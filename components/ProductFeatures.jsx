@@ -90,6 +90,7 @@ export default function ProductFeatures() {
             </div>
             <div className="flex justify-center mt-10" data-aos="fade-up" data-aos-delay="400">
             <button
+              href="#areyouready"
                 className="px-6 py-3 bg-teal-500 hover:bg-cyan-600 text-white font-semibold 
                         rounded-md shadow-md transition-all duration-300"
             >
