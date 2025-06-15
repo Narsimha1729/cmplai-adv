@@ -34,7 +34,7 @@ export const metadata = {
     siteName: "Cmplai",
     images: [
       {
-        url: "/og-image.jpg", // ← place this image in /public
+        url: "/og-image.webp", // ← place this image in /public
         width: 1200,
         height: 630,
         alt: "Cmplai AI Compliance Platform",
