@@ -13,7 +13,7 @@ const team = [
     email: 'mailto:narsimha@example.com',
   },
   {
-    name: 'Divya',
+    name: 'Divya Taluri',
     role: 'Chief Regulatory Officer',
     experience: '3+ years of experience in pharmaceutical compliance and quality management',
     image: '/divya taluri.jpg',
