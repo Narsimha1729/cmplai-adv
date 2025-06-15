@@ -1,7 +1,8 @@
+// app/layout.js
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AOSInit from "@/components/AOSInit";
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,7 +27,7 @@ export const metadata = {
     "AI for pharma",
     "QMS software",
   ],
-  metadataBase: new URL("https://www.cmplai.com"), // important for absolute paths
+  metadataBase: new URL("https://www.cmplai.com"),
   openGraph: {
     title: "Cmplai – Compliance Simplified",
     description:
@@ -35,7 +36,7 @@ export const metadata = {
     siteName: "Cmplai",
     images: [
       {
-        url: "/og-image.webp", // ← place this image in /public
+        url: "/og-image.webp", // Make sure this image is in your /public folder
         width: 1200,
         height: 630,
         alt: "Cmplai AI Compliance Platform",
@@ -48,7 +49,7 @@ export const metadata = {
     title: "Cmplai – Compliance Simplified",
     description:
       "Automate documentation, stay audit-ready, and reduce compliance effort with AI.",
-    images: ["/og-image.jpg"],
+    images: ["/og-image.webp"], // Ensure this matches OpenGraph
   },
   alternates: {
     canonical: "https://www.cmplai.com",
