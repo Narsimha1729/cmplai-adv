@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Cmplai - Compliance Automation",
+  title: "Cmplai – Compliance Simplified",
   description: "AI-powered compliance platform",
 };
 
