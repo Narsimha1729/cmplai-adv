@@ -5,7 +5,7 @@ import Image from "next/image";
 const WhatSetsUsApart = () => {
   const cards = [
     "Our solution is purpose-built with pre-configured templates and compliance logic tailored to global standards like <strong>GMP</strong>, <strong>ISO</strong>, and <strong>US-FDA</strong>, ensuring organizations are always audit-ready and aligned with evolving regulations. The architecture is highly scalable, supporting multi-industry applications and seamless expansion across plants and teams.",
-    "Comply's unique focus is on automated document creation — delivering <strong>70%</strong> of its value through advanced templating and content automation, while also providing robust document management capabilities. This enables us to address the core pain points of compliance: high manual effort, risk of errors, and slow workflows.",
+    "Cmplai's unique focus is on automated document creation — delivering <strong>70%</strong> of its value through advanced templating and content automation, while also providing robust document management capabilities. This enables us to address the core pain points of compliance: high manual effort, risk of errors, and slow workflows.",
     "Our platform not only delivers substantial cost savings — equivalent to a full-time <strong>QMS</strong> employee per plant — but also empowers organizations to repurpose their workforce for higher-value tasks, fostering <strong>innovation</strong> and <strong>job satisfaction</strong>.",
   ];
 
