@@ -1,9 +1,9 @@
+import BlogSection from '@/components/BlogSection';
+
 export const metadata = {
   title: 'Blog – Cmplai',
-  description: 'Explore industry insights and AI compliance strategies by Cmplai.',
+  description: 'Explore expert blogs from the Cmplai team on compliance and automation.',
 };
-
-import BlogSection from '@/components/BlogSection';
 
 export default function BlogPage() {
   return (

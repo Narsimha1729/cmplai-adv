@@ -2,35 +2,32 @@
 import { useState } from 'react';
 import Image from 'next/image';
 
-export default function BlogCard({ blog, isExpanded, onExpand }) {
+export default function BlogCard({ blog }) {
+  const [expanded, setExpanded] = useState(false);
+
   return (
-    <div
-      className={`bg-white border rounded-xl overflow-hidden shadow transition-all duration-300 ${
-        isExpanded ? 'col-span-full' : ''
-      }`}
-    >
-      <div className="relative w-full h-48 sm:h-64">
-        <Image
-          src={blog.image}
-          alt={blog.title}
-          fill
-          className="object-cover"
-        />
-      </div>
+    <div className="bg-white border border-teal-100 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden">
+      <Image
+        src={blog.image || '/placeholder.png'}
+        alt={blog.title}
+        width={600}
+        height={300}
+        className="object-cover w-full h-48"
+      />
+
       <div className="p-6">
-        <p className="text-xs text-gray-400 mb-1">{blog.date}</p>
-        <h3 className="text-2xl font-semibold text-gray-900 mb-3">
-          {blog.title}
-        </h3>
-        <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
-          {isExpanded ? blog.full : blog.summary}
+        <h3 className="text-xl font-bold text-teal-700 mb-2">{blog.title}</h3>
+        <p className="text-sm text-gray-500 mb-2">{blog.date}</p>
+
+        <p className="text-gray-700 text-sm leading-relaxed">
+          {expanded ? blog.full : blog.summary}
         </p>
 
         <button
-          onClick={() => onExpand(blog.id)}
-          className="text-teal-600 mt-4 font-semibold text-sm hover:underline"
+          onClick={() => setExpanded(!expanded)}
+          className="mt-4 text-teal-600 font-semibold text-sm hover:underline"
         >
-          {isExpanded ? 'Show Less ▲' : 'Read More →'}
+          {expanded ? 'Show Less' : 'Read More →'}
         </button>
       </div>
     </div>

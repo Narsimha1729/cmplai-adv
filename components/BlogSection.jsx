@@ -1,9 +1,7 @@
-// components/BlogSection.jsx
-import BlogCard from "./BlogCard"; // default import
+import BlogCard from './BlogCard';
 
-export default function BlogSection() {
-  const blogs = [
-    {
+const blogs = [
+  {
     id: 1,
     title: 'Why Manual Compliance is Holding Pharma Back',
     date: 'June 2025',
@@ -49,14 +47,14 @@ What makes GenAI powerful is not automation alone — it’s the ability to lear
 
 With Cmplai, your documents aren’t just compliant — they’re intelligent.`,
   },
+];
 
-  ]; // your blogs array
+export default function BlogSection() {
   return (
-    <div className="grid md:grid-cols-3 gap-6">
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
       {blogs.map((blog) => (
         <BlogCard key={blog.id} blog={blog} />
       ))}
     </div>
   );
 }
-
