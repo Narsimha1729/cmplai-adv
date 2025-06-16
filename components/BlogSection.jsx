@@ -1,3 +1,5 @@
+'use client';
+import { useState } from 'react';
 import BlogCard from './BlogCard';
 
 const blogs = [
@@ -6,7 +8,8 @@ const blogs = [
     title: 'Why Manual Compliance is Holding Pharma Back',
     date: 'June 2025',
     image: '/placeholder.png',
-    summary: 'Manual documentation takes up over 70% of compliance teams\' time. Learn why modern pharma companies are shifting to automation.',
+    summary:
+      "Manual documentation takes up over 70% of compliance teams' time. Learn why modern pharma companies are shifting to automation.",
     full: `Manual compliance processes are not just outdated — they’re a major roadblock to innovation in the pharmaceutical industry.
 
 From SOPs to validation reports, every document demands hours of human effort and cross-checking. This not only increases the risk of errors but also slows down your ability to respond to audits, change controls, and global regulatory updates.
@@ -20,7 +23,8 @@ The future of pharma belongs to those who automate — not those who manually su
     title: '5 Ways Cmplai Transforms Regulatory Workflows',
     date: 'May 2025',
     image: '/placeholder.png',
-    summary: 'Discover how Cmplai makes compliance faster, more accurate, and easier for teams across pharma and manufacturing.',
+    summary:
+      'Discover how Cmplai makes compliance faster, more accurate, and easier for teams across pharma and manufacturing.',
     full: `Regulatory teams spend most of their time preparing, reviewing, and maintaining documents — not improving them.
 
 Cmplai changes that with:
@@ -38,7 +42,8 @@ Instead of just managing documentation, you now manage outcomes — with full co
     title: 'GenAI + Compliance: A Match Made for Pharma',
     date: 'April 2025',
     image: '/placeholder.png',
-    summary: 'AI is not replacing quality teams — it’s making them faster, smarter, and more valuable. Here’s how GenAI enhances pharma compliance.',
+    summary:
+      'AI is not replacing quality teams — it’s making them faster, smarter, and more valuable. Here’s how GenAI enhances pharma compliance.',
     full: `In highly regulated industries, AI isn’t a shortcut — it’s a safety net.
 
 Cmplai integrates GenAI to generate accurate documentation based on predefined logic and templates, validate inputs in real-time, and reduce human errors across SOPs, CAPAs, and batch records.
@@ -50,10 +55,17 @@ With Cmplai, your documents aren’t just compliant — they’re intelligent.`,
 ];
 
 export default function BlogSection() {
+  const [expandedId, setExpandedId] = useState(null);
+
   return (
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {blogs.map((blog) => (
-        <BlogCard key={blog.id} blog={blog} />
+        <BlogCard
+          key={blog.id}
+          blog={blog}
+          expandedId={expandedId}
+          setExpandedId={setExpandedId}
+        />
       ))}
     </div>
   );
