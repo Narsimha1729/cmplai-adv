@@ -3,7 +3,7 @@ const blogs = [
     id: 1,
     title: 'Why Manual Compliance is Holding Pharma Back',
     date: 'June 2025',
-    image: '/blog1.webp',
+    image: '/placeholder.png',
     summary: 'Manual documentation takes up over 70% of compliance teams\' time. Learn why modern pharma companies are shifting to automation.',
     full: `Manual compliance processes are not just outdated — they’re a major roadblock to innovation in the pharmaceutical industry.
 
@@ -17,7 +17,7 @@ The future of pharma belongs to those who automate — not those who manually su
     id: 2,
     title: '5 Ways Cmplai Transforms Regulatory Workflows',
     date: 'May 2025',
-    image: '/blog2.webp',
+    image: '/placeholder.png',
     summary: 'Discover how Cmplai makes compliance faster, more accurate, and easier for teams across pharma and manufacturing.',
     full: `Regulatory teams spend most of their time preparing, reviewing, and maintaining documents — not improving them.
 
@@ -35,7 +35,7 @@ Instead of just managing documentation, you now manage outcomes — with full co
     id: 3,
     title: 'GenAI + Compliance: A Match Made for Pharma',
     date: 'April 2025',
-    image: '/blog3.webp',
+    image: '/placeholder.png',
     summary: 'AI is not replacing quality teams — it’s making them faster, smarter, and more valuable. Here’s how GenAI enhances pharma compliance.',
     full: `In highly regulated industries, AI isn’t a shortcut — it’s a safety net.
 
