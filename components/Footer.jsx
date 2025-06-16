@@ -44,7 +44,7 @@ export default function Footer() {
           <h4 className="text-lg font-semibold text-gray-900">Resources</h4>
           <ul className="space-y-2 text-sm">
             <li><Link href="/blog" className="text-gray-600 hover:text-teal-600 transition">Blog</Link></li>
-            <li><Link href="#">Case Studies</Link></li>
+            <li><Link href="/case-studies" className="text-gray-600 hover:text-teal-600 transition">Case Studies</Link></li>
             <li><Link href="#">Documentation</Link></li>
             <li><Link href="#">FAQ</Link></li>
           </ul>
@@ -68,9 +68,9 @@ export default function Footer() {
           © 2025 LN Infosphere TechTransformers Pvt Ltd. All rights reserved.
         </p>
         <div className="flex gap-4 text-center md:text-right">
-          <Link href="/privacy-policy" className="hover:underline">Privacy Policy</Link>
-          <Link href="/terms-of-service" className="hover:underline">Terms of Service</Link>
-          <Link href="/cookie-policy" className="hover:underline">Cookie Policy</Link>
+          <Link href="/privacy-policy" className="text-gray-600 hover:text-teal-600 transition hover:underline">Privacy Policy</Link>
+          <Link href="/terms-of-service" className="text-gray-600 hover:text-teal-600 transition hover:underline">Terms of Service</Link>
+          <Link href="/cookie-policy" className="text-gray-600 hover:text-teal-600 transition hover:underline">Cookie Policy</Link>
         </div>
       </div>
     </footer>
