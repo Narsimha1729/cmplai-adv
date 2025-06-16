@@ -1,31 +1,38 @@
 'use client';
 import BlogCard from './BlogCard';
 
-const blogPosts = [
+const blogs = [
   {
     id: 1,
     title: 'Why Compliance Automation is the Future',
-    summary: 'Discover why companies are turning to AI for compliance management...',
-    full: 'In the rapidly evolving pharmaceutical and manufacturing sectors, manual compliance documentation is becoming obsolete...',
+    date: 'June 2025',
+    image: '/blog1.webp',
+    summary: 'Discover how AI-driven compliance is changing the pharmaceutical and manufacturing world.',
+    link: '#',
   },
   {
     id: 2,
     title: 'Top 5 Benefits of Using Cmplai',
-    summary: 'Explore the top advantages our clients experience using our platform...',
-    full: 'Our platform not only accelerates document creation but also enables smarter workforce allocation...',
+    date: 'May 2025',
+    image: '/blog2.webp',
+    summary: 'Save time, reduce errors, and stay audit-ready — learn how Cmplai drives efficiency.',
+    link: '#',
+  },
+  {
+    id: 3,
+    title: 'Inside Our Tech Stack: How Cmplai is Built',
+    date: 'April 2025',
+    image: '/blog3.webp',
+    summary: 'From GenAI to cloud-native architecture, here’s what powers our platform.',
+    link: '#',
   },
 ];
 
 export default function BlogSection() {
   return (
-    <div className="grid md:grid-cols-2 gap-8">
-      {blogPosts.map((post) => (
-        <BlogCard
-          key={post.id}
-          title={post.title}
-          summary={post.summary}
-          full={post.full}
-        />
+    <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
+      {blogs.map((blog) => (
+        <BlogCard key={blog.id} {...blog} />
       ))}
     </div>
   );

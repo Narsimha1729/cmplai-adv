@@ -1,23 +1,28 @@
 'use client';
-import { useState } from 'react';
+import Image from 'next/image';
 
-export default function BlogCard({ title, summary, full }) {
-  const [expanded, setExpanded] = useState(false);
-
+export default function BlogCard({ title, image, date, summary, link }) {
   return (
-    <div className="p-6 bg-gray-50 border rounded-xl shadow hover:shadow-md transition">
-      <h2 className="text-xl font-bold text-gray-900 mb-2">{title}</h2>
-
-      <p className="text-sm text-gray-700">
-        {expanded ? full : summary}
-      </p>
-
-      <button
-        onClick={() => setExpanded(!expanded)}
-        className="text-teal-600 font-medium text-sm mt-3 hover:underline"
-      >
-        {expanded ? 'See Less ▲' : 'See More ▼'}
-      </button>
+    <div className="bg-white border rounded-xl shadow hover:shadow-lg transition-all overflow-hidden">
+      <div className="relative w-full h-48">
+        <Image
+          src={image}
+          alt={title}
+          fill
+          className="object-cover"
+        />
+      </div>
+      <div className="p-6">
+        <p className="text-xs text-gray-400 mb-1">{date}</p>
+        <h3 className="text-xl font-semibold text-gray-900 mb-2">{title}</h3>
+        <p className="text-sm text-gray-600 mb-4">{summary}</p>
+        <a
+          href={link}
+          className="text-teal-600 font-medium hover:underline text-sm"
+        >
+          Read more →
+        </a>
+      </div>
     </div>
   );
 }
