@@ -1,3 +1,4 @@
+import Navbar from '@/components/Navbar';
 import BlogSection from '@/components/BlogSection';
 
 export const metadata = {
@@ -7,6 +8,8 @@ export const metadata = {
 
 export default function BlogPage() {
   return (
+    <>
+    <Navbar />
     <section className="py-24 px-6 bg-[#f9fefe] min-h-screen">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
@@ -18,5 +21,6 @@ export default function BlogPage() {
         <BlogSection />
       </div>
     </section>
+    </>
   );
 }
