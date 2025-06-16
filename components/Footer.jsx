@@ -68,9 +68,9 @@ export default function Footer() {
           © 2025 LN Infosphere TechTransformers Pvt Ltd. All rights reserved.
         </p>
         <div className="flex gap-4 text-center md:text-right">
-          <Link href="#" className="hover:underline">Privacy Policy</Link>
-          <Link href="#" className="hover:underline">Terms of Service</Link>
-          <Link href="#" className="hover:underline">Cookie Policy</Link>
+          <Link href="/privacy-policy" className="hover:underline">Privacy Policy</Link>
+          <Link href="/terms-of-service" className="hover:underline">Terms of Service</Link>
+          <Link href="/cookie-policy" className="hover:underline">Cookie Policy</Link>
         </div>
       </div>
     </footer>
