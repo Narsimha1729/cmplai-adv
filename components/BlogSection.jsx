@@ -1,51 +1,48 @@
-'use client';
-import { useState } from 'react';
-import BlogCard from './BlogCard';
-
 const blogs = [
   {
     id: 1,
-    title: 'Why Compliance Automation is the Future',
+    title: 'Why Manual Compliance is Holding Pharma Back',
     date: 'June 2025',
     image: '/blog1.webp',
-    summary: 'Discover how AI-driven compliance is changing the pharma world...',
-    full: `In the rapidly evolving pharmaceutical industry, manual compliance processes are no longer sustainable.\n\nCmplai leverages GenAI to automate documentation, minimize errors, and ensure consistent regulatory readiness across plants.`,
+    summary: 'Manual documentation takes up over 70% of compliance teams\' time. Learn why modern pharma companies are shifting to automation.',
+    full: `Manual compliance processes are not just outdated — they’re a major roadblock to innovation in the pharmaceutical industry.
+
+From SOPs to validation reports, every document demands hours of human effort and cross-checking. This not only increases the risk of errors but also slows down your ability to respond to audits, change controls, and global regulatory updates.
+
+With Cmplai’s AI-driven platform, companies reduce document preparation time by 70%, ensure audit readiness in real-time, and free up compliance teams to focus on strategic quality initiatives.
+
+The future of pharma belongs to those who automate — not those who manually survive.`,
   },
   {
     id: 2,
-    title: 'Top 5 Benefits of Using Cmplai',
+    title: '5 Ways Cmplai Transforms Regulatory Workflows',
     date: 'May 2025',
     image: '/blog2.webp',
-    summary: 'Explore the top advantages Cmplai delivers to its partners...',
-    full: `From reduced documentation time to higher audit pass rates, Cmplai is built for performance.\n\nOur platform supports ISO, FDA, and GMP standards, giving you unmatched speed and reliability.`,
+    summary: 'Discover how Cmplai makes compliance faster, more accurate, and easier for teams across pharma and manufacturing.',
+    full: `Regulatory teams spend most of their time preparing, reviewing, and maintaining documents — not improving them.
+
+Cmplai changes that with:
+
+1. AI-powered templating that auto-generates reports  
+2. Pre-built logic aligned to GMP, ISO, and US-FDA  
+3. Version control and real-time collaboration  
+4. Audit trails and digital signatures  
+5. Smart dashboards that highlight gaps
+
+Instead of just managing documentation, you now manage outcomes — with full confidence that every file is compliant, complete, and secure.`,
   },
   {
     id: 3,
-    title: 'Inside Our Tech Stack',
+    title: 'GenAI + Compliance: A Match Made for Pharma',
     date: 'April 2025',
     image: '/blog3.webp',
-    summary: 'A sneak peek at the technology behind Cmplai’s powerful AI engine...',
-    full: `Cmplai runs on a scalable GenAI stack, with secure APIs, compliance-ready databases, and cutting-edge automation libraries.\n\nWe're building not just for today — but for the future of regulatory innovation.`,
+    summary: 'AI is not replacing quality teams — it’s making them faster, smarter, and more valuable. Here’s how GenAI enhances pharma compliance.',
+    full: `In highly regulated industries, AI isn’t a shortcut — it’s a safety net.
+
+Cmplai integrates GenAI to generate accurate documentation based on predefined logic and templates, validate inputs in real-time, and reduce human errors across SOPs, CAPAs, and batch records.
+
+What makes GenAI powerful is not automation alone — it’s the ability to learn, adapt, and suggest improvements based on compliance history.
+
+With Cmplai, your documents aren’t just compliant — they’re intelligent.`,
   },
 ];
-
-export default function BlogSection() {
-  const [expandedId, setExpandedId] = useState(null);
-
-  const handleExpand = (id) => {
-    setExpandedId((prev) => (prev === id ? null : id));
-  };
-
-  return (
-    <div className="grid md:grid-cols-2 gap-10">
-      {blogs.map((blog) => (
-        <BlogCard
-          key={blog.id}
-          blog={blog}
-          isExpanded={expandedId === blog.id}
-          onExpand={handleExpand}
-        />
-      ))}
-    </div>
-  );
-}
