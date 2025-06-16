@@ -1,9 +1,9 @@
+import BlogSection from '@/components/BlogSection';
+
 export const metadata = {
   title: 'Blog – Cmplai',
-  description: 'Explore industry insights and AI compliance strategies by Cmplai.',
+  description: 'Industry insights, case studies, and technology updates from Cmplai',
 };
-
-import BlogSection from '@/components/BlogSection';
 
 export default function BlogPage() {
   return (
@@ -15,6 +15,7 @@ export default function BlogPage() {
             Industry insights, product updates, and expert strategies from the Cmplai team.
           </p>
         </div>
+
         <BlogSection />
       </div>
     </section>
