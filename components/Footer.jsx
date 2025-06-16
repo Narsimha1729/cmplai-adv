@@ -43,7 +43,7 @@ export default function Footer() {
         <div className="space-y-4">
           <h4 className="text-lg font-semibold text-gray-900">Resources</h4>
           <ul className="space-y-2 text-sm">
-            <li><Link href="#">Blog</Link></li>
+            <li><Link href="#BlogSection">Blog</Link></li>
             <li><Link href="#">Case Studies</Link></li>
             <li><Link href="#">Documentation</Link></li>
             <li><Link href="#">FAQ</Link></li>
