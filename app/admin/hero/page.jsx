@@ -671,13 +671,13 @@ export default function HeroEditor() {
               <input
                 id="bgVideoUrl"
                 type="url"
-                placeholder="https://www.youtube.com/embed/yourvideo"
+                placeholder="https://www.youtube.com/embed/your_video_id?autoplay=1&mute=1&loop=1&playlist=your_video_id&controls=0"
                 value={form.bgVideo}
                 onChange={(e) => handleChange('bgVideo', e.target.value)}
                 className="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-teal-500 focus:border-teal-500"
               />
               <p className="text-sm text-gray-500 mt-1">
-                For YouTube, use the embed URL (e.g., `https://www.youtube.com/embed/VIDEO_ID?autoplay=1&loop=1&playlist=VIDEO_ID&mute=1&controls=0`).
+                For YouTube, use the embed URL and add `?autoplay=1&mute=1&loop=1&playlist=VIDEO_ID&controls=0` for a seamless background.
               </p>
             </div>
           )}
