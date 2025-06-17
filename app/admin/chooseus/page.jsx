@@ -1,52 +1,62 @@
 // app/admin/chooseus/page.jsx
 'use client';
 
-import { useState, createElement } from 'react'; // Import createElement for dynamic JSX creation
+import { useState, createElement } from 'react';
 import {
   Plus,
   Trash,
   Sparkles,
   Target,
   Globe2,
-  // Add other Lucide icons if you want to offer more choices in the editor's icon selector
-  Lightbulb,
-  ShieldCheck,
-  Rocket,
-  Settings, // For general section settings icon
-  Monitor,  // For live preview section icon
-  FileText, // For section description icon
+  // Add all Lucide icons here that you want to offer in the editor's icon selector.
+  // This list should be comprehensive to give the user choices.
+  Lightbulb, ShieldCheck, Rocket, Wrench, Gauge, Briefcase, Layers, Zap, Star, Award, Bell,
+  CheckCircle, Cpu, Feather, GitPullRequest, Heart, Key, Leaf, Megaphone, Network, Palette,
+  PieChart, RefreshCw, Search, Server, Settings, Sliders, Smartphone, Sunrise, ThumbsUp,
+  TrendingUp, Umbrella, Users, Waves, ZapOff,
+  FileText, // For section description icon in editor
+  Monitor,  // For live preview section icon in editor
+  Palette as ColorPalette, // Alias for clarity if using Palette elsewhere
+  Type, // For font/text settings
 } from 'lucide-react';
 
 // IMPORTANT: Ensure this import path is correct relative to app/admin/chooseus/page.jsx
-// It needs to go up 3 levels to reach the root, then down into 'components'.
+// It needs to go up 3 levels from app/admin/chooseus to the root, then into 'components'.
 import Chooseus from '../../../components/Chooseus';
 
 // Map icon names (strings) to actual Lucide React components
-// Only include icons here that you want the user to be able to select in the editor.
-// These should correspond to the icons imported above.
+// This object must contain ALL icons that you want the user to be able to select in the editor.
+// Ensure this list is consistent with the one in components/Chooseus.jsx for proper rendering.
 const iconComponents = {
-  Sparkles,
-  Target,
-  Globe2,
-  Lightbulb,
-  ShieldCheck,
-  Rocket,
-  // Add more icons here if you desire more options in the editor's dropdown
+  Sparkles, Target, Globe2, Lightbulb, ShieldCheck, Rocket, Wrench, Gauge, Briefcase, Layers, Zap, Star, Award, Bell,
+  CheckCircle, Cpu, Feather, GitPullRequest, Heart, Key, Leaf, Megaphone, Network, Palette,
+  PieChart, RefreshCw, Search, Server, Settings, Sliders, Smartphone, Sunrise, ThumbsUp,
+  TrendingUp, Umbrella, Users, Waves, ZapOff,
 };
 
-export default function ChooseUsEditorPage() { // Renamed to clearly denote it's a page component
+export default function ChooseUsEditorPage() {
   const [form, setForm] = useState({
-    // These properties directly map to the text content that your Chooseus.jsx uses
     sectionTitle: 'Why Choose Us?',
-    sectionDesc: 'Discover how Cmplai transforms compliance processes',
+    sectionDesc: 'Discover how Cmplai transforms compliance processes with innovation and expertise.',
+    // Dynamic styling options that Chooseus.jsx will now accept as props
+    sectionBgColor: '#f0fdf4', // Corresponds to Tailwind bg-teal-50 for default section background
+    titleColor: '#0f766e',     // Corresponds to Tailwind text-teal-600
+    descColor: '#4b5563',      // Corresponds to Tailwind text-gray-600
+    iconColor: '#0f766e',      // Global icon color, also text-teal-600
+    pointBgColor: '#ffffff',   // Corresponds to Tailwind bg-white for individual points
+    pointBorderColor: '#e0f2f7', // Default border color (e.g., teal-100 or transparent)
+    pointHoverBorderColor: '#0d9488', // Corresponds to Tailwind hover:border-teal-500
+    pointHoverBgColor: '#f0fdf4',     // Corresponds to Tailwind hover:bg-teal-50
+    pointTitleColor: '#1a202c',       // Corresponds to Tailwind text-gray-900
+    pointHoverTitleColor: '#0d9488',  // Corresponds to Tailwind group-hover:text-teal-600
+    pointDescColor: '#4b5563',        // Corresponds to Tailwind text-gray-600
+    iconBaseBgColor: '#e0f2f7',        // Corresponds to Tailwind bg-teal-50 for icon circle
+    iconHoverBgColor: '#e0f2f7',      // Corresponds to Tailwind group-hover:bg-teal-100 for icon circle hover
 
-    // Points array: Stores string icon names for editor control.
-    // The frontend Chooseus.jsx currently expects JSX elements for icons,
-    // so we'll transform this for the live preview.
     points: [
       {
-        id: `point-${Date.now()}-1`, // Unique ID for each point (good for React keys)
-        icon: 'Sparkles', // Stores the string name of the Lucide icon
+        id: `point-${Date.now()}-1`, // Unique ID for each point (important for React keys)
+        icon: 'Sparkles', // Stored as a string name for editor control
         title: 'Industry-First GenAI Automation',
         desc: 'Comply revolutionizes compliance by automating document preparation, reducing turnaround time for critical workflows from <strong>3 months</strong> to just <strong>3 days</strong>. Our <strong>GenAI-powered</strong> SaaS ERP platform minimizes manual intervention and errors, ensuring unmatched accuracy and regulatory adherence.',
       },
@@ -63,14 +73,6 @@ export default function ChooseUsEditorPage() { // Renamed to clearly denote it's
         desc: 'We reduce <strong>repetitive manual tasks</strong>, allowing your teams to focus on <strong>high-value work</strong> like innovation and quality enhancement, leading to better resource allocation and job satisfaction.',
       },
     ],
-
-    // IMPORTANT: These are NOT currently used as props in your provided Chooseus.jsx.
-    // They are included here in the editor's state as a placeholder if you wish
-    // to make these styles dynamic in your Chooseus.jsx later.
-    // For now, they primarily serve to visually guide the editor's own background/text colors.
-    sectionBgColor: '#ffffff', // Reflects bg-white from your Chooseus.jsx
-    titleColor: '#0f766e',     // Reflects text-teal-600 from your Chooseus.jsx
-    descColor: '#4b5563',      // Reflects text-gray-600 from your Chooseus.jsx
   });
 
   // Reusable Tailwind CSS classes for consistent input styling
@@ -78,9 +80,9 @@ export default function ChooseUsEditorPage() { // Renamed to clearly denote it's
   const commonTextareaClasses = "w-full border border-gray-300 px-4 py-2 rounded-md text-gray-900 resize-y focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400";
   const commonSelectClasses = "w-full border border-gray-300 px-4 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500";
   const commonColorInputClasses = "h-10 w-full rounded-md border border-gray-300 cursor-pointer";
+  const sectionHeaderClasses = "text-xl font-bold text-gray-800 mb-4 flex items-center gap-2";
 
-
-  // Handles changes for top-level form fields (e.g., sectionTitle, sectionDesc, bgColor)
+  // Handles changes for top-level form fields (e.g., sectionTitle, sectionDesc, colors)
   const handleChange = (field, value) => {
     setForm((prevForm) => ({ ...prevForm, [field]: value }));
   };
@@ -95,7 +97,7 @@ export default function ChooseUsEditorPage() { // Renamed to clearly denote it's
 
   // Removes a 'point' item by its unique ID
   const removePoint = (id) => {
-    if (window.confirm('Are you sure you want to remove this point?')) { // Using window.confirm for simplicity in demo
+    if (window.confirm('Are you sure you want to remove this point?')) {
       const updatedPoints = form.points.filter((point) => point.id !== id);
       setForm((prevForm) => ({ ...prevForm, points: updatedPoints }));
     }
@@ -121,30 +123,24 @@ export default function ChooseUsEditorPage() { // Renamed to clearly denote it's
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Saved Choose Us section data:', form);
-    alert('✅ "Why Choose Us" section saved (demo only)'); // Using alert for simplicity in demo
+    alert('✅ "Why Choose Us" section saved (demo only)'); // Simple alert for demo purposes
+    // In a real application, you would send 'form' data to a backend API here.
   };
 
-  // PREPARE CONFIG FOR LIVE PREVIEW:
-  // Your Chooseus.jsx component expects `point.icon` to be a JSX element,
-  // but our editor's state `form.points[].icon` stores a string name.
-  // We need to transform the data for the preview.
+  // Prepare the configuration object to pass to the Chooseus frontend component.
+  // The frontend component expects JSX elements for icons, so we transform the string names.
   const previewConfig = {
-    sectionTitle: form.sectionTitle,
-    sectionDesc: form.sectionDesc,
-    // Transform points to match the Chooseus.jsx's expected icon format
+    ...form, // Pass all form properties directly
     points: form.points.map(p => {
       const Icon = iconComponents[p.icon]; // Get the Lucide component based on string name
       return {
         ...p,
-        // Recreate the JSX element with the class names expected by your Chooseus.jsx
-        icon: Icon ? createElement(Icon, { className: "w-6 h-6 text-teal-600" }) : null,
+        // Recreate the JSX element for the icon.
+        // The classNames here are just for the editor's internal logic;
+        // the Chooseus component will apply its own styles based on passed props.
+        icon: Icon ? createElement(Icon) : null,
       };
     }),
-    // Pass other relevant simple style properties (if Chooseus.jsx was dynamic for them)
-    // For now, Chooseus.jsx's colors are hardcoded, but if you change it, this would send them.
-    titleColor: form.titleColor,
-    descColor: form.descColor,
-    bgColor: form.bgColor,
   };
 
 
@@ -155,51 +151,92 @@ export default function ChooseUsEditorPage() { // Renamed to clearly denote it's
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-10">
-        {/* --- Section General Settings --- */}
-        {/* Note: Based on your Chooseus.jsx, only the background color is explicitly dynamic.
-            Other colors like title/desc/icon colors are hardcoded in Chooseus.jsx.
-            If you want them editable, you need to modify Chooseus.jsx to accept them as props.
-        */}
-        <div className="pb-6 border-b border-gray-200">
-          <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-            <Settings className="w-5 h-5 text-gray-600" /> General Section Styling
+        {/* --- General Section Settings --- */}
+        <div className="pb-8 border-b border-gray-200">
+          <h3 className={sectionHeaderClasses}>
+            <ColorPalette className="w-5 h-5 text-gray-600" /> General Section Styling
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Section Background Color */}
             <div>
-              <label htmlFor="bgColor" className="block text-sm font-semibold text-gray-700 mb-1">Section Background Color</label>
+              <label htmlFor="sectionBgColor" className="block text-sm font-semibold text-gray-700 mb-1">Section Background</label>
               <input
-                id="bgColor"
+                id="sectionBgColor"
                 type="color"
-                value={form.bgColor}
-                onChange={(e) => handleChange('bgColor', e.target.value)}
+                value={form.sectionBgColor}
+                onChange={(e) => handleChange('sectionBgColor', e.target.value)}
                 className={commonColorInputClasses}
                 title="Choose Section Background Color"
               />
-              <p className="text-xs text-gray-500 mt-1">Changes the background of the entire section.</p>
             </div>
-            {/* If Chooseus.jsx was dynamic for other colors, their inputs would go here. */}
-            {/* Example if it became dynamic:
+            {/* Main Title Color */}
             <div>
-              <label htmlFor="globalIconColor" className="block text-sm font-semibold text-gray-700 mb-1">Global Icon Color</label>
+              <label htmlFor="titleColor" className="block text-sm font-semibold text-gray-700 mb-1">Title Color</label>
               <input
-                id="globalIconColor"
+                id="titleColor"
                 type="color"
-                value={form.globalIconColor}
-                onChange={(e) => handleChange('globalIconColor', e.target.value)}
+                value={form.titleColor}
+                onChange={(e) => handleChange('titleColor', e.target.value)}
                 className={commonColorInputClasses}
+                title="Choose Main Title Color"
               />
-              <p className="text-xs text-gray-500 mt-1">Note: Your frontend component currently hardcodes icon color to teal-600.</p>
             </div>
-            */}
+            {/* Main Description Color */}
+            <div>
+              <label htmlFor="descColor" className="block text-sm font-semibold text-gray-700 mb-1">Description Color</label>
+              <input
+                id="descColor"
+                type="color"
+                value={form.descColor}
+                onChange={(e) => handleChange('descColor', e.target.value)}
+                className={commonColorInputClasses}
+                title="Choose Main Description Color"
+              />
+            </div>
+            {/* Global Icon Color */}
+            <div>
+              <label htmlFor="iconColor" className="block text-sm font-semibold text-gray-700 mb-1">Icon Color (Global)</label>
+              <input
+                id="iconColor"
+                type="color"
+                value={form.iconColor}
+                onChange={(e) => handleChange('iconColor', e.target.value)}
+                className={commonColorInputClasses}
+                title="Choose Global Icon Color"
+              />
+            </div>
+            {/* Icon Circle Base Background Color */}
+            <div>
+              <label htmlFor="iconBaseBgColor" className="block text-sm font-semibold text-gray-700 mb-1">Icon Circle Background</label>
+              <input
+                id="iconBaseBgColor"
+                type="color"
+                value={form.iconBaseBgColor}
+                onChange={(e) => handleChange('iconBaseBgColor', e.target.value)}
+                className={commonColorInputClasses}
+                title="Choose Icon Circle Base Background Color"
+              />
+            </div>
+            {/* Icon Circle Hover Background Color */}
+            <div>
+              <label htmlFor="iconHoverBgColor" className="block text-sm font-semibold text-gray-700 mb-1">Icon Circle Hover Bg</label>
+              <input
+                id="iconHoverBgColor"
+                type="color"
+                value={form.iconHoverBgColor}
+                onChange={(e) => handleChange('iconHoverBgColor', e.target.value)}
+                className={commonColorInputClasses}
+                title="Choose Icon Circle Hover Background Color"
+              />
+            </div>
           </div>
         </div>
 
         {/* --- Section Title & Description Content --- */}
-        <div className="grid md:grid-cols-2 gap-8 pb-6 border-b border-gray-200">
+        <div className="grid md:grid-cols-2 gap-8 pb-8 border-b border-gray-200">
           <div>
-            <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-gray-600" /> Section Title
+            <h3 className={sectionHeaderClasses}>
+              <Type className="w-5 h-5 text-gray-600" /> Section Title
             </h3>
             <label htmlFor="sectionTitle" className="sr-only">Section Title Text</label>
             <input
@@ -210,11 +247,10 @@ export default function ChooseUsEditorPage() { // Renamed to clearly denote it's
               className={commonInputClasses}
               placeholder="e.g., Why Choose Cmplai?"
             />
-            {/* If your Chooseus.jsx accepted dynamic title colors/fonts, inputs would be here. */}
           </div>
 
           <div>
-            <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <h3 className={sectionHeaderClasses}>
               <FileText className="w-5 h-5 text-gray-600" /> Section Description
             </h3>
             <label htmlFor="sectionDesc" className="sr-only">Section Subtitle / Description Text</label>
@@ -226,15 +262,95 @@ export default function ChooseUsEditorPage() { // Renamed to clearly denote it's
               className={commonInputClasses}
               placeholder="e.g., Our unique value proposition..."
             />
-            {/* If your Chooseus.jsx accepted dynamic description colors/fonts, inputs would be here. */}
           </div>
         </div>
 
         {/* --- Individual Value Proposition Points --- */}
         <div>
-          <h3 className="text-xl font-bold text-gray-800 mb-5 border-b pb-3 border-gray-200 flex items-center gap-2">
+          <h3 className={sectionHeaderClasses}>
             <Target className="w-5 h-5 text-gray-600" /> Manage Value Proposition Points
           </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            {/* Point specific styling controls, applied globally to all points */}
+            <div>
+              <label htmlFor="pointBgColor" className="block text-sm font-semibold text-gray-700 mb-1">Point Background</label>
+              <input
+                id="pointBgColor"
+                type="color"
+                value={form.pointBgColor}
+                onChange={(e) => handleChange('pointBgColor', e.target.value)}
+                className={commonColorInputClasses}
+                title="Choose Point Background Color"
+              />
+            </div>
+            <div>
+              <label htmlFor="pointBorderColor" className="block text-sm font-semibold text-gray-700 mb-1">Point Border</label>
+              <input
+                id="pointBorderColor"
+                type="color"
+                value={form.pointBorderColor}
+                onChange={(e) => handleChange('pointBorderColor', e.target.value)}
+                className={commonColorInputClasses}
+                title="Choose Point Border Color"
+              />
+            </div>
+            <div>
+              <label htmlFor="pointHoverBorderColor" className="block text-sm font-semibold text-gray-700 mb-1">Point Hover Border</label>
+              <input
+                id="pointHoverBorderColor"
+                type="color"
+                value={form.pointHoverBorderColor}
+                onChange={(e) => handleChange('pointHoverBorderColor', e.target.value)}
+                className={commonColorInputClasses}
+                title="Choose Point Hover Border Color"
+              />
+            </div>
+            <div>
+              <label htmlFor="pointHoverBgColor" className="block text-sm font-semibold text-gray-700 mb-1">Point Hover Background</label>
+              <input
+                id="pointHoverBgColor"
+                type="color"
+                value={form.pointHoverBgColor}
+                onChange={(e) => handleChange('pointHoverBgColor', e.target.value)}
+                className={commonColorInputClasses}
+                title="Choose Point Hover Background Color"
+              />
+            </div>
+            <div>
+              <label htmlFor="pointTitleColor" className="block text-sm font-semibold text-gray-700 mb-1">Point Title Color</label>
+              <input
+                id="pointTitleColor"
+                type="color"
+                value={form.pointTitleColor}
+                onChange={(e) => handleChange('pointTitleColor', e.target.value)}
+                className={commonColorInputClasses}
+                title="Choose Point Title Color"
+              />
+            </div>
+            <div>
+              <label htmlFor="pointHoverTitleColor" className="block text-sm font-semibold text-gray-700 mb-1">Point Hover Title Color</label>
+              <input
+                id="pointHoverTitleColor"
+                type="color"
+                value={form.pointHoverTitleColor}
+                onChange={(e) => handleChange('pointHoverTitleColor', e.target.value)}
+                className={commonColorInputClasses}
+                title="Choose Point Hover Title Color"
+              />
+            </div>
+            <div>
+              <label htmlFor="pointDescColor" className="block text-sm font-semibold text-gray-700 mb-1">Point Description Color</label>
+              <input
+                id="pointDescColor"
+                type="color"
+                value={form.pointDescColor}
+                onChange={(e) => handleChange('pointDescColor', e.target.value)}
+                className={commonColorInputClasses}
+                title="Choose Point Description Color"
+              />
+            </div>
+          </div>
+
           {form.points.map((point, i) => {
             const IconComponent = iconComponents[point.icon]; // Get the actual Lucide component for editor's internal preview
             return (
@@ -272,6 +388,7 @@ export default function ChooseUsEditorPage() { // Renamed to clearly denote it's
                       className={commonSelectClasses}
                       aria-label="Select icon for this point"
                     >
+                      {/* Populate dropdown with all available icon names */}
                       {Object.keys(iconComponents).map((iconName) => (
                         <option key={iconName} value={iconName}>
                           {iconName}
@@ -281,13 +398,13 @@ export default function ChooseUsEditorPage() { // Renamed to clearly denote it's
                     {/* Live preview of the selected icon within the editor itself */}
                     {IconComponent && (
                       <div className="p-2 border border-gray-200 rounded-md bg-white flex items-center justify-center">
-                        {/* The icon in the editor preview uses the specific color from your Chooseus.jsx */}
-                        <IconComponent className="w-8 h-8 text-teal-600" aria-hidden="true" />
+                        {/* Use the current global icon color for the editor's preview */}
+                        <IconComponent className="w-8 h-8" style={{ color: form.iconColor }} aria-hidden="true" />
                       </div>
                     )}
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
-                    Choose a relevant icon from the list. (Note: Icon color is hardcoded to teal-600 in your frontend component).
+                    Choose a relevant icon from the list.
                   </p>
                 </div>
 
@@ -339,22 +456,18 @@ export default function ChooseUsEditorPage() { // Renamed to clearly denote it's
           </button>
         </div>
 
-        {/* Live Preview Section */}
+        {/* --- Live Preview Section --- */}
         <div className="pt-8 border-t border-gray-200">
-          <h3 className="text-xl font-bold text-gray-800 mb-5 flex items-center gap-2">
+          <h3 className={sectionHeaderClasses}>
             <Monitor className="w-5 h-5 text-gray-600" /> Live Preview
           </h3>
-          <div className="border border-dashed border-gray-300 rounded-lg p-4 bg-gray-50">
-            {/*
-              Pass the 'previewConfig' to the Chooseus component.
-              This config contains the transformed 'points' array where each icon is
-              a JSX element, matching what your Chooseus.jsx component expects.
-            */}
+          <div className="border border-dashed border-gray-300 rounded-lg p-4 bg-gray-50 overflow-hidden">
+            {/* The Chooseus component renders here, receiving the dynamic form data */}
             <Chooseus config={previewConfig} />
           </div>
         </div>
 
-        {/* Save Button */}
+        {/* --- Save Button --- */}
         <div className="text-right pt-8">
           <button
             type="submit"
