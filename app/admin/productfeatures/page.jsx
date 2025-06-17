@@ -1,105 +1,145 @@
-"use client";
+'use client';
 
-import {
-  Zap,
-  ShieldCheck,
-  FileText,
-  Clock,
-  CheckCircle,
-  Users,
-} from "lucide-react";
+import { useState } from 'react';
+import { Zap, ShieldCheck, FileText, Clock, CheckCircle, Users, Plus, Trash } from 'lucide-react';
 
-const features = [
-  {
-    icon: <Zap className="w-5 h-5 text-teal-600" />,
-    text: "AI-powered document automation reducing compliance workload by 70%",
-  },
-  {
-    icon: <ShieldCheck className="w-5 h-5 text-teal-600" />,
-    text: "Regulatory-ready templates ensuring 100% compliance with global standards",
-  },
-  {
-    icon: <FileText className="w-5 h-5 text-teal-600" />,
-    text: "End-to-end document lifecycle management with full audit trails",
-  },
-  {
-    icon: <Clock className="w-5 h-5 text-teal-600" />,
-    text: "Reduced turnaround time from months to days",
-  },
-  {
-    icon: <CheckCircle className="w-5 h-5 text-teal-600" />,
-    text: "Minimized manual errors and enhanced data integrity",
-  },
-  {
-    icon: <Users className="w-5 h-5 text-teal-600" />,
-    text: "Improved resource allocation and team productivity",
-  },
-];
+const icons = {
+  zap: <Zap className="w-5 h-5 text-teal-600" />,
+  shield: <ShieldCheck className="w-5 h-5 text-teal-600" />,
+  file: <FileText className="w-5 h-5 text-teal-600" />,
+  clock: <Clock className="w-5 h-5 text-teal-600" />,
+  check: <CheckCircle className="w-5 h-5 text-teal-600" />,
+  users: <Users className="w-5 h-5 text-teal-600" />,
+};
 
-export default function ProductFeatures() {
+export default function ProductFeaturesEditor() {
+  const [form, setForm] = useState({
+    heading: 'Product Features',
+    subheading: 'Comprehensive solutions to transform your compliance processes',
+    image: '/productfeatures.webp',
+    features: [
+      { icon: 'zap', text: 'AI-powered document automation reducing compliance workload by 70%' },
+      { icon: 'shield', text: 'Regulatory-ready templates ensuring 100% compliance with global standards' },
+      { icon: 'file', text: 'End-to-end document lifecycle management with full audit trails' },
+      { icon: 'clock', text: 'Reduced turnaround time from months to days' },
+      { icon: 'check', text: 'Minimized manual errors and enhanced data integrity' },
+      { icon: 'users', text: 'Improved resource allocation and team productivity' },
+    ],
+  });
+
+  const handleChange = (field, value) => {
+    setForm({ ...form, [field]: value });
+  };
+
+  const handleFeatureChange = (i, key, value) => {
+    const updated = [...form.features];
+    updated[i][key] = value;
+    setForm({ ...form, features: updated });
+  };
+
+  const addFeature = () => {
+    setForm({
+      ...form,
+      features: [...form.features, { icon: 'zap', text: '' }],
+    });
+  };
+
+  const removeFeature = (i) => {
+    const updated = [...form.features];
+    updated.splice(i, 1);
+    setForm({ ...form, features: updated });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('Submitted Product Features:', form);
+    alert('Product Features saved (demo only)');
+  };
+
   return (
-    <section
-      id="product"
-      className="relative py-24 px-4 bg-gradient-to-br from-white to-teal-50 overflow-hidden"
-    >
-      {/* Subtle radial glow effect behind image */}
-      <div className="absolute top-20 left-0 w-[300px] h-[300px] bg-teal-200 opacity-30 blur-3xl rounded-full z-0" />
-      <div className="absolute bottom-[-100px] right-[-100px] w-[250px] h-[250px] bg-cyan-300 opacity-20 blur-2xl rounded-full z-0" />
+    <div className="max-w-5xl mx-auto bg-white p-8 rounded-xl shadow-md border border-teal-100">
+      <h2 className="text-2xl font-bold text-teal-600 mb-6">Product Features Editor</h2>
 
-      <div className="max-w-7xl mx-auto relative z-10">
+      <form onSubmit={handleSubmit} className="space-y-8">
+
         {/* Heading */}
-        <div className="text-center mb-14" data-aos="fade-up">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-teal-600 mb-2">
-            Product Features
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Comprehensive solutions to transform your compliance processes
-          </p>
+        <div>
+          <label className="block font-medium text-gray-700 mb-1">Section Heading</label>
+          <input
+            value={form.heading}
+            onChange={(e) => handleChange('heading', e.target.value)}
+            className="w-full px-4 py-2 border rounded"
+          />
         </div>
 
-        {/* Image + Features Grid */}
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          {/* Left: Image Box with Glow */}
-          <div data-aos="fade-right" className="relative">
-<div
-  className="w-full max-h-[500px] overflow-hidden rounded-2xl border bg-white shadow-xl 
-             transition-transform duration-500 hover:scale-[1.02] hover:shadow-2xl"
->
-  <img
-    src="/productfeatures.webp"
-    alt="Product Features"
-    className="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-105"
-  />
-</div>
-          </div>
-
-          {/* Right: Features List */}
-          <div>
-            <div className="space-y-4" data-aos="fade-left" data-aos-delay="200">
-              {features.map((item, i) => (
-                <div
-                  key={i}
-                  className="flex items-start gap-3 p-4 rounded-lg border border-teal-100 bg-white 
-                             hover:border-teal-400 hover:bg-teal-50 hover:scale-[1.02] 
-                             transition-all duration-300 ease-in-out group"
-                >
-                  <div className="bg-teal-50 p-2 rounded-full">{item.icon}</div>
-                  <p className="text-gray-700 text-sm">{item.text}</p>
-                </div>
-              ))}
-            </div>
-            <div className="flex justify-center mt-10" data-aos="fade-up" data-aos-delay="400">
-            <button
-              href="#areyouready"
-                className="px-6 py-3 bg-teal-500 hover:bg-cyan-600 text-white font-semibold 
-                        rounded-md shadow-md transition-all duration-300"
-            >
-                Request a Demo
-            </button>
-            </div>
-          </div>
+        {/* Subheading */}
+        <div>
+          <label className="block font-medium text-gray-700 mb-1">Subheading</label>
+          <input
+            value={form.subheading}
+            onChange={(e) => handleChange('subheading', e.target.value)}
+            className="w-full px-4 py-2 border rounded"
+          />
         </div>
-      </div>
-    </section>
+
+        {/* Image */}
+        <div>
+          <label className="block font-medium text-gray-700 mb-1">Image URL</label>
+          <input
+            value={form.image}
+            onChange={(e) => handleChange('image', e.target.value)}
+            className="w-full px-4 py-2 border rounded mb-2"
+          />
+          <img src={form.image} alt="Preview" className="w-full max-h-64 object-contain border rounded" />
+        </div>
+
+        {/* Features */}
+        <div>
+          <h3 className="text-lg font-semibold text-gray-800 mb-3">Features</h3>
+          {form.features.map((f, i) => (
+            <div key={i} className="flex gap-3 items-center mb-3">
+              <select
+                value={f.icon}
+                onChange={(e) => handleFeatureChange(i, 'icon', e.target.value)}
+                className="border rounded px-2 py-1"
+              >
+                <option value="zap">Zap</option>
+                <option value="shield">Shield</option>
+                <option value="file">File</option>
+                <option value="clock">Clock</option>
+                <option value="check">Check</option>
+                <option value="users">Users</option>
+              </select>
+              <input
+                value={f.text}
+                onChange={(e) => handleFeatureChange(i, 'text', e.target.value)}
+                placeholder="Feature Description"
+                className="flex-1 px-4 py-2 border rounded"
+              />
+              <button type="button" onClick={() => removeFeature(i)}>
+                <Trash className="text-red-500 w-4 h-4" />
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={addFeature}
+            className="flex items-center gap-2 text-teal-600 hover:underline mt-2"
+          >
+            <Plus className="w-4 h-4" /> Add Feature
+          </button>
+        </div>
+
+        {/* Save */}
+        <div className="text-right pt-4">
+          <button
+            type="submit"
+            className="bg-gradient-to-r from-teal-500 to-cyan-600 text-white px-6 py-3 font-semibold rounded-md hover:opacity-90"
+          >
+            Save Product Features
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }
