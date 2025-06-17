@@ -169,7 +169,7 @@ export default function AboutUsEditor() {
         {/* Paragraphs */}
         {form.paragraphs.map((para, i) => (
           <div key={i}>
-            <label className="font-medium text-gray-700 mb-1 block">Paragraph {i + 1}</label>
+            <label className="font-medium text-black mb-1 block">Paragraph {i + 1}</label>
             <textarea
               rows={3}
               value={para}
