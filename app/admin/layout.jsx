@@ -5,7 +5,7 @@ export const metadata = {
 export default function AdminLayout({ children }) {
   return (
     <html lang="en">
-      <body className="bg-[#f9fefe] font-sans antialiased text-black-1000">
+      <body className="bg-[#f9fefe] font-sans antialiased text-gray-900">
         <div className="flex min-h-screen overflow-hidden">
           {/* Sidebar */}
           <aside className="w-64 bg-white border-r border-teal-100 p-6 shadow-xl hidden lg:block">
@@ -13,7 +13,7 @@ export default function AdminLayout({ children }) {
               Admin Panel
             </h2>
 
-            <nav className="space-y-3 text-sm font-medium">
+            <nav className="space-y-3 text-sm font-medium text-black">
               {[
                 { label: "Dashboard", path: "/admin" },
                 { label: "Navbar", path: "/admin/navbar" },
