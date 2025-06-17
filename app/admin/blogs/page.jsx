@@ -226,7 +226,7 @@ export default function AdminBlogEditor() {
               </div>
             ) : (
               <div className="pt-2">
-                <label htmlFor={`file-upload-${index}`} className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2 cursor-pointer">
+                <label htmlFor={`file-upload-${index}`} className="text-sm font-medium text-gray-700 mb-1 flex items-center gap-2 cursor-pointer">
                   <UploadCloud className="w-4 h-4 text-teal-600" />
                   Upload {blog.mediaType === "image" ? "Image" : "Video"}
                 </label>
