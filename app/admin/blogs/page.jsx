@@ -3,21 +3,25 @@
 import { useState } from "react";
 import { Plus, Trash } from "lucide-react";
 
-export default function AdminBlogPage() {
+export default function AdminBlogEditor() {
   const [blogs, setBlogs] = useState([
     {
       title: "Why Manual Compliance is Holding Pharma Back",
       date: "June 2025",
-      image: "/placeholder.png",
+      mediaType: "image",
+      mediaURL: "/placeholder.png",
+      headingColor: "#0f766e",
+      headingSize: "32px",
+      headingFont: "sans-serif",
       summary:
         "Manual documentation takes up over 70% of compliance teams' time. Learn why modern pharma companies are shifting to automation.",
-      full: `Manual compliance processes are not just outdated — they’re a major roadblock to innovation in the pharmaceutical industry.
+      content: `Manual compliance processes are not just outdated — they’re a major roadblock to innovation in the pharmaceutical industry.
 
 From SOPs to validation reports, every document demands hours of human effort and cross-checking. This not only increases the risk of errors but also slows down your ability to respond to audits, change controls, and global regulatory updates.`,
     },
   ]);
 
-  const handleBlogChange = (index, field, value) => {
+  const handleChange = (index, field, value) => {
     const updated = [...blogs];
     updated[index][field] = value;
     setBlogs(updated);
@@ -29,9 +33,13 @@ From SOPs to validation reports, every document demands hours of human effort an
       {
         title: "",
         date: "",
-        image: "",
+        mediaType: "image",
+        mediaURL: "",
+        headingColor: "#0f766e",
+        headingSize: "32px",
+        headingFont: "sans-serif",
         summary: "",
-        full: "",
+        content: "",
       },
     ]);
   };
@@ -44,91 +52,169 @@ From SOPs to validation reports, every document demands hours of human effort an
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("✅ Blogs Saved:", blogs);
-    alert("Blogs saved successfully (Demo)");
+    console.log("Saved blogs:", blogs);
+    alert("Blogs saved successfully (demo)");
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-8 bg-white border border-teal-100 rounded-xl shadow-md">
-      <h2 className="text-2xl font-bold text-teal-600 mb-6">📝 Blog Manager</h2>
-
-      <form onSubmit={handleSubmit} className="space-y-8">
-        {blogs.map((blog, i) => (
-          <div key={i} className="border border-gray-200 p-6 rounded-md shadow-sm">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold text-gray-700">Blog #{i + 1}</h3>
+    <div className="max-w-6xl mx-auto p-8 bg-white rounded-xl shadow-lg border border-teal-100">
+      <h2 className="text-2xl font-bold text-teal-600 mb-6">Blog Editor Dashboard</h2>
+      <form onSubmit={handleSubmit} className="space-y-10">
+        {blogs.map((blog, index) => (
+          <div
+            key={index}
+            className="bg-[#f9fefe] p-6 border border-teal-200 rounded-lg shadow-sm space-y-4"
+          >
+            {/* Header */}
+            <div className="flex justify-between items-center mb-2">
+              <h3 className="text-xl font-semibold text-gray-800">
+                ✏️ Blog #{index + 1}
+              </h3>
               <button
                 type="button"
-                onClick={() => removeBlog(i)}
-                className="text-red-500 hover:underline"
+                onClick={() => removeBlog(index)}
+                className="text-red-600 text-sm"
               >
-                <Trash className="w-4 h-4 inline-block" /> Remove
+                <Trash className="inline-block w-4 h-4" /> Remove
               </button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Title + Date */}
+            <div className="grid md:grid-cols-2 gap-4">
               <input
                 type="text"
                 placeholder="Blog Title"
                 value={blog.title}
-                onChange={(e) => handleBlogChange(i, "title", e.target.value)}
+                onChange={(e) => handleChange(index, "title", e.target.value)}
                 className="border px-4 py-2 rounded w-full"
               />
               <input
                 type="text"
-                placeholder="Date (e.g., May 2025)"
+                placeholder="Blog Date (e.g., June 2025)"
                 value={blog.date}
-                onChange={(e) => handleBlogChange(i, "date", e.target.value)}
+                onChange={(e) => handleChange(index, "date", e.target.value)}
                 className="border px-4 py-2 rounded w-full"
               />
             </div>
 
-            <div className="mt-4">
+            {/* Heading Styling */}
+            <div className="grid md:grid-cols-3 gap-4">
+              <div>
+                <label className="text-sm text-gray-600">Heading Color</label>
+                <input
+                  type="color"
+                  value={blog.headingColor}
+                  onChange={(e) =>
+                    handleChange(index, "headingColor", e.target.value)
+                  }
+                  className="h-10 w-20"
+                />
+              </div>
+              <div>
+                <label className="text-sm text-gray-600">Heading Size</label>
+                <input
+                  type="number"
+                  value={parseInt(blog.headingSize)}
+                  onChange={(e) =>
+                    handleChange(index, "headingSize", `${e.target.value}px`)
+                  }
+                  className="w-full border rounded px-3 py-1"
+                />
+              </div>
+              <div>
+                <label className="text-sm text-gray-600">Font</label>
+                <select
+                  value={blog.headingFont}
+                  onChange={(e) =>
+                    handleChange(index, "headingFont", e.target.value)
+                  }
+                  className="w-full border rounded px-3 py-1"
+                >
+                  <option value="sans-serif">Sans-serif</option>
+                  <option value="serif">Serif</option>
+                  <option value="'Poppins', sans-serif">Poppins</option>
+                  <option value="monospace">Monospace</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Media Selection */}
+            <div className="space-y-2">
+              <label className="text-sm text-gray-600 font-semibold">Media</label>
+              <select
+                value={blog.mediaType}
+                onChange={(e) => handleChange(index, "mediaType", e.target.value)}
+                className="w-full border px-3 py-2 rounded"
+              >
+                <option value="image">Image</option>
+                <option value="video">Video</option>
+              </select>
               <input
                 type="text"
-                placeholder="Image URL (optional)"
-                value={blog.image}
-                onChange={(e) => handleBlogChange(i, "image", e.target.value)}
-                className="border px-4 py-2 rounded w-full"
+                placeholder="Image or Video URL"
+                value={blog.mediaURL}
+                onChange={(e) => handleChange(index, "mediaURL", e.target.value)}
+                className="w-full border px-4 py-2 rounded"
               />
             </div>
 
-            <div className="mt-4">
+            {/* Preview Media */}
+            {blog.mediaURL &&
+              (blog.mediaType === "image" ? (
+                <img
+                  src={blog.mediaURL}
+                  alt="Preview"
+                  className="rounded-md w-full h-64 object-cover mt-2"
+                />
+              ) : (
+                <video
+                  src={blog.mediaURL}
+                  controls
+                  className="rounded-md w-full mt-2"
+                />
+              ))}
+
+            {/* Summary */}
+            <div>
+              <label className="text-sm text-gray-700 font-semibold">Summary</label>
               <textarea
-                placeholder="Short Summary"
                 value={blog.summary}
-                onChange={(e) => handleBlogChange(i, "summary", e.target.value)}
+                onChange={(e) => handleChange(index, "summary", e.target.value)}
                 rows={3}
-                className="border px-4 py-2 rounded w-full"
+                className="w-full border px-4 py-2 rounded"
               />
             </div>
 
-            <div className="mt-4">
+            {/* Content */}
+            <div>
+              <label className="text-sm text-gray-700 font-semibold">
+                Full Blog Content
+              </label>
               <textarea
-                placeholder="Full Blog Content"
-                value={blog.full}
-                onChange={(e) => handleBlogChange(i, "full", e.target.value)}
-                rows={5}
-                className="border px-4 py-2 rounded w-full"
+                value={blog.content}
+                onChange={(e) => handleChange(index, "content", e.target.value)}
+                rows={6}
+                className="w-full border px-4 py-2 rounded"
               />
             </div>
           </div>
         ))}
 
-        <div className="flex justify-between mt-6">
+        {/* Add Button + Submit */}
+        <div className="flex justify-between items-center">
           <button
             type="button"
             onClick={addBlog}
-            className="flex items-center gap-2 text-teal-600 hover:text-cyan-600 font-medium"
+            className="text-teal-600 hover:underline flex items-center gap-1"
           >
             <Plus className="w-4 h-4" /> Add New Blog
           </button>
 
           <button
             type="submit"
-            className="bg-gradient-to-r from-teal-500 to-cyan-600 text-white font-semibold px-6 py-3 rounded-md shadow-md hover:opacity-90 transition"
+            className="bg-gradient-to-r from-teal-500 to-cyan-600 text-white font-semibold px-6 py-3 rounded-md hover:opacity-90 shadow-md transition"
           >
-            💾 Save Blogs
+            Save All Blogs
           </button>
         </div>
       </form>
