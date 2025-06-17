@@ -1,62 +1,29 @@
-// components/ChooseUsEditor.jsx
+// app/admin/chooseus/page.jsx
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, createElement } from 'react'; // Import createElement for dynamic JSX creation
 import {
   Plus,
   Trash,
   Sparkles,
   Target,
   Globe2,
+  // Add other Lucide icons if you want to offer more choices in the editor's icon selector
   Lightbulb,
   ShieldCheck,
   Rocket,
-  Wrench,
-  Gauge,
-  Briefcase,
-  Layers,
-  Zap,
-  Star,
-  Award,
-  Bell,
-  CheckCircle,
-  Cpu,
-  Feather,
-  GitPullRequest,
-  Heart,
-  Key,
-  Leaf,
-  Megaphone,
-  Network,
-  Palette,
-  PieChart,
-  RefreshCw,
-  Search,
-  Server,
-  Settings,
-  Sliders,
-  Smartphone,
-  Sunrise,
-  ThumbsUp,
-  TrendingUp,
-  Umbrella,
-  Users,
-  Waves,
-  ZapOff,
-  FileText, // For description icon
-  Monitor, // For live preview icon
+  Settings, // For general section settings icon
+  Monitor,  // For live preview section icon
+  FileText, // For section description icon
 } from 'lucide-react';
 
-// IMPORTANT: This component assumes you have a 'ChooseUs.jsx' file
-// in the same directory that exports a default React component
-// which accepts a 'config' prop.
-// For example: import ChooseUs from './ChooseUs';
-// If you don't have it, the Live Preview will not work.
-// Make sure your ChooseUs.jsx matches the structure that accepts a 'config' prop.
-import ChooseUs from '../../../components/Chooseus'; // Ensure this path is correct based on your file structure
+// IMPORTANT: Ensure this import path is correct relative to app/admin/chooseus/page.jsx
+// It needs to go up 3 levels to reach the root, then down into 'components'.
+import Chooseus from '../../../components/Chooseus';
 
-
-// Map icon names to actual Lucide React components
+// Map icon names (strings) to actual Lucide React components
+// Only include icons here that you want the user to be able to select in the editor.
+// These should correspond to the icons imported above.
 const iconComponents = {
   Sparkles,
   Target,
@@ -64,85 +31,61 @@ const iconComponents = {
   Lightbulb,
   ShieldCheck,
   Rocket,
-  Wrench,
-  Gauge,
-  Briefcase,
-  Layers,
-  Zap,
-  Star,
-  Award,
-  Bell,
-  CheckCircle,
-  Cpu,
-  Feather,
-  GitPullRequest,
-  Heart,
-  Key,
-  Leaf,
-  Megaphone,
-  Network,
-  Palette,
-  PieChart,
-  RefreshCw,
-  Search,
-  Server,
-  Settings,
-  Sliders,
-  Smartphone,
-  Sunrise,
-  ThumbsUp,
-  TrendingUp,
-  Umbrella,
-  Users,
-  Waves,
-  ZapOff,
+  // Add more icons here if you desire more options in the editor's dropdown
 };
 
-export default function ChooseUsEditor() {
+export default function ChooseUsEditorPage() { // Renamed to clearly denote it's a page component
   const [form, setForm] = useState({
+    // These properties directly map to the text content that your Chooseus.jsx uses
     sectionTitle: 'Why Choose Us?',
-    sectionDesc: 'Discover how Cmplai transforms compliance processes with innovation and expertise.',
-    titleColor: '#0f766e',
-    titleSize: '36px',
-    descColor: '#4b5563',
-    descSize: '18px',
-    titleFont: 'sans-serif',
-    descFont: 'sans-serif',
-    iconColor: '#0f766e',
-    bgColor: '#f0fdf4',
+    sectionDesc: 'Discover how Cmplai transforms compliance processes',
+    
+    // Points array: Stores string icon names for editor control.
+    // The frontend Chooseus.jsx currently expects JSX elements for icons,
+    // so we'll transform this for the live preview.
     points: [
       {
-        id: `point-${Date.now()}-1`, // Unique ID for each point
-        icon: 'Sparkles',
+        id: `point-${Date.now()}-1`, // Unique ID for each point (good for React keys)
+        icon: 'Sparkles', // Stores the string name of the Lucide icon
         title: 'Industry-First GenAI Automation',
-        desc: 'Comply revolutionizes compliance by automating document preparation, reducing turnaround time for critical workflows from <strong>3 months</strong> to just <strong>3 days</strong>.',
+        desc: 'Comply revolutionizes compliance by automating document preparation, reducing turnaround time for critical workflows from <strong>3 months</strong> to just <strong>3 days</strong>. Our <strong>GenAI-powered</strong> SaaS ERP platform minimizes manual intervention and errors, ensuring unmatched accuracy and regulatory adherence.',
       },
       {
         id: `point-${Date.now()}-2`,
         icon: 'Target',
         title: 'Purpose-Built for Pharma & Manufacturing',
-        desc: 'We deliver <strong>pre-built templates</strong> and compliance logic tailored to <strong>GMP</strong>, <strong>ISO</strong>, and more, ensuring industry-specific accuracy.',
+        desc: 'We deliver <strong>pre-built templates</strong> and compliance logic tailored to <strong>GMP</strong>, <strong>ISO</strong>, <strong>US-FDA</strong>, and other global standards, so your documentation is always audit-ready and meets the strictest requirements.',
       },
       {
         id: `point-${Date.now()}-3`,
         icon: 'Globe2',
         title: 'Empowering Your Workforce',
-        desc: 'We reduce <strong>manual tasks</strong> and streamline processes, allowing your teams to focus on <strong>innovation</strong> and higher-value activities.',
+        desc: 'We reduce <strong>repetitive manual tasks</strong>, allowing your teams to focus on <strong>high-value work</strong> like innovation and quality enhancement, leading to better resource allocation and job satisfaction.',
       },
     ],
+
+    // IMPORTANT: These are NOT currently used as props in your provided Chooseus.jsx.
+    // They are included here in the editor's state as a placeholder if you wish
+    // to make these styles dynamic in your Chooseus.jsx later.
+    // For now, they primarily serve to visually guide the editor's own background/text colors.
+    sectionBgColor: '#ffffff', // Reflects bg-white from your Chooseus.jsx
+    titleColor: '#0f766e',     // Reflects text-teal-600 from your Chooseus.jsx
+    descColor: '#4b5563',      // Reflects text-gray-600 from your Chooseus.jsx
   });
 
+  // Reusable Tailwind CSS classes for consistent input styling
   const commonInputClasses = "w-full border border-gray-300 px-4 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400";
-  const commonColorInputClasses = "h-10 w-full rounded-md border border-gray-300 cursor-pointer";
+  const commonTextareaClasses = "w-full border border-gray-300 px-4 py-2 rounded-md text-gray-900 resize-y focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400";
   const commonSelectClasses = "w-full border border-gray-300 px-4 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500";
+  const commonColorInputClasses = "h-10 w-full rounded-md border border-gray-300 cursor-pointer";
 
 
-  // Handle changes for top-level form fields (sectionTitle, bgColor, etc.)
+  // Handles changes for top-level form fields (e.g., sectionTitle, sectionDesc, bgColor)
   const handleChange = (field, value) => {
     setForm((prevForm) => ({ ...prevForm, [field]: value }));
   };
 
-  // Update a specific field within a 'point' item by ID
+  // Updates a specific field within a 'point' item by its unique ID
   const updatePoint = (id, field, value) => {
     const updatedPoints = form.points.map((point) =>
       point.id === id ? { ...point, [field]: value } : point
@@ -150,23 +93,22 @@ export default function ChooseUsEditor() {
     setForm((prevForm) => ({ ...prevForm, points: updatedPoints }));
   };
 
-  // Remove a 'point' item by ID
+  // Removes a 'point' item by its unique ID
   const removePoint = (id) => {
-    // eslint-disable-next-line no-alert
-    if (window.confirm('Are you sure you want to remove this point?')) {
+    if (window.confirm('Are you sure you want to remove this point?')) { // Using window.confirm for simplicity in demo
       const updatedPoints = form.points.filter((point) => point.id !== id);
       setForm((prevForm) => ({ ...prevForm, points: updatedPoints }));
     }
   };
 
-  // Add a new blank 'point' item
+  // Adds a new blank 'point' item with a unique ID and default values
   const addPoint = () => {
     setForm((prevForm) => ({
       ...prevForm,
       points: [
         ...prevForm.points,
         {
-          id: `point-${Date.now()}`, // Unique ID for new point
+          id: `point-${Date.now()}`, // Generate a new unique ID
           icon: 'Sparkles', // Default icon for new points
           title: 'New Point Title',
           desc: 'Brief description for the new point.',
@@ -175,29 +117,55 @@ export default function ChooseUsEditor() {
     }));
   };
 
-  // Handle form submission
+  // Handles form submission (e.g., sending data to a backend API)
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Saved ChooseUs section data:', form);
-    // In a real application, you'd send 'form' data to a backend API here.
-    // eslint-disable-next-line no-alert
-    alert('✅ "Why Choose Us" section saved (demo only)');
+    console.log('Saved Choose Us section data:', form);
+    alert('✅ "Why Choose Us" section saved (demo only)'); // Using alert for simplicity in demo
   };
+
+  // PREPARE CONFIG FOR LIVE PREVIEW:
+  // Your Chooseus.jsx component expects `point.icon` to be a JSX element,
+  // but our editor's state `form.points[].icon` stores a string name.
+  // We need to transform the data for the preview.
+  const previewConfig = {
+    sectionTitle: form.sectionTitle,
+    sectionDesc: form.sectionDesc,
+    // Transform points to match the Chooseus.jsx's expected icon format
+    points: form.points.map(p => {
+      const Icon = iconComponents[p.icon]; // Get the Lucide component based on string name
+      return {
+        ...p,
+        // Recreate the JSX element with the class names expected by your Chooseus.jsx
+        icon: Icon ? createElement(Icon, { className: "w-6 h-6 text-teal-600" }) : null,
+      };
+    }),
+    // Pass other relevant simple style properties (if Chooseus.jsx was dynamic for them)
+    // For now, Chooseus.jsx's colors are hardcoded, but if you change it, this would send them.
+    titleColor: form.titleColor,
+    descColor: form.descColor,
+    bgColor: form.bgColor,
+  };
+
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-10 bg-white rounded-xl shadow-lg border border-teal-100 my-10">
       <h2 className="text-3xl font-extrabold text-teal-700 mb-8 text-center">
-        <Sparkles className="inline-block w-8 h-8 mr-2 text-teal-600" /> "Why Choose Us" Section Editor
+        <Settings className="inline-block w-8 h-8 mr-2 text-teal-600" /> "Why Choose Us" Section Editor
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-10">
         {/* --- Section General Settings --- */}
+        {/* Note: Based on your Chooseus.jsx, only the background color is explicitly dynamic.
+            Other colors like title/desc/icon colors are hardcoded in Chooseus.jsx.
+            If you want them editable, you need to modify Chooseus.jsx to accept them as props.
+        */}
         <div className="pb-6 border-b border-gray-200">
           <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-            <Settings className="w-5 h-5 text-gray-600" /> General Section Settings
+            <Settings className="w-5 h-5 text-gray-600" /> General Section Styling
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Background Color */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Section Background Color */}
             <div>
               <label htmlFor="bgColor" className="block text-sm font-semibold text-gray-700 mb-1">Section Background Color</label>
               <input
@@ -208,23 +176,26 @@ export default function ChooseUsEditor() {
                 className={commonColorInputClasses}
                 title="Choose Section Background Color"
               />
+              <p className="text-xs text-gray-500 mt-1">Changes the background of the entire section.</p>
             </div>
-            {/* Global Icon Color */}
+            {/* If Chooseus.jsx was dynamic for other colors, their inputs would go here. */}
+            {/* Example if it became dynamic:
             <div>
-              <label htmlFor="iconColor" className="block text-sm font-semibold text-gray-700 mb-1">Global Icon Color</label>
+              <label htmlFor="globalIconColor" className="block text-sm font-semibold text-gray-700 mb-1">Global Icon Color</label>
               <input
-                id="iconColor"
+                id="globalIconColor"
                 type="color"
-                value={form.iconColor}
-                onChange={(e) => handleChange('iconColor', e.target.value)}
+                value={form.globalIconColor}
+                onChange={(e) => handleChange('globalIconColor', e.target.value)}
                 className={commonColorInputClasses}
-                title="Choose Icon Color for all points"
               />
+              <p className="text-xs text-gray-500 mt-1">Note: Your frontend component currently hardcodes icon color to teal-600.</p>
             </div>
+            */}
           </div>
         </div>
 
-        {/* --- Section Title & Description Controls --- */}
+        {/* --- Section Title & Description Content --- */}
         <div className="grid md:grid-cols-2 gap-8 pb-6 border-b border-gray-200">
           <div>
             <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
@@ -239,49 +210,7 @@ export default function ChooseUsEditor() {
               className={commonInputClasses}
               placeholder="e.g., Why Choose Cmplai?"
             />
-            <div className="grid grid-cols-3 gap-3 mt-3">
-              <div>
-                <label htmlFor="titleColor" className="sr-only">Title Color</label>
-                <input
-                  id="titleColor"
-                  type="color"
-                  value={form.titleColor}
-                  onChange={(e) => handleChange('titleColor', e.target.value)}
-                  className={commonColorInputClasses}
-                  title="Choose Section Title Color"
-                />
-              </div>
-              <div>
-                <label htmlFor="titleSize" className="sr-only">Title Font Size (px)</label>
-                <input
-                  id="titleSize"
-                  type="number"
-                  min="12"
-                  max="100"
-                  value={parseInt(form.titleSize, 10)}
-                  onChange={(e) => handleChange('titleSize', `${e.target.value}px`)}
-                  placeholder="Size (px)"
-                  className={commonInputClasses}
-                  aria-label="Section Title Font Size"
-                />
-              </div>
-              <div>
-                <label htmlFor="titleFont" className="sr-only">Title Font</label>
-                <select
-                  id="titleFont"
-                  value={form.titleFont}
-                  onChange={(e) => handleChange('titleFont', e.target.value)}
-                  className={commonSelectClasses}
-                  aria-label="Section Title Font"
-                >
-                  <option value="sans-serif">Sans-serif (Default)</option>
-                  <option value="serif">Serif</option>
-                  <option value="'Poppins', sans-serif">Poppins</option>
-                  <option value="'Inter', sans-serif">Inter</option>
-                  <option value="monospace">Monospace</option>
-                </select>
-              </div>
-            </div>
+            {/* If your Chooseus.jsx accepted dynamic title colors/fonts, inputs would be here. */}
           </div>
 
           <div>
@@ -297,64 +226,22 @@ export default function ChooseUsEditor() {
               className={commonInputClasses}
               placeholder="e.g., Our unique value proposition..."
             />
-            <div className="grid grid-cols-3 gap-3 mt-3">
-              <div>
-                <label htmlFor="descColor" className="sr-only">Subtitle Color</label>
-                <input
-                  id="descColor"
-                  type="color"
-                  value={form.descColor}
-                  onChange={(e) => handleChange('descColor', e.target.value)}
-                  className={commonColorInputClasses}
-                  title="Choose Section Subtitle Color"
-                />
-              </div>
-              <div>
-                <label htmlFor="descSize" className="sr-only">Subtitle Font Size (px)</label>
-                <input
-                  id="descSize"
-                  type="number"
-                  min="10"
-                  max="50"
-                  value={parseInt(form.descSize, 10)}
-                  onChange={(e) => handleChange('descSize', `${e.target.value}px`)}
-                  placeholder="Size (px)"
-                  className={commonInputClasses}
-                  aria-label="Section Subtitle Font Size"
-                />
-              </div>
-              <div>
-                <label htmlFor="descFont" className="sr-only">Subtitle Font</label>
-                <select
-                  id="descFont"
-                  value={form.descFont}
-                  onChange={(e) => handleChange('descFont', e.target.value)}
-                  className={commonSelectClasses}
-                  aria-label="Section Subtitle Font"
-                >
-                  <option value="sans-serif">Sans-serif (Default)</option>
-                  <option value="serif">Serif</option>
-                  <option value="'Inter', sans-serif">Inter</option>
-                  <option value="monospace">Monospace</option>
-                </select>
-              </div>
-            </div>
+            {/* If your Chooseus.jsx accepted dynamic description colors/fonts, inputs would be here. */}
           </div>
         </div>
 
-        {/* --- Editable Points --- */}
+        {/* --- Individual Value Proposition Points --- */}
         <div>
           <h3 className="text-xl font-bold text-gray-800 mb-5 border-b pb-3 border-gray-200 flex items-center gap-2">
-            <Target className="w-5 h-5 text-gray-600" /> Individual Value Proposition Points
+            <Target className="w-5 h-5 text-gray-600" /> Manage Value Proposition Points
           </h3>
           {form.points.map((point, i) => {
-            const IconComponent = iconComponents[point.icon]; // Get the actual component
+            const IconComponent = iconComponents[point.icon]; // Get the actual Lucide component for editor's internal preview
             return (
               <div
-                key={point.id} // Use unique ID as key
+                key={point.id} // Use unique ID as key for stable list rendering
                 className="mb-8 p-6 bg-gray-50 rounded-lg shadow-sm border border-gray-200 relative"
               >
-                {/* Point Header with Remove Button */}
                 <div className="flex justify-between items-center mb-4">
                   <h4 className="text-lg font-semibold text-gray-700">
                     Point #{i + 1}
@@ -391,22 +278,16 @@ export default function ChooseUsEditor() {
                         </option>
                       ))}
                     </select>
-                    {/* Icon Preview */}
+                    {/* Live preview of the selected icon within the editor itself */}
                     {IconComponent && (
-                      <div
-                        className="p-2 border border-gray-200 rounded-md bg-white flex items-center justify-center"
-                        style={{ backgroundColor: form.bgColor }}
-                      >
-                        <IconComponent
-                          className="w-8 h-8"
-                          style={{ color: form.iconColor }}
-                          aria-hidden="true" // Icon is decorative
-                        />
+                      <div className="p-2 border border-gray-200 rounded-md bg-white flex items-center justify-center">
+                        {/* The icon in the editor preview uses the specific color from your Chooseus.jsx */}
+                        <IconComponent className="w-8 h-8 text-teal-600" aria-hidden="true" />
                       </div>
                     )}
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
-                    Choose a relevant icon from the list (color applied globally).
+                    Choose a relevant icon from the list. (Note: Icon color is hardcoded to teal-600 in your frontend component).
                   </p>
                 </div>
 
@@ -441,7 +322,7 @@ export default function ChooseUsEditor() {
                     rows={4}
                     value={point.desc}
                     onChange={(e) => updatePoint(point.id, 'desc', e.target.value)}
-                    className={commonInputClasses}
+                    className={commonTextareaClasses}
                     placeholder="Describe the benefit or feature here. You can use <strong> for bold text."
                   />
                 </div>
@@ -458,18 +339,22 @@ export default function ChooseUsEditor() {
           </button>
         </div>
 
-        {/* --- Live Preview --- */}
+        {/* Live Preview Section */}
         <div className="pt-8 border-t border-gray-200">
           <h3 className="text-xl font-bold text-gray-800 mb-5 flex items-center gap-2">
             <Monitor className="w-5 h-5 text-gray-600" /> Live Preview
           </h3>
           <div className="border border-dashed border-gray-300 rounded-lg p-4 bg-gray-50">
-            {/* The ChooseUs component is rendered here with the current form state */}
-            <ChooseUs config={form} />
+            {/*
+              Pass the 'previewConfig' to the Chooseus component.
+              This config contains the transformed 'points' array where each icon is
+              a JSX element, matching what your Chooseus.jsx component expects.
+            */}
+            <Chooseus config={previewConfig} />
           </div>
         </div>
 
-        {/* --- Save Button --- */}
+        {/* Save Button */}
         <div className="text-right pt-8">
           <button
             type="submit"
