@@ -20,6 +20,8 @@ import {
   Box, // For Product link
   Info, // For About Us link
   BookOpen, // For Blog link
+  Image as ImageIcon, // Renamed to avoid conflict with HTML ImageElement
+  UploadCloud, // For upload button
 } from 'lucide-react';
 
 // Map social platform names to Lucide icons
@@ -103,6 +105,58 @@ export default function FooterEditor() {
     }
   };
 
+  // --- New function to handle logo file upload ---
+  const handleLogoUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      // Basic file size validation (e.g., max 2MB)
+      if (file.size > 2 * 1024 * 1024) {
+        // eslint-disable-next-line no-alert
+        alert('File size exceeds 2MB. Please choose a smaller image.');
+        return;
+      }
+
+      // Check file type (optional, for more specific validation)
+      const acceptedImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/svg+xml'];
+      if (!acceptedImageTypes.includes(file.type)) {
+        // eslint-disable-next-line no-alert
+        alert('Invalid file type. Please upload a JPG, PNG, GIF, or SVG image.');
+        return;
+      }
+
+      // In a real application, you would upload this file to a server
+      // (e.g., AWS S3, Cloudinary, your own backend API) and get a public URL back.
+      // For this demo, we'll use FileReader to create a Data URL for instant preview.
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        handleChange('logo', reader.result); // reader.result will be a Data URL (base64 encoded image)
+      };
+      reader.readAsDataURL(file);
+
+      // Example of what you'd do with a real upload API:
+      /*
+      const formData = new FormData();
+      formData.append('logo', file);
+      fetch('/api/upload-logo', {
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.url) {
+          handleChange('logo', data.url);
+        } else {
+          alert('Logo upload failed: ' + (data.message || 'Unknown error'));
+        }
+      })
+      .catch(error => {
+        console.error('Error uploading logo:', error);
+        alert('An error occurred during logo upload.');
+      });
+      */
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Final Footer Data:', form);
@@ -120,20 +174,61 @@ export default function FooterEditor() {
       <form onSubmit={handleSubmit} className="space-y-10">
         {/* --- Logo & Tagline --- */}
         <div className="pb-6 border-b border-gray-200">
-          <label htmlFor="logoUrl" className="block font-semibold text-gray-800 mb-2">
-            Company Logo (URL)
+          <label className="block font-semibold text-gray-800 mb-2">Company Logo</label>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
+            {/* Logo Preview */}
+            {form.logo && (
+              <div className="flex-shrink-0">
+                <img
+                  src={form.logo}
+                  alt="Company Logo Preview"
+                  className="h-20 w-auto object-contain border border-gray-300 p-2 rounded-md bg-white"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = '/placeholder-logo.png'; // Fallback image if actual logo fails
+                  }}
+                />
+              </div>
+            )}
+
+            {/* File Input & Upload Button */}
+            <div className="flex-grow">
+              <input
+                id="logoUpload"
+                type="file"
+                accept="image/*"
+                onChange={handleLogoUpload}
+                className="hidden" // Hide the default file input
+              />
+              <label
+                htmlFor="logoUpload"
+                className="inline-flex items-center px-4 py-2 bg-teal-500 text-white font-semibold rounded-md shadow-sm hover:bg-teal-600 cursor-pointer transition-colors duration-200"
+              >
+                <UploadCloud className="w-5 h-5 mr-2" />
+                Upload Logo
+              </label>
+              <p className="text-sm text-gray-500 mt-2">
+                Accepted formats: JPG, PNG, GIF, SVG. Max size: 2MB.
+              </p>
+            </div>
+          </div>
+
+          {/* Direct URL Input */}
+          <label htmlFor="logoUrl" className="block font-semibold text-gray-800 mt-6 mb-2">
+            Or provide Logo URL:
           </label>
           <input
             id="logoUrl"
-            type="text"
+            type="url" // Use type="url" for direct URL input
             value={form.logo}
             onChange={(e) => handleChange('logo', e.target.value)}
             className="w-full border border-gray-300 px-4 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
-            placeholder="e.g., /images/your-logo.png or https://example.com/logo.svg"
+            placeholder="e.g., https://example.com/your-logo.png"
           />
           <p className="text-sm text-gray-500 mt-1">
-            Provide the full URL or path to your logo image.
+            Uploading a file will override this URL.
           </p>
+
 
           <label htmlFor="tagline" className="block font-semibold text-gray-800 mt-6 mb-2">
             Company Tagline
