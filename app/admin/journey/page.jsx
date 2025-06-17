@@ -8,11 +8,9 @@ import {
   Text,
   Ruler,
   Paintbrush,
-  Clock,
-  Briefcase,
+  CalendarDays, // Using CalendarDays for consistency with your display
   AlignLeft,
   AlignRight,
-  SplitSquareHorizontal,
   ChevronUp,
   ChevronDown,
 } from 'lucide-react';
@@ -24,14 +22,19 @@ export default function JourneyEditor() {
     titleColor: '#00b4bc',
     subtitleColor: '#4b5563',
     backgroundColor: '#f1fcfc',
-    globalFont: 'sans-serif', // Renamed for clarity
+    globalFont: 'sans-serif', // Added global font control
     titleSize: '36px',
     subtitleSize: '16px',
-    milestoneCardBgColor: '#ffffff', // New: global card background
-    milestoneCardTextColor: '#333333', // New: global card text color
-    timelineLineColor: '#00b4bc', // New: timeline line color
-    milestoneDotColor: '#00b4bc', // New: timeline dot color
-    milestoneSpacing: '60px', // New: vertical spacing between milestones
+    milestoneCardBgColor: '#ffffff', // Card background
+    milestoneCardTextColor: '#333333', // Card text color
+    timelineLineColor: '#00b4bc', // Line color
+    milestoneDotColor: '#00b4bc', // Dot color
+    milestoneDotBorderColor: '#00b4bc', // Dot border color
+    milestoneDotInnerBg: '#ffffff', // Inner dot background
+    milestoneSpacing: '60px', // Vertical spacing between milestones (approx)
+    cardBorderHoverColor: '#4b5563', // Hover border color for cards
+    cardBgHoverColor: '#e0f7fa', // Hover background color for cards
+    cardHoverScale: '1.02', // Hover scale effect for cards
 
     milestones: [
       {
@@ -42,15 +45,21 @@ export default function JourneyEditor() {
       },
       {
         date: 'January 2025',
-        title: 'First Product Launch',
-        description: 'Successfully launched our inaugural AI-powered compliance platform, receiving positive feedback from early adopters.',
+        title: 'iTIC IITH Incubation',
+        description: 'Incubated at iTIC IIT Hyderabad, a significant step in our early development.',
         side: 'left',
       },
       {
-        date: 'April 2025',
-        title: 'Strategic Partnership',
-        description: 'Formed a key partnership with a leading industry player, expanding our market reach and collaborative potential.',
+        date: 'February 2025',
+        title: 'IITM Incubation',
+        description: 'Further strengthened our foundation by joining the IITM Incubation Cell.',
         side: 'right',
+      },
+      {
+        date: 'March 2025',
+        title: 'Grant Received',
+        description: 'Secured a grant of 4 lakhs from iTIC, accelerating our research and development efforts.',
+        side: 'left',
       },
     ],
   });
@@ -96,13 +105,14 @@ export default function JourneyEditor() {
     }
   };
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Saved Journey:', form);
-    alert('Journey section saved (demo only)');
+    // In a real application, you would send this 'form' data to your backend API
+    alert('Journey section configuration saved! (Demo only)');
   };
 
+  // Common Tailwind classes for inputs and selects to ensure black text
   const commonInputClasses = "w-full border border-gray-300 px-3 py-2 rounded-md focus:ring-teal-500 focus:border-teal-500 text-black";
   const commonSelectClasses = "w-full border border-gray-300 px-3 py-2 rounded-md focus:ring-teal-500 focus:border-teal-500 text-black";
 
@@ -117,7 +127,9 @@ export default function JourneyEditor() {
 
         {/* --- Global Styles --- */}
         <div className="pb-6 border-b border-gray-200">
-          <h3 className="text-xl font-bold text-gray-800 mb-4">🎨 Global Styles</h3>
+          <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <Palette className="w-5 h-5 text-gray-600" /> Global Section Styles
+          </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-1">Background Color</label>
@@ -162,6 +174,24 @@ export default function JourneyEditor() {
               />
             </div>
             <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Milestone Dot Border</label>
+              <input
+                type="color"
+                value={form.milestoneDotBorderColor}
+                onChange={(e) => handleChange('milestoneDotBorderColor', e.target.value)}
+                className="h-10 w-full border border-gray-300 rounded-md p-1"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Milestone Dot Inner Bg</label>
+              <input
+                type="color"
+                value={form.milestoneDotInnerBg}
+                onChange={(e) => handleChange('milestoneDotInnerBg', e.target.value)}
+                className="h-10 w-full border border-gray-300 rounded-md p-1"
+              />
+            </div>
+            <div>
               <label className="block text-sm font-semibold text-gray-700 mb-1">Milestone Vertical Spacing (px)</label>
               <input
                 type="number"
@@ -175,7 +205,9 @@ export default function JourneyEditor() {
 
         {/* --- Title & Subtitle --- */}
         <div className="pb-6 border-b border-gray-200">
-          <h3 className="text-xl font-bold text-gray-800 mb-4">✍️ Section Title & Subtitle</h3>
+          <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <Text className="w-5 h-5 text-gray-600" /> Section Title & Subtitle
+          </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Title */}
             <div>
@@ -245,8 +277,10 @@ export default function JourneyEditor() {
 
         {/* --- Milestone Cards Styling --- */}
         <div className="pb-6 border-b border-gray-200">
-          <h3 className="text-xl font-bold text-gray-800 mb-4">📇 Milestone Card Styles</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <Paintbrush className="w-5 h-5 text-gray-600" /> Milestone Card Styles
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-1">Card Background Color</label>
               <input
@@ -265,13 +299,43 @@ export default function JourneyEditor() {
                 className="h-10 w-full border border-gray-300 rounded-md p-1"
               />
             </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Card Border Hover Color</label>
+              <input
+                type="color"
+                value={form.cardBorderHoverColor}
+                onChange={(e) => handleChange('cardBorderHoverColor', e.target.value)}
+                className="h-10 w-full border border-gray-300 rounded-md p-1"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Card Background Hover Color</label>
+              <input
+                type="color"
+                value={form.cardBgHoverColor}
+                onChange={(e) => handleChange('cardBgHoverColor', e.target.value)}
+                className="h-10 w-full border border-gray-300 rounded-md p-1"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Card Hover Scale (e.g., 1.02)</label>
+              <input
+                type="number"
+                step="0.01"
+                value={parseFloat(form.cardHoverScale)}
+                onChange={(e) => handleChange('cardHoverScale', e.target.value)}
+                className={commonInputClasses}
+              />
+            </div>
           </div>
         </div>
 
 
         {/* --- Milestone Cards Data --- */}
         <div className="pb-6 border-b border-gray-200">
-          <h3 className="text-xl font-bold text-gray-800 mb-4">📍 Milestones Content</h3>
+          <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <CalendarDays className="w-5 h-5 text-gray-600" /> Milestones Content
+          </h3>
           {form.milestones.map((milestone, i) => (
             <div key={i} className="bg-gray-50 border border-gray-200 p-4 mb-4 rounded-lg relative shadow-sm">
               <div className="absolute top-2 right-2 flex space-x-1">
@@ -363,7 +427,7 @@ export default function JourneyEditor() {
         >
           <h3 className="text-2xl font-bold text-teal-700 mb-6 text-center">👁️ Live Preview</h3>
 
-          <div className="journey-preview py-8 px-4" style={{ backgroundColor: form.backgroundColor }}>
+          <div className="journey-preview py-8 px-4" style={{ backgroundColor: form.backgroundColor, fontFamily: form.globalFont }}>
             <div className="text-center mb-12">
               <h2
                 className="text-4xl font-extrabold mb-3"
@@ -379,63 +443,67 @@ export default function JourneyEditor() {
               </p>
             </div>
 
-            <div className="relative wrap overflow-hidden p-10 h-full">
-              {/* Timeline Line */}
+            <div className="relative max-w-6xl mx-auto">
+              {/* Vertical Dotted Line */}
               <div
-                className="border-2-2 absolute h-full border"
-                style={{
-                  left: '50%',
-                  borderColor: form.timelineLineColor,
-                  borderRightStyle: 'dashed',
-                  borderLeftStyle: 'dashed',
-                }}
-              ></div>
+                className="absolute left-1/2 transform -translate-x-1/2 h-full border-l-2 border-dotted z-0"
+                style={{ borderColor: form.timelineLineColor }}
+              />
 
-              {form.milestones.map((milestone, i) => (
+              {form.milestones.map((item, index) => (
                 <div
-                  key={i}
-                  className={`mb-${parseInt(form.milestoneSpacing) / 4} flex justify-between items-center w-full ${milestone.side === 'right' ? 'flex-row-reverse' : ''}`}
-                  style={{ marginBottom: form.milestoneSpacing }} // Apply dynamic spacing
+                  key={index}
+                  className={`relative w-full md:w-1/2 px-4 py-10 ${
+                    item.side === "left"
+                      ? "text-right md:pr-10 ml-auto"
+                      : "text-left md:pl-10 mr-auto"
+                  }`}
+                  style={{ marginBottom: parseInt(form.milestoneSpacing) - 80 + 'px' }} // Adjust for py-10, approx spacing
                 >
-                  {/* Left Side */}
-                  <div className="order-1 w-5/12">
-                    {milestone.side === 'left' && (
-                      <div
-                        className="bg-white rounded-lg shadow-lg p-6 relative"
-                        style={{ backgroundColor: form.milestoneCardBgColor, color: form.milestoneCardTextColor }}
-                      >
-                        <h4 className="font-bold text-md sm:text-lg mb-1" style={{ color: form.timelineLineColor }}>
-                          <Clock className="inline-block w-4 h-4 mr-2" />
-                          {milestone.date}
-                        </h4>
-                        <h3 className="font-bold text-xl mb-3">{milestone.title}</h3>
-                        <p className="text-sm leading-snug">{milestone.description}</p>
-                      </div>
-                    )}
-                  </div>
+                  {/* Dot on the line, outside the card */}
+                  <div
+                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full z-10 shadow-md"
+                    style={{
+                      backgroundColor: form.milestoneDotInnerBg,
+                      border: `4px solid ${form.milestoneDotBorderColor}`,
+                    }}
+                  />
 
-                  {/* Dot */}
-                  <div className="z-20 flex items-center order-1 bg-gray-800 shadow-xl w-8 h-8 rounded-full">
-                    <h1 className="mx-auto font-semibold text-lg text-white" style={{ color: form.milestoneDotColor === '#ffffff' ? '#000000' : 'white' }}>
-                      {i + 1}
-                    </h1>
-                  </div>
-
-                  {/* Right Side */}
-                  <div className="order-1 w-5/12">
-                    {milestone.side === 'right' && (
-                      <div
-                        className="bg-white rounded-lg shadow-lg p-6 relative"
-                        style={{ backgroundColor: form.milestoneCardBgColor, color: form.milestoneCardTextColor }}
-                      >
-                        <h4 className="font-bold text-md sm:text-lg mb-1" style={{ color: form.timelineLineColor }}>
-                          <Clock className="inline-block w-4 h-4 mr-2" />
-                          {milestone.date}
-                        </h4>
-                        <h3 className="font-bold text-xl mb-3">{milestone.title}</h3>
-                        <p className="text-sm leading-snug">{milestone.description}</p>
-                      </div>
-                    )}
+                  {/* Card */}
+                  <div
+                    className="group rounded-xl border shadow-md p-6 text-left md:text-inherit relative z-20 transition-all duration-300"
+                    style={{
+                      backgroundColor: form.milestoneCardBgColor,
+                      color: form.milestoneCardTextColor,
+                      borderColor: 'transparent', // Default border color
+                      transform: 'scale(1)', // Default scale
+                      '--tw-border-opacity': 1, // Reset border opacity
+                      '--tw-bg-opacity': 1, // Reset bg opacity
+                      '--tw-shadow-color': 'rgba(0, 0, 0, 0.1)', // Default shadow
+                    }}
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.borderColor = form.cardBorderHoverColor;
+                        e.currentTarget.style.backgroundColor = form.cardBgHoverColor;
+                        e.currentTarget.style.transform = `scale(${form.cardHoverScale})`;
+                        e.currentTarget.style.boxShadow = '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)'; // Tailwind shadow-xl
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.borderColor = 'transparent';
+                        e.currentTarget.style.backgroundColor = form.milestoneCardBgColor;
+                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.boxShadow = '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)'; // Tailwind shadow-md
+                    }}
+                  >
+                    <div className="flex items-center gap-2 mb-2 text-sm font-medium" style={{ color: form.timelineLineColor }}>
+                      <CalendarDays className="w-5 h-5" />
+                      <span>{item.date}</span>
+                    </div>
+                    <h3 className="text-lg font-bold mb-1" style={{ color: form.milestoneCardTextColor }}>
+                      {item.title}
+                    </h3>
+                    <p className="text-sm text-justify" style={{ color: form.milestoneCardTextColor }}>
+                      {item.description}
+                    </p>
                   </div>
                 </div>
               ))}
