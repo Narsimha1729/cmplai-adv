@@ -29,6 +29,7 @@ export default function AdminLayout({ children }) {
                 { label: "About Us", path: "/admin/aboutus" },
                 { label: "Team", path: "/admin/team" },
                 { label: "Contact Us", path: "/admin/contactus" },
+                { label: "Footer", path: "/admin/footer" },
                 { label: "Blogs", path: "/admin/blogs" },
               ].map((item) => (
                 <a
