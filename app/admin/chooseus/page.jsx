@@ -109,7 +109,7 @@ export default function ChooseUsEditor() {
   return (
     <div className="max-w-6xl mx-auto bg-white p-8 rounded-xl shadow-2xl border border-teal-100">
       <h2 className="text-3xl font-extrabold text-teal-700 mb-8 text-center">
-        🎨 Choose Us Section Editor 🚀
+        🎨 Choose Us Section Editor
       </h2>
       <form onSubmit={handleSubmit} className="space-y-10">
         {/* Section Global Settings */}
@@ -311,7 +311,7 @@ export default function ChooseUsEditor() {
         {/* Live Preview */}
         <div className="mt-12 p-8 rounded-xl border-4 border-dashed border-purple-300 bg-gradient-to-br from-gray-50 to-white shadow-xl">
           <h3 className="text-3xl font-bold text-gray-800 mb-8 text-center">
-            👀 Live Preview: Your Choose Us Section
+            👀 Live Preview
           </h3>
           <section className="py-12 px-4 rounded-lg" style={{ backgroundColor: form.sectionBgColor }}>
             <div className="max-w-6xl mx-auto text-center">
