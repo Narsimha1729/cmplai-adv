@@ -247,7 +247,7 @@ export default function ChallengesEditor() {
 
               {/* Icon Upload */}
               <div className="mb-4">
-                <label htmlFor={`icon-upload-${i}`} className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2 cursor-pointer">
+                <label htmlFor={`icon-upload-${i}`} className="text-sm font-medium text-gray-700 mb-1 flex items-center gap-2 cursor-pointer">
                   <ImageIcon className="w-4 h-4 text-teal-600" /> Upload Icon Image (SVG, PNG, JPG)
                 </label>
                 <input
