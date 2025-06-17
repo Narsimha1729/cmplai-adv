@@ -1,31 +1,32 @@
 // app/admin/chooseus/page.jsx
 'use client';
 
-import { useState, createElement } from 'react';
+import { useState, createElement, useEffect } from 'react';
 import {
   Plus,
   Trash,
   Sparkles,
   Target,
   Globe2,
-  // Add all Lucide icons here that you want to offer in the editor's icon selector.
-  // This list should be comprehensive to give the user choices.
   Lightbulb, ShieldCheck, Rocket, Wrench, Gauge, Briefcase, Layers, Zap, Star, Award, Bell,
   CheckCircle, Cpu, Feather, GitPullRequest, Heart, Key, Leaf, Megaphone, Network, Palette,
   PieChart, RefreshCw, Search, Server, Settings, Sliders, Smartphone, Sunrise, ThumbsUp,
   TrendingUp, Umbrella, Users, Waves, ZapOff,
   FileText, // For section description icon in editor
-  Monitor,  // For live preview section icon in editor
+  Monitor,  // For live preview icon
   Palette as ColorPalette, // Alias for clarity if using Palette elsewhere
   Type, // For font/text settings
+  RefreshCw as RefreshIcon, // Icon for refresh button
+  AlignLeft, AlignCenter, AlignRight, // For text alignment
+  Text as TextIcon, // For general text content section
+  Paintbrush, // For general styling
+  Component, // For point management
 } from 'lucide-react';
 
-// IMPORTANT: Ensure this import path is correct relative to app/admin/chooseus/page.jsx
-// It needs to go up 3 levels from app/admin/chooseus to the root, then into 'components'.
+// IMPORTANT: This path is crucial. It needs to go up 3 levels from app/admin/chooseus to the root, then into 'components'.
 import Chooseus from '../../../components/Chooseus';
 
 // Map icon names (strings) to actual Lucide React components
-// This object must contain ALL icons that you want the user to be able to select in the editor.
 // Ensure this list is consistent with the one in components/Chooseus.jsx for proper rendering.
 const iconComponents = {
   Sparkles, Target, Globe2, Lightbulb, ShieldCheck, Rocket, Wrench, Gauge, Briefcase, Layers, Zap, Star, Award, Bell,
@@ -34,25 +35,47 @@ const iconComponents = {
   TrendingUp, Umbrella, Users, Waves, ZapOff,
 };
 
+// Helper function to create a preview configuration from the current form state.
+// This is used for the manual "Refresh Preview" functionality.
+const createPreviewConfig = (formData) => ({
+    ...formData,
+    points: formData.points.map(p => {
+        const Icon = iconComponents[p.icon];
+        return {
+            ...p,
+            icon: Icon ? createElement(Icon) : null, // Convert string icon name to JSX element
+        };
+    }),
+});
+
 export default function ChooseUsEditorPage() {
+  // State to manage all form inputs. Updates immediately on user input.
   const [form, setForm] = useState({
     sectionTitle: 'Why Choose Us?',
     sectionDesc: 'Discover how Cmplai transforms compliance processes with innovation and expertise.',
-    // Dynamic styling options that Chooseus.jsx will now accept as props
-    sectionBgColor: '#f0fdf4', // Corresponds to Tailwind bg-teal-50 for default section background
-    titleColor: '#0f766e',     // Corresponds to Tailwind text-teal-600
-    descColor: '#4b5563',      // Corresponds to Tailwind text-gray-600
-    iconColor: '#0f766e',      // Global icon color, also text-teal-600
-    pointBgColor: '#ffffff',   // Corresponds to Tailwind bg-white for individual points
-    pointBorderColor: '#e0f2f7', // Default border color (e.g., teal-100 or transparent)
-    pointHoverBorderColor: '#0d9488', // Corresponds to Tailwind hover:border-teal-500
-    pointHoverBgColor: '#f0fdf4',     // Corresponds to Tailwind hover:bg-teal-50
-    pointTitleColor: '#1a202c',       // Corresponds to Tailwind text-gray-900
-    pointHoverTitleColor: '#0d9488',  // Corresponds to Tailwind group-hover:text-teal-600
-    pointDescColor: '#4b5563',        // Corresponds to Tailwind text-gray-600
-    iconBaseBgColor: '#e0f2f7',        // Corresponds to Tailwind bg-teal-50 for icon circle
-    iconHoverBgColor: '#e0f2f7',      // Corresponds to Tailwind group-hover:bg-teal-100 for icon circle hover
+    // Global Section Styling
+    sectionBgColor: '#f0fdf4', // Tailwind bg-teal-50
+    titleColor: '#0f766e',     // Tailwind text-teal-600
+    descColor: '#4b5563',      // Tailwind text-gray-600
 
+    // Global Point Styling (applies to all points)
+    iconColor: '#0f766e',      // Global icon color, also text-teal-600
+    iconBaseBgColor: '#e0f2f7',// Tailwind bg-teal-50 for icon circle
+    iconHoverBgColor: '#f0fdf4',// Tailwind group-hover:bg-teal-100 for icon circle hover
+    pointBgColor: '#ffffff',   // Tailwind bg-white for individual points
+    pointBorderColor: 'transparent',
+    pointHoverBorderColor: '#0d9488', // Tailwind hover:border-teal-500
+    pointHoverBgColor: '#f0fdf4',     // Tailwind hover:bg-teal-50
+    pointTitleColor: '#1a202c',       // Tailwind text-gray-900
+    pointHoverTitleColor: '#0d9488',  // Tailwind group-hover:text-teal-600
+    pointDescColor: '#4b5563',        // Tailwind text-gray-600
+    pointTitleSize: '1.125rem', // text-lg
+    pointTitleWeight: '600',    // font-semibold
+    pointTitleAlign: 'center',
+    pointDescSize: '0.875rem',  // text-sm
+    pointDescAlign: 'justify',
+
+    // Individual Points Content
     points: [
       {
         id: `point-${Date.now()}-1`, // Unique ID for each point (important for React keys)
@@ -75,14 +98,23 @@ export default function ChooseUsEditorPage() {
     ],
   });
 
+  // State for the preview. This only updates when `handleRefreshPreview` is called.
+  const [displayedPreviewConfig, setDisplayedPreviewConfig] = useState(() => createPreviewConfig(form));
+
+  // Initialize the displayed preview config when the component mounts
+  useEffect(() => {
+    setDisplayedPreviewConfig(createPreviewConfig(form));
+  }, []); // Empty dependency array means this runs only once on mount
+
   // Reusable Tailwind CSS classes for consistent input styling
   const commonInputClasses = "w-full border border-gray-300 px-4 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400";
   const commonTextareaClasses = "w-full border border-gray-300 px-4 py-2 rounded-md text-gray-900 resize-y focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400";
   const commonSelectClasses = "w-full border border-gray-300 px-4 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500";
-  const commonColorInputClasses = "h-10 w-full rounded-md border border-gray-300 cursor-pointer";
+  const commonColorInputClasses = "h-10 w-full border border-gray-300 rounded-md p-1 cursor-pointer"; // Added p-1 for better color picker rendering
   const sectionHeaderClasses = "text-xl font-bold text-gray-800 mb-4 flex items-center gap-2";
+  const subSectionHeaderClasses = "text-lg font-semibold text-gray-700 mb-3 flex items-center gap-2"; // New for sub-sections
 
-  // Handles changes for top-level form fields (e.g., sectionTitle, sectionDesc, colors)
+  // Handles changes for top-level form fields (e.g., sectionTitle, sectionDesc, global styles)
   const handleChange = (field, value) => {
     setForm((prevForm) => ({ ...prevForm, [field]: value }));
   };
@@ -119,30 +151,19 @@ export default function ChooseUsEditorPage() {
     }));
   };
 
+  // Function to manually update the preview
+  const handleRefreshPreview = () => {
+    setDisplayedPreviewConfig(createPreviewConfig(form));
+  };
+
   // Handles form submission (e.g., sending data to a backend API)
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Saved Choose Us section data:', form);
     alert('✅ "Why Choose Us" section saved (demo only)'); // Simple alert for demo purposes
-    // In a real application, you would send 'form' data to a backend API here.
+    // Ensure the preview is also updated after saving
+    handleRefreshPreview();
   };
-
-  // Prepare the configuration object to pass to the Chooseus frontend component.
-  // The frontend component expects JSX elements for icons, so we transform the string names.
-  const previewConfig = {
-    ...form, // Pass all form properties directly
-    points: form.points.map(p => {
-      const Icon = iconComponents[p.icon]; // Get the Lucide component based on string name
-      return {
-        ...p,
-        // Recreate the JSX element for the icon.
-        // The classNames here are just for the editor's internal logic;
-        // the Chooseus component will apply its own styles based on passed props.
-        icon: Icon ? createElement(Icon) : null,
-      };
-    }),
-  };
-
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-10 bg-white rounded-xl shadow-lg border border-teal-100 my-10">
@@ -151,10 +172,43 @@ export default function ChooseUsEditorPage() {
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-10">
-        {/* --- General Section Settings --- */}
+
+        {/* --- Section Content (Title & Description) --- */}
         <div className="pb-8 border-b border-gray-200">
           <h3 className={sectionHeaderClasses}>
-            <ColorPalette className="w-5 h-5 text-gray-600" /> General Section Styling
+            <TextIcon className="w-5 h-5 text-gray-600" /> Section Content
+          </h3>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div>
+              <label htmlFor="sectionTitle" className="block text-sm font-semibold text-gray-700 mb-1">Section Title</label>
+              <input
+                id="sectionTitle"
+                type="text"
+                value={form.sectionTitle}
+                onChange={(e) => handleChange('sectionTitle', e.target.value)}
+                className={commonInputClasses}
+                placeholder="e.g., Why Choose Cmplai?"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="sectionDesc" className="block text-sm font-semibold text-gray-700 mb-1">Section Description</label>
+              <input
+                id="sectionDesc"
+                type="text"
+                value={form.sectionDesc}
+                onChange={(e) => handleChange('sectionDesc', e.target.value)}
+                className={commonInputClasses}
+                placeholder="e.g., Our unique value proposition..."
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* --- Global Section Styles --- */}
+        <div className="pb-8 border-b border-gray-200">
+          <h3 className={sectionHeaderClasses}>
+            <Paintbrush className="w-5 h-5 text-gray-600" /> Global Section & Text Styles
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Section Background Color */}
@@ -193,9 +247,102 @@ export default function ChooseUsEditorPage() {
                 title="Choose Main Description Color"
               />
             </div>
+          </div>
+        </div>
+
+        {/* --- Global Point Styling --- */}
+        <div className="pb-8 border-b border-gray-200">
+          <h3 className={sectionHeaderClasses}>
+            <Component className="w-5 h-5 text-gray-600" /> Global Point Styling
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            {/* Point Background Color */}
+            <div>
+              <label htmlFor="pointBgColor" className="block text-sm font-semibold text-gray-700 mb-1">Point Background</label>
+              <input
+                id="pointBgColor"
+                type="color"
+                value={form.pointBgColor}
+                onChange={(e) => handleChange('pointBgColor', e.target.value)}
+                className={commonColorInputClasses}
+                title="Choose Point Background Color"
+              />
+            </div>
+            {/* Point Border Color */}
+            <div>
+              <label htmlFor="pointBorderColor" className="block text-sm font-semibold text-gray-700 mb-1">Point Border</label>
+              <input
+                id="pointBorderColor"
+                type="color"
+                value={form.pointBorderColor}
+                onChange={(e) => handleChange('pointBorderColor', e.target.value)}
+                className={commonColorInputClasses}
+                title="Choose Point Border Color"
+              />
+            </div>
+            {/* Point Hover Border Color */}
+            <div>
+              <label htmlFor="pointHoverBorderColor" className="block text-sm font-semibold text-gray-700 mb-1">Point Hover Border</label>
+              <input
+                id="pointHoverBorderColor"
+                type="color"
+                value={form.pointHoverBorderColor}
+                onChange={(e) => handleChange('pointHoverBorderColor', e.target.value)}
+                className={commonColorInputClasses}
+                title="Choose Point Hover Border Color"
+              />
+            </div>
+            {/* Point Hover Background Color */}
+            <div>
+              <label htmlFor="pointHoverBgColor" className="block text-sm font-semibold text-gray-700 mb-1">Point Hover Background</label>
+              <input
+                id="pointHoverBgColor"
+                type="color"
+                value={form.pointHoverBgColor}
+                onChange={(e) => handleChange('pointHoverBgColor', e.target.value)}
+                className={commonColorInputClasses}
+                title="Choose Point Hover Background Color"
+              />
+            </div>
+            {/* Point Title Color */}
+            <div>
+              <label htmlFor="pointTitleColor" className="block text-sm font-semibold text-gray-700 mb-1">Point Title Color</label>
+              <input
+                id="pointTitleColor"
+                type="color"
+                value={form.pointTitleColor}
+                onChange={(e) => handleChange('pointTitleColor', e.target.value)}
+                className={commonColorInputClasses}
+                title="Choose Point Title Color"
+              />
+            </div>
+            {/* Point Hover Title Color */}
+            <div>
+              <label htmlFor="pointHoverTitleColor" className="block text-sm font-semibold text-gray-700 mb-1">Point Hover Title Color</label>
+              <input
+                id="pointHoverTitleColor"
+                type="color"
+                value={form.pointHoverTitleColor}
+                onChange={(e) => handleChange('pointHoverTitleColor', e.target.value)}
+                className={commonColorInputClasses}
+                title="Choose Point Hover Title Color"
+              />
+            </div>
+            {/* Point Description Color */}
+            <div>
+              <label htmlFor="pointDescColor" className="block text-sm font-semibold text-gray-700 mb-1">Point Description Color</label>
+              <input
+                id="pointDescColor"
+                type="color"
+                value={form.pointDescColor}
+                onChange={(e) => handleChange('pointDescColor', e.target.value)}
+                className={commonColorInputClasses}
+                title="Choose Point Description Color"
+              />
+            </div>
             {/* Global Icon Color */}
             <div>
-              <label htmlFor="iconColor" className="block text-sm font-semibold text-gray-700 mb-1">Icon Color (Global)</label>
+              <label htmlFor="iconColor" className="block text-sm font-semibold text-gray-700 mb-1">Icon Color</label>
               <input
                 id="iconColor"
                 type="color"
@@ -229,128 +376,109 @@ export default function ChooseUsEditorPage() {
                 title="Choose Icon Circle Hover Background Color"
               />
             </div>
+            {/* Point Title Size */}
+            <div>
+                <label htmlFor="pointTitleSize" className="block text-sm font-semibold text-gray-700 mb-1">Point Title Size (px)</label>
+                <input
+                    id="pointTitleSize"
+                    type="number"
+                    value={parseInt(form.pointTitleSize)}
+                    onChange={(e) => handleChange('pointTitleSize', e.target.value + 'px')}
+                    className={commonInputClasses}
+                    placeholder="e.g., 18"
+                />
+            </div>
+             {/* Point Title Weight */}
+             <div>
+                <label htmlFor="pointTitleWeight" className="block text-sm font-semibold text-gray-700 mb-1">Point Title Weight</label>
+                <select
+                    id="pointTitleWeight"
+                    value={form.pointTitleWeight}
+                    onChange={(e) => handleChange('pointTitleWeight', e.target.value)}
+                    className={commonSelectClasses}
+                >
+                    <option value="400">Normal (400)</option>
+                    <option value="600">Semi-Bold (600)</option>
+                    <option value="700">Bold (700)</option>
+                    <option value="800">Extra Bold (800)</option>
+                </select>
+            </div>
+            {/* Point Title Alignment */}
+            <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">Point Title Align</label>
+                <div className="flex space-x-2">
+                    <button
+                        type="button"
+                        onClick={() => handleChange('pointTitleAlign', 'left')}
+                        className={`p-2 border rounded-md ${form.pointTitleAlign === 'left' ? 'bg-teal-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                        aria-label="Align Left"
+                    ><AlignLeft className="w-5 h-5" /></button>
+                    <button
+                        type="button"
+                        onClick={() => handleChange('pointTitleAlign', 'center')}
+                        className={`p-2 border rounded-md ${form.pointTitleAlign === 'center' ? 'bg-teal-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                        aria-label="Align Center"
+                    ><AlignCenter className="w-5 h-5" /></button>
+                    <button
+                        type="button"
+                        onClick={() => handleChange('pointTitleAlign', 'right')}
+                        className={`p-2 border rounded-md ${form.pointTitleAlign === 'right' ? 'bg-teal-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                        aria-label="Align Right"
+                    ><AlignRight className="w-5 h-5" /></button>
+                </div>
+            </div>
+            {/* Point Description Size */}
+            <div>
+                <label htmlFor="pointDescSize" className="block text-sm font-semibold text-gray-700 mb-1">Point Description Size (px)</label>
+                <input
+                    id="pointDescSize"
+                    type="number"
+                    value={parseInt(form.pointDescSize)}
+                    onChange={(e) => handleChange('pointDescSize', e.target.value + 'px')}
+                    className={commonInputClasses}
+                    placeholder="e.g., 14"
+                />
+            </div>
+            {/* Point Description Alignment */}
+            <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">Point Description Align</label>
+                <div className="flex space-x-2">
+                    <button
+                        type="button"
+                        onClick={() => handleChange('pointDescAlign', 'left')}
+                        className={`p-2 border rounded-md ${form.pointDescAlign === 'left' ? 'bg-teal-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                        aria-label="Align Left"
+                    ><AlignLeft className="w-5 h-5" /></button>
+                    <button
+                        type="button"
+                        onClick={() => handleChange('pointDescAlign', 'center')}
+                        className={`p-2 border rounded-md ${form.pointDescAlign === 'center' ? 'bg-teal-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                        aria-label="Align Center"
+                    ><AlignCenter className="w-5 h-5" /></button>
+                    <button
+                        type="button"
+                        onClick={() => handleChange('pointDescAlign', 'right')}
+                        className={`p-2 border rounded-md ${form.pointDescAlign === 'right' ? 'bg-teal-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                        aria-label="Align Right"
+                    ><AlignRight className="w-5 h-5" /></button>
+                    <button
+                        type="button"
+                        onClick={() => handleChange('pointDescAlign', 'justify')}
+                        className={`p-2 border rounded-md ${form.pointDescAlign === 'justify' ? 'bg-teal-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                        aria-label="Align Justify"
+                    ><Ruler className="w-5 h-5" /></button> {/* Using Ruler for justify for now, no direct Lucide icon for justify */}
+                </div>
+            </div>
           </div>
         </div>
 
-        {/* --- Section Title & Description Content --- */}
-        <div className="grid md:grid-cols-2 gap-8 pb-8 border-b border-gray-200">
-          <div>
-            <h3 className={sectionHeaderClasses}>
-              <Type className="w-5 h-5 text-gray-600" /> Section Title
-            </h3>
-            <label htmlFor="sectionTitle" className="sr-only">Section Title Text</label>
-            <input
-              id="sectionTitle"
-              type="text"
-              value={form.sectionTitle}
-              onChange={(e) => handleChange('sectionTitle', e.target.value)}
-              className={commonInputClasses}
-              placeholder="e.g., Why Choose Cmplai?"
-            />
-          </div>
-
-          <div>
-            <h3 className={sectionHeaderClasses}>
-              <FileText className="w-5 h-5 text-gray-600" /> Section Description
-            </h3>
-            <label htmlFor="sectionDesc" className="sr-only">Section Subtitle / Description Text</label>
-            <input
-              id="sectionDesc"
-              type="text"
-              value={form.sectionDesc}
-              onChange={(e) => handleChange('sectionDesc', e.target.value)}
-              className={commonInputClasses}
-              placeholder="e.g., Our unique value proposition..."
-            />
-          </div>
-        </div>
-
-        {/* --- Individual Value Proposition Points --- */}
+        {/* --- Individual Value Proposition Points Content --- */}
         <div>
           <h3 className={sectionHeaderClasses}>
-            <Target className="w-5 h-5 text-gray-600" /> Manage Value Proposition Points
+            <Target className="w-5 h-5 text-gray-600" /> Manage Individual Points
           </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {/* Point specific styling controls, applied globally to all points */}
-            <div>
-              <label htmlFor="pointBgColor" className="block text-sm font-semibold text-gray-700 mb-1">Point Background</label>
-              <input
-                id="pointBgColor"
-                type="color"
-                value={form.pointBgColor}
-                onChange={(e) => handleChange('pointBgColor', e.target.value)}
-                className={commonColorInputClasses}
-                title="Choose Point Background Color"
-              />
-            </div>
-            <div>
-              <label htmlFor="pointBorderColor" className="block text-sm font-semibold text-gray-700 mb-1">Point Border</label>
-              <input
-                id="pointBorderColor"
-                type="color"
-                value={form.pointBorderColor}
-                onChange={(e) => handleChange('pointBorderColor', e.target.value)}
-                className={commonColorInputClasses}
-                title="Choose Point Border Color"
-              />
-            </div>
-            <div>
-              <label htmlFor="pointHoverBorderColor" className="block text-sm font-semibold text-gray-700 mb-1">Point Hover Border</label>
-              <input
-                id="pointHoverBorderColor"
-                type="color"
-                value={form.pointHoverBorderColor}
-                onChange={(e) => handleChange('pointHoverBorderColor', e.target.value)}
-                className={commonColorInputClasses}
-                title="Choose Point Hover Border Color"
-              />
-            </div>
-            <div>
-              <label htmlFor="pointHoverBgColor" className="block text-sm font-semibold text-gray-700 mb-1">Point Hover Background</label>
-              <input
-                id="pointHoverBgColor"
-                type="color"
-                value={form.pointHoverBgColor}
-                onChange={(e) => handleChange('pointHoverBgColor', e.target.value)}
-                className={commonColorInputClasses}
-                title="Choose Point Hover Background Color"
-              />
-            </div>
-            <div>
-              <label htmlFor="pointTitleColor" className="block text-sm font-semibold text-gray-700 mb-1">Point Title Color</label>
-              <input
-                id="pointTitleColor"
-                type="color"
-                value={form.pointTitleColor}
-                onChange={(e) => handleChange('pointTitleColor', e.target.value)}
-                className={commonColorInputClasses}
-                title="Choose Point Title Color"
-              />
-            </div>
-            <div>
-              <label htmlFor="pointHoverTitleColor" className="block text-sm font-semibold text-gray-700 mb-1">Point Hover Title Color</label>
-              <input
-                id="pointHoverTitleColor"
-                type="color"
-                value={form.pointHoverTitleColor}
-                onChange={(e) => handleChange('pointHoverTitleColor', e.target.value)}
-                className={commonColorInputClasses}
-                title="Choose Point Hover Title Color"
-              />
-            </div>
-            <div>
-              <label htmlFor="pointDescColor" className="block text-sm font-semibold text-gray-700 mb-1">Point Description Color</label>
-              <input
-                id="pointDescColor"
-                type="color"
-                value={form.pointDescColor}
-                onChange={(e) => handleChange('pointDescColor', e.target.value)}
-                className={commonColorInputClasses}
-                title="Choose Point Description Color"
-              />
-            </div>
-          </div>
 
+          {/* Mapping through individual points for editing */}
           {form.points.map((point, i) => {
             const IconComponent = iconComponents[point.icon]; // Get the actual Lucide component for editor's internal preview
             return (
@@ -456,24 +584,33 @@ export default function ChooseUsEditorPage() {
           </button>
         </div>
 
-        {/* --- Live Preview Section --- */}
-        <div className="pt-8 border-t border-gray-200">
-          <h3 className={sectionHeaderClasses}>
-            <Monitor className="w-5 h-5 text-gray-600" /> Live Preview
+        {/* --- Live Preview Section with Refresh Button --- */}
+        <div className="mt-10 p-8 rounded-xl border-2 border-dashed border-teal-200 shadow-inner bg-gray-50">
+          <h3 className="text-2xl font-bold text-teal-700 mb-6 text-center">
+            <Monitor className="inline-block w-6 h-6 mr-2 text-teal-600" /> Live Preview
           </h3>
-          <div className="border border-dashed border-gray-300 rounded-lg p-4 bg-gray-50 overflow-hidden">
+          <div className="flex justify-end mb-4">
+            <button
+              type="button"
+              onClick={handleRefreshPreview}
+              className="bg-blue-500 text-white px-5 py-2 rounded-md shadow-md hover:bg-blue-600 transition-colors duration-200 flex items-center gap-2"
+            >
+              <RefreshIcon className="w-5 h-5" /> Refresh Preview
+            </button>
+          </div>
+          <div className="border border-dashed border-gray-300 rounded-lg p-4 bg-white overflow-hidden">
             {/* The Chooseus component renders here, receiving the dynamic form data */}
-            <Chooseus config={previewConfig} />
+            <Chooseus config={displayedPreviewConfig} />
           </div>
         </div>
 
         {/* --- Save Button --- */}
-        <div className="text-right pt-8">
+        <div className="pt-8 text-center">
           <button
             type="submit"
-            className="bg-gradient-to-r from-teal-500 to-cyan-600 text-white px-8 py-3 font-semibold rounded-lg shadow-lg hover:opacity-90 transition-opacity duration-300"
+            className="bg-gradient-to-r from-teal-500 to-cyan-600 text-white px-10 py-4 font-bold text-lg rounded-xl shadow-xl hover:from-teal-600 hover:to-cyan-700 transition-all duration-300 transform hover:scale-105"
           >
-            Save "Why Choose Us" Section
+            🚀 Save "Why Choose Us" Section
           </button>
         </div>
       </form>
