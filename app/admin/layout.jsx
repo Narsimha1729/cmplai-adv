@@ -14,8 +14,9 @@ export default function AdminLayout({ children }) {
             </h2>
             <nav className="space-y-4 text-gray-700">
               <a href="/admin" className="block hover:text-teal-500">Dashboard</a>
-              <a href="/admin/hero" className="block hover:text-teal-500">Hero Section</a>
               <a href="/admin/navbar" className="block hover:text-teal-500">Navbar</a>
+              <a href="/admin/hero" className="block hover:text-teal-500">Hero Section</a>
+              <a href="/admin/stats" className="block hover:text-teal-500">Stats</a>
               <a href="/admin/footer" className="block hover:text-teal-500">Footer</a>
               <a href="/admin/blogs" className="block hover:text-teal-500">Blogs</a>
               <a href="/admin/faq" className="block hover:text-teal-500">FAQ</a>
