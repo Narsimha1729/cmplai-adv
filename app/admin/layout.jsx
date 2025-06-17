@@ -19,8 +19,15 @@ export default function AdminLayout({ children }) {
               <a href="/admin/stats" className="block hover:text-teal-500">Stats</a>
               <a href="/admin/productfeatures" className="block hover:text-teal-500">Product Features</a>
               <a href="/admin/service" className="block hover:text-teal-500">Services</a>
+              <a href="/admin/setus" className="block hover:text-teal-500">Set Us</a>
+              <a href="/admin/chooseus" className="block hover:text-teal-500">Choose Us</a>
+              <a href="/admin/challenges" className="block hover:text-teal-500">Challenges</a>
+              <a href="/admin/journey" className="block hover:text-teal-500">Journey</a>
+              <a href="/admin/areyouready" className="block hover:text-teal-500">Are You Ready</a>
+              <a href="/admin/aboutus" className="block hover:text-teal-500">About Us</a>
               <a href="/admin/team" className="block hover:text-teal-500">Team</a>
-              <a href="/admin/footer" className="block hover:text-teal-500">Footer</a>
+              <a href="/admin/service" className="block hover:text-teal-500">Services</a>
+              <a href="/admin/contactus" className="block hover:text-teal-500">Contact Us</a>
               <a href="/admin/blogs" className="block hover:text-teal-500">Blogs</a>
               <a href="/admin/faq" className="block hover:text-teal-500">FAQ</a>
               <a href="/admin/docs" className="block hover:text-teal-500">Docs</a>
