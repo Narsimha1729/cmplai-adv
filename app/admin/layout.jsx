@@ -5,7 +5,7 @@ export const metadata = {
 export default function AdminLayout({ children }) {
   return (
     <html lang="en">
-      <body className="bg-[#f9fefe] font-sans antialiased text-gray-900">
+      <body className="bg-[#f9fefe] font-sans antialiased text-black-900">
         <div className="flex min-h-screen overflow-hidden">
           {/* Sidebar */}
           <aside className="w-64 bg-white border-r border-teal-100 p-6 shadow-xl hidden lg:block">
