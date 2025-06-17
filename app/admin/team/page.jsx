@@ -83,30 +83,6 @@ export default function TeamEditor() {
         cardBgColor: '#ffffff',
         cardShadow: 'md',
       },
-      {
-        id: 'member-3',
-        name: 'Aisha Sharma',
-        role: 'Lead AI Engineer',
-        experience: '7+ years crafting intelligent solutions, specializing in machine learning for regulatory compliance.',
-        image: 'https://randomuser.me/api/portraits/women/68.jpg', // Example external image
-        linkedin: 'https://www.linkedin.com/in/aisha-sharma-example',
-        twitter: 'https://twitter.com/aisha_ai_example',
-        email: 'mailto:aisha@example.com',
-        cardBgColor: '#ffffff',
-        cardShadow: 'md',
-      },
-      {
-        id: 'member-4',
-        name: 'Siddharth Reddy',
-        role: 'Product Manager',
-        experience: '10+ years experience in product development, bringing innovative pharma tech to market.',
-        image: 'https://randomuser.me/api/portraits/men/44.jpg', // Example external image
-        linkedin: 'https://www.linkedin.com/in/siddharth-reddy-example',
-        twitter: 'https://twitter.com/siddharth_r_example',
-        email: 'mailto:siddharth@example.com',
-        cardBgColor: '#ffffff',
-        cardShadow: 'md',
-      },
     ],
   });
 
