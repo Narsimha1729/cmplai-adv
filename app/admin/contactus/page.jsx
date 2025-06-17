@@ -41,7 +41,7 @@ export default function ContactEditor() {
     form.backgroundType === "color"
       ? { backgroundColor: form.bgColor }
       : form.backgroundType === "image"
-      ? { backgroundImage: url(${form.bgImage}), backgroundSize: "cover", backgroundPosition: "center" }
+      ? { backgroundImage: `url(${form.bgImage})`, backgroundSize: "cover", backgroundPosition: "center" }
       : {};
 
   return (
@@ -164,7 +164,7 @@ export default function ContactEditor() {
       {/* === Live Preview === */}
       <div className="mt-10 p-6 rounded-xl border shadow-inner" style={bgStyle}>
         <h1
-          className={text-3xl md:text-4xl font-bold mb-2 ${form.headingGradient ? "bg-clip-text text-transparent bg-gradient-to-r from-teal-600 via-cyan-600 to-sky-500" : ""}}
+          className={`text-3xl md:text-4xl font-bold mb-2 ${form.headingGradient ? "bg-clip-text text-transparent bg-gradient-to-r from-teal-600 via-cyan-600 to-sky-500" : ""}`}
           style={{
             color: form.headingGradient ? undefined : form.headingColor,
             fontSize: form.headingSize,
