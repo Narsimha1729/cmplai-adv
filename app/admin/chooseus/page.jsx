@@ -53,7 +53,7 @@ import {
 // For example: import ChooseUs from './ChooseUs';
 // If you don't have it, the Live Preview will not work.
 // Make sure your ChooseUs.jsx matches the structure that accepts a 'config' prop.
-import ChooseUs from './ChooseUs'; // Ensure this path is correct based on your file structure
+import ChooseUs from './Chooseus'; // Ensure this path is correct based on your file structure
 
 
 // Map icon names to actual Lucide React components
