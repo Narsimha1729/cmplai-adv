@@ -39,7 +39,7 @@ export default function ChooseUsEditorPage() { // Renamed to clearly denote it's
     // These properties directly map to the text content that your Chooseus.jsx uses
     sectionTitle: 'Why Choose Us?',
     sectionDesc: 'Discover how Cmplai transforms compliance processes',
-    
+
     // Points array: Stores string icon names for editor control.
     // The frontend Chooseus.jsx currently expects JSX elements for icons,
     // so we'll transform this for the live preview.
