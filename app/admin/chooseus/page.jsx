@@ -16,7 +16,7 @@ import {
   Briefcase,
   Layers,
   Zap,
-  Star, // Added Star for more options
+  Star,
   Award,
   Bell,
   CheckCircle,
@@ -40,13 +40,21 @@ import {
   ThumbsUp,
   TrendingUp,
   Umbrella,
-  Users, // Also used in TeamEditor
+  Users,
   Waves,
   ZapOff,
+  FileText, // For description icon
+  Monitor, // For live preview icon
 } from 'lucide-react';
 
-// Import the ChooseUs display component for live preview
-import ChooseUs from './ChooseUs'; // Assuming ChooseUs.jsx is in the same folder
+// IMPORTANT: This component assumes you have a 'ChooseUs.jsx' file
+// in the same directory that exports a default React component
+// which accepts a 'config' prop.
+// For example: import ChooseUs from './ChooseUs';
+// If you don't have it, the Live Preview will not work.
+// Make sure your ChooseUs.jsx matches the structure that accepts a 'config' prop.
+import ChooseUs from './ChooseUs'; // Ensure this path is correct based on your file structure
+
 
 // Map icon names to actual Lucide React components
 const iconComponents = {
@@ -456,6 +464,7 @@ export default function ChooseUsEditor() {
             <Monitor className="w-5 h-5 text-gray-600" /> Live Preview
           </h3>
           <div className="border border-dashed border-gray-300 rounded-lg p-4 bg-gray-50">
+            {/* The ChooseUs component is rendered here with the current form state */}
             <ChooseUs config={form} />
           </div>
         </div>
