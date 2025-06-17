@@ -17,6 +17,7 @@ export default function AdminLayout({ children }) {
               <a href="/admin/navbar" className="block hover:text-teal-500">Navbar</a>
               <a href="/admin/hero" className="block hover:text-teal-500">Hero Section</a>
               <a href="/admin/stats" className="block hover:text-teal-500">Stats</a>
+              <a href="/admin/productfeatures" className="block hover:text-teal-500">Product Features</a>
               <a href="/admin/service" className="block hover:text-teal-500">Services</a>
               <a href="/admin/footer" className="block hover:text-teal-500">Footer</a>
               <a href="/admin/blogs" className="block hover:text-teal-500">Blogs</a>
