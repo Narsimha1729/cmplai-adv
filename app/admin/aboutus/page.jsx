@@ -104,7 +104,7 @@ export default function AboutUsEditor() {
               <select
                 value={form.subFont}
                 onChange={(e) => handleChange("subFont", e.target.value)}
-                className="border rounded px-2"
+                className="border text-black rounded px-2"
               >
                 <option value="Poppins">Poppins</option>
                 <option value="Inter">Inter</option>
@@ -123,7 +123,7 @@ export default function AboutUsEditor() {
 
         {/* Media Option */}
         <div>
-          <label className="font-semibold block mb-2">Media Type</label>
+          <label className="font-semibold block text-black mb-2">Media Type</label>
           <select
             value={form.mediaType}
             onChange={(e) => handleChange("mediaType", e.target.value)}
@@ -158,7 +158,7 @@ export default function AboutUsEditor() {
 
         {/* Title */}
         <div>
-          <label className="block font-semibold mb-1">Title Heading</label>
+          <label className="block font-semibold text-black mb-1">Title Heading</label>
           <input
             value={form.title}
             onChange={(e) => handleChange("title", e.target.value)}
