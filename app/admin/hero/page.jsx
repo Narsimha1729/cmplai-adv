@@ -169,7 +169,7 @@ export default function HeroEditor() {
               rows={3}
               value={form.heading}
               onChange={(e) => handleChange('heading', e.target.value)}
-              className="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-teal-500 focus:border-teal-500"
+              className="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-teal-500 focus:border-teal-500 text-black" // Added text-black
               placeholder="Enter your main hero heading"
             />
           </div>
@@ -180,7 +180,7 @@ export default function HeroEditor() {
               rows={2}
               value={form.subtext}
               onChange={(e) => handleChange('subtext', e.target.value)}
-              className="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-teal-500 focus:border-teal-500"
+              className="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-teal-500 focus:border-teal-500 text-black" // Added text-black
               placeholder="A short, compelling sub-headline"
             />
           </div>
@@ -191,7 +191,7 @@ export default function HeroEditor() {
               type="text"
               value={form.buttonText}
               onChange={(e) => handleChange('buttonText', e.target.value)}
-              className="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-teal-500 focus:border-teal-500"
+              className="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-teal-500 focus:border-teal-500 text-black" // Added text-black
               placeholder="e.g., Learn More, Get Started"
             />
           </div>
@@ -227,7 +227,7 @@ export default function HeroEditor() {
                 type="number"
                 value={parseInt(form.headingSize)}
                 onChange={(e) => handleChange('headingSize', e.target.value + 'px')}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500 text-black" // Added text-black
               />
             </div>
             <div>
@@ -235,7 +235,7 @@ export default function HeroEditor() {
               <select
                 value={form.headingFont}
                 onChange={(e) => handleChange('headingFont', e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500 text-black" // Added text-black
               >
                 <option value="sans-serif">Sans-serif (Default)</option>
                 <option value="serif">Serif</option>
@@ -250,7 +250,7 @@ export default function HeroEditor() {
               <select
                 value={form.headingWeight}
                 onChange={(e) => handleChange('headingWeight', e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500 text-black" // Added text-black
               >
                 <option value="400">Normal (400)</option>
                 <option value="600">Semi-Bold (600)</option>
@@ -266,7 +266,7 @@ export default function HeroEditor() {
                 step="0.1"
                 value={parseFloat(form.headingLineHeight)}
                 onChange={(e) => handleChange('headingLineHeight', e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500 text-black" // Added text-black
               />
             </div>
             <div>
@@ -276,7 +276,7 @@ export default function HeroEditor() {
                 step="0.1"
                 value={parseFloat(form.headingLetterSpacing)}
                 onChange={(e) => handleChange('headingLetterSpacing', e.target.value + 'px')}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500 text-black" // Added text-black
               />
             </div>
             <div>
@@ -334,7 +334,7 @@ export default function HeroEditor() {
                 type="number"
                 value={parseInt(form.subSize)}
                 onChange={(e) => handleChange('subSize', e.target.value + 'px')}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500 text-black" // Added text-black
               />
             </div>
             <div>
@@ -342,7 +342,7 @@ export default function HeroEditor() {
               <select
                 value={form.subFont}
                 onChange={(e) => handleChange('subFont', e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500 text-black" // Added text-black
               >
                 <option value="sans-serif">Sans-serif (Default)</option>
                 <option value="serif">Serif</option>
@@ -359,7 +359,7 @@ export default function HeroEditor() {
                 step="0.1"
                 value={parseFloat(form.subLineHeight)}
                 onChange={(e) => handleChange('subLineHeight', e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500 text-black" // Added text-black
               />
             </div>
             <div>
@@ -369,7 +369,7 @@ export default function HeroEditor() {
                 step="0.1"
                 value={parseFloat(form.subLetterSpacing)}
                 onChange={(e) => handleChange('subLetterSpacing', e.target.value + 'px')}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500 text-black" // Added text-black
               />
             </div>
             <div>
@@ -444,7 +444,7 @@ export default function HeroEditor() {
                 type="number"
                 value={parseInt(form.buttonFontSize)}
                 onChange={(e) => handleChange('buttonFontSize', e.target.value + 'px')}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500 text-black" // Added text-black
               />
             </div>
             <div>
@@ -452,7 +452,7 @@ export default function HeroEditor() {
               <select
                 value={form.buttonFont}
                 onChange={(e) => handleChange('buttonFont', e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500 text-black" // Added text-black
               >
                 <option value="sans-serif">Sans-serif (Default)</option>
                 <option value="serif">Serif</option>
@@ -468,7 +468,7 @@ export default function HeroEditor() {
                 type="number"
                 value={parseInt(form.buttonRounded)}
                 onChange={(e) => handleChange('buttonRounded', e.target.value + 'px')}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500 text-black" // Added text-black
               />
             </div>
             <div>
@@ -477,7 +477,7 @@ export default function HeroEditor() {
                 type="number"
                 value={parseInt(form.buttonPaddingY)}
                 onChange={(e) => handleChange('buttonPaddingY', e.target.value + 'px')}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500 text-black" // Added text-black
               />
             </div>
             <div>
@@ -486,7 +486,7 @@ export default function HeroEditor() {
                 type="number"
                 value={parseInt(form.buttonPaddingX)}
                 onChange={(e) => handleChange('buttonPaddingX', e.target.value + 'px')}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500 text-black" // Added text-black
               />
             </div>
             <div>
@@ -495,7 +495,7 @@ export default function HeroEditor() {
                 type="number"
                 value={parseInt(form.buttonBorderWidth)}
                 onChange={(e) => handleChange('buttonBorderWidth', e.target.value + 'px')}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500 text-black" // Added text-black
               />
             </div>
             <div>
@@ -512,7 +512,7 @@ export default function HeroEditor() {
               <select
                 value={form.buttonBorderStyle}
                 onChange={(e) => handleChange('buttonBorderStyle', e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500"
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500 text-black" // Added text-black
               >
                 <option value="none">None</option>
                 <option value="solid">Solid</option>
@@ -543,7 +543,7 @@ export default function HeroEditor() {
             <select
               value={form.bgType}
               onChange={(e) => handleChange('bgType', e.target.value)}
-              className="border border-gray-300 px-3 py-2 rounded-md focus:ring-teal-500 focus:border-teal-500"
+              className="border border-gray-300 px-3 py-2 rounded-md focus:ring-teal-500 focus:border-teal-500 text-black" // Added text-black
             >
               <option value="color">Solid Color</option>
               <option value="image">Image</option>
@@ -605,7 +605,7 @@ export default function HeroEditor() {
                   placeholder="https://example.com/your-background.jpg"
                   value={form.bgImage}
                   onChange={(e) => handleChange('bgImage', e.target.value)}
-                  className="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-teal-500 focus:border-teal-500"
+                  className="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-teal-500 focus:border-teal-500 text-black" // Added text-black
                 />
               </div>
 
@@ -615,7 +615,7 @@ export default function HeroEditor() {
                   <select
                     value={form.bgImagePosition}
                     onChange={(e) => handleChange('bgImagePosition', e.target.value)}
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500"
+                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500 text-black" // Added text-black
                   >
                     <option value="center">Center</option>
                     <option value="top">Top</option>
@@ -629,7 +629,7 @@ export default function HeroEditor() {
                   <select
                     value={form.bgImageSize}
                     onChange={(e) => handleChange('bgImageSize', e.target.value)}
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500"
+                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-teal-500 focus:border-teal-500 text-black" // Added text-black
                   >
                     <option value="cover">Cover</option>
                     <option value="contain">Contain</option>
@@ -674,7 +674,7 @@ export default function HeroEditor() {
                 placeholder="https://www.youtube.com/embed/your_video_id?autoplay=1&mute=1&loop=1&playlist=your_video_id&controls=0"
                 value={form.bgVideo}
                 onChange={(e) => handleChange('bgVideo', e.target.value)}
-                className="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-teal-500 focus:border-teal-500"
+                className="w-full border border-gray-300 px-4 py-2 rounded-md focus:ring-teal-500 focus:border-teal-500 text-black" // Added text-black
               />
               <p className="text-sm text-gray-500 mt-1">
                 For YouTube, use the embed URL and add `?autoplay=1&mute=1&loop=1&playlist=VIDEO_ID&controls=0` for a seamless background.
