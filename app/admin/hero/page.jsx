@@ -224,15 +224,73 @@ export default function HeroEditor() {
           <span className="text-gray-700">Enable Glow/Blur Effect</span>
         </div>
 
-        {/* Submit Button */}
-        <div className="pt-6 text-right">
-          <button
-            type="submit"
-            className="bg-gradient-to-r from-teal-500 to-cyan-600 text-white font-semibold px-6 py-3 rounded-md hover:opacity-90"
-          >
-            Save Hero Section
-          </button>
+        {/* Button Styles */}
+        <hr className="my-6" />
+        <h3 className="text-lg font-semibold text-gray-800">Button Styling</h3>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div>
+            <label className="block text-sm text-gray-700">Text Color</label>
+            <input
+            type="color"
+            value={form.buttonTextColor}
+            onChange={(e) => handleChange('buttonTextColor', e.target.value)}
+            />
         </div>
+
+        <div>
+            <label className="block text-sm text-gray-700">Background Color</label>
+            <input
+            type="color"
+            value={form.buttonBgColor}
+            onChange={(e) => handleChange('buttonBgColor', e.target.value)}
+            />
+        </div>
+
+        <div>
+            <label className="block text-sm text-gray-700">Font Size (px)</label>
+            <input
+            type="number"
+            value={parseInt(form.buttonFontSize)}
+            onChange={(e) => handleChange('buttonFontSize', e.target.value + 'px')}
+            className="w-full border rounded px-2"
+            />
+        </div>
+
+        <div>
+            <label className="block text-sm text-gray-700">Font Family</label>
+            <select
+            value={form.buttonFont}
+            onChange={(e) => handleChange('buttonFont', e.target.value)}
+            className="w-full border rounded px-2"
+            >
+            <option value="sans-serif">Sans-serif</option>
+            <option value="serif">Serif</option>
+            <option value="monospace">Monospace</option>
+            <option value="'Poppins', sans-serif">Poppins</option>
+            </select>
+        </div>
+
+        <div>
+            <label className="block text-sm text-gray-700">Rounded Radius (px)</label>
+            <input
+            type="number"
+            value={parseInt(form.buttonRounded)}
+            onChange={(e) => handleChange('buttonRounded', e.target.value + 'px')}
+            className="w-full border rounded px-2"
+            />
+        </div>
+
+        <div className="flex items-center gap-2 mt-6">
+            <input
+            type="checkbox"
+            checked={form.buttonShadow}
+            onChange={(e) => handleChange('buttonShadow', e.target.checked)}
+            />
+            <label className="text-sm text-gray-700">Enable Button Shadow</label>
+        </div>
+        </div>
+
       </form>
     </div>
   );
