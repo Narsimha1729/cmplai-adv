@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Trash } from "lucide-react";
+import { Plus, Trash, UploadCloud } from "lucide-react";
 
 export default function AdminBlogEditor() {
   const [blogs, setBlogs] = useState([
@@ -10,20 +10,26 @@ export default function AdminBlogEditor() {
       date: "June 2025",
       mediaType: "image",
       mediaURL: "/placeholder.png",
+      mediaSource: "url", // 'url' or 'upload'
+      uploadedFile: null,
       headingColor: "#0f766e",
       headingSize: "32px",
       headingFont: "sans-serif",
-      summary:
-        "Manual documentation takes up over 70% of compliance teams' time. Learn why modern pharma companies are shifting to automation.",
-      content: `Manual compliance processes are not just outdated — they’re a major roadblock to innovation in the pharmaceutical industry.
-
-From SOPs to validation reports, every document demands hours of human effort and cross-checking. This not only increases the risk of errors but also slows down your ability to respond to audits, change controls, and global regulatory updates.`,
+      summary: "Manual documentation takes up over 70% of compliance teams' time. Learn why modern pharma companies are shifting to automation.",
+      content: "Manual compliance processes are not just outdated — they’re a major roadblock to innovation in the pharmaceutical industry...",
     },
   ]);
 
   const handleChange = (index, field, value) => {
     const updated = [...blogs];
     updated[index][field] = value;
+    setBlogs(updated);
+  };
+
+  const handleFileUpload = (index, file) => {
+    const updated = [...blogs];
+    updated[index].uploadedFile = file;
+    updated[index].mediaURL = URL.createObjectURL(file);
     setBlogs(updated);
   };
 
@@ -35,6 +41,8 @@ From SOPs to validation reports, every document demands hours of human effort an
         date: "",
         mediaType: "image",
         mediaURL: "",
+        mediaSource: "url",
+        uploadedFile: null,
         headingColor: "#0f766e",
         headingSize: "32px",
         headingFont: "sans-serif",
@@ -53,7 +61,7 @@ From SOPs to validation reports, every document demands hours of human effort an
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Saved blogs:", blogs);
-    alert("Blogs saved successfully (demo)");
+    alert("✅ Blogs saved successfully (demo)");
   };
 
   return (
@@ -67,9 +75,7 @@ From SOPs to validation reports, every document demands hours of human effort an
           >
             {/* Header */}
             <div className="flex justify-between items-center mb-2">
-              <h3 className="text-xl font-semibold text-gray-800">
-                ✏️ Blog #{index + 1}
-              </h3>
+              <h3 className="text-xl font-semibold text-gray-800">✏️ Blog #{index + 1}</h3>
               <button
                 type="button"
                 onClick={() => removeBlog(index)}
@@ -104,9 +110,7 @@ From SOPs to validation reports, every document demands hours of human effort an
                 <input
                   type="color"
                   value={blog.headingColor}
-                  onChange={(e) =>
-                    handleChange(index, "headingColor", e.target.value)
-                  }
+                  onChange={(e) => handleChange(index, "headingColor", e.target.value)}
                   className="h-10 w-20"
                 />
               </div>
@@ -115,9 +119,7 @@ From SOPs to validation reports, every document demands hours of human effort an
                 <input
                   type="number"
                   value={parseInt(blog.headingSize)}
-                  onChange={(e) =>
-                    handleChange(index, "headingSize", `${e.target.value}px`)
-                  }
+                  onChange={(e) => handleChange(index, "headingSize", `${e.target.value}px`)}
                   className="w-full border rounded px-3 py-1"
                 />
               </div>
@@ -125,9 +127,7 @@ From SOPs to validation reports, every document demands hours of human effort an
                 <label className="text-sm text-gray-600">Font</label>
                 <select
                   value={blog.headingFont}
-                  onChange={(e) =>
-                    handleChange(index, "headingFont", e.target.value)
-                  }
+                  onChange={(e) => handleChange(index, "headingFont", e.target.value)}
                   className="w-full border rounded px-3 py-1"
                 >
                   <option value="sans-serif">Sans-serif</option>
@@ -138,17 +138,35 @@ From SOPs to validation reports, every document demands hours of human effort an
               </div>
             </div>
 
-            {/* Media Selection */}
-            <div className="space-y-2">
-              <label className="text-sm text-gray-600 font-semibold">Media</label>
-              <select
-                value={blog.mediaType}
-                onChange={(e) => handleChange(index, "mediaType", e.target.value)}
-                className="w-full border px-3 py-2 rounded"
-              >
-                <option value="image">Image</option>
-                <option value="video">Video</option>
-              </select>
+            {/* Media Type & Source */}
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-semibold text-gray-700">Media Type</label>
+                <select
+                  value={blog.mediaType}
+                  onChange={(e) => handleChange(index, "mediaType", e.target.value)}
+                  className="w-full border px-3 py-2 rounded"
+                >
+                  <option value="image">Image</option>
+                  <option value="video">Video</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="text-sm font-semibold text-gray-700">Media Source</label>
+                <select
+                  value={blog.mediaSource}
+                  onChange={(e) => handleChange(index, "mediaSource", e.target.value)}
+                  className="w-full border px-3 py-2 rounded"
+                >
+                  <option value="url">External URL</option>
+                  <option value="upload">Upload File</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Upload or URL */}
+            {blog.mediaSource === "url" ? (
               <input
                 type="text"
                 placeholder="Image or Video URL"
@@ -156,7 +174,19 @@ From SOPs to validation reports, every document demands hours of human effort an
                 onChange={(e) => handleChange(index, "mediaURL", e.target.value)}
                 className="w-full border px-4 py-2 rounded"
               />
-            </div>
+            ) : (
+              <div>
+                <label className="text-sm text-gray-600 flex items-center gap-2">
+                  <UploadCloud className="w-4 h-4" /> Upload Media
+                </label>
+                <input
+                  type="file"
+                  accept={blog.mediaType === "image" ? "image/*" : "video/*"}
+                  onChange={(e) => handleFileUpload(index, e.target.files[0])}
+                  className="w-full border px-4 py-2 rounded mt-1"
+                />
+              </div>
+            )}
 
             {/* Preview Media */}
             {blog.mediaURL &&
@@ -170,7 +200,7 @@ From SOPs to validation reports, every document demands hours of human effort an
                 <video
                   src={blog.mediaURL}
                   controls
-                  className="rounded-md w-full mt-2"
+                  className="rounded-md w-full mt-2 max-h-[300px]"
                 />
               ))}
 
@@ -187,9 +217,7 @@ From SOPs to validation reports, every document demands hours of human effort an
 
             {/* Content */}
             <div>
-              <label className="text-sm text-gray-700 font-semibold">
-                Full Blog Content
-              </label>
+              <label className="text-sm text-gray-700 font-semibold">Full Blog Content</label>
               <textarea
                 value={blog.content}
                 onChange={(e) => handleChange(index, "content", e.target.value)}
@@ -200,7 +228,7 @@ From SOPs to validation reports, every document demands hours of human effort an
           </div>
         ))}
 
-        {/* Add Button + Submit */}
+        {/* Buttons */}
         <div className="flex justify-between items-center">
           <button
             type="button"
