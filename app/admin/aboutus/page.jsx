@@ -45,15 +45,14 @@ export default function AboutUsEditor() {
     <div className="max-w-5xl mx-auto bg-white p-8 rounded-xl shadow border border-teal-100">
       <h2 className="text-2xl font-bold text-teal-600 mb-6">🧾 About Us Editor</h2>
       <form onSubmit={handleSubmit} className="space-y-8">
-
         {/* Heading & Subheading */}
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <label className="block font-semibold mb-1">Main Heading</label>
+            <label className="block font-semibold mb-1 text-black">Main Heading</label>
             <input
               value={form.heading}
               onChange={(e) => handleChange("heading", e.target.value)}
-              className="w-full border px-4 py-2 rounded"
+              className="w-full border px-4 py-2 rounded text-black"
             />
             <div className="grid grid-cols-3 gap-3 mt-2">
               <input
@@ -64,7 +63,7 @@ export default function AboutUsEditor() {
               <select
                 value={form.headingFont}
                 onChange={(e) => handleChange("headingFont", e.target.value)}
-                className="border rounded px-2"
+                className="border rounded px-2 text-black"
               >
                 <option value="Poppins">Poppins</option>
                 <option value="Inter">Inter</option>
@@ -75,10 +74,10 @@ export default function AboutUsEditor() {
                 type="number"
                 value={parseInt(form.headingSize)}
                 onChange={(e) => handleChange("headingSize", e.target.value + "px")}
-                className="border px-2 rounded"
+                className="border px-2 rounded text-black"
               />
             </div>
-            <label className="flex items-center gap-2 mt-2 text-sm">
+            <label className="flex items-center gap-2 mt-2 text-sm text-black">
               <input
                 type="checkbox"
                 checked={form.headingGradient}
@@ -89,11 +88,11 @@ export default function AboutUsEditor() {
           </div>
 
           <div>
-            <label className="block font-semibold mb-1">Subheading</label>
+            <label className="block font-semibold mb-1 text-black">Subheading</label>
             <input
               value={form.subheading}
               onChange={(e) => handleChange("subheading", e.target.value)}
-              className="w-full border px-4 py-2 rounded"
+              className="w-full border px-4 py-2 rounded text-black"
             />
             <div className="grid grid-cols-3 gap-3 mt-2">
               <input
@@ -104,7 +103,7 @@ export default function AboutUsEditor() {
               <select
                 value={form.subFont}
                 onChange={(e) => handleChange("subFont", e.target.value)}
-                className="border text-black rounded px-2"
+                className="border rounded px-2 text-black"
               >
                 <option value="Poppins">Poppins</option>
                 <option value="Inter">Inter</option>
@@ -115,7 +114,7 @@ export default function AboutUsEditor() {
                 type="number"
                 value={parseInt(form.subSize)}
                 onChange={(e) => handleChange("subSize", e.target.value + "px")}
-                className="border px-2 rounded"
+                className="border px-2 rounded text-black"
               />
             </div>
           </div>
@@ -127,7 +126,7 @@ export default function AboutUsEditor() {
           <select
             value={form.mediaType}
             onChange={(e) => handleChange("mediaType", e.target.value)}
-            className="border px-3 py-2 rounded"
+            className="border px-3 py-2 rounded text-black"
           >
             <option value="image">Image</option>
             <option value="video">Video</option>
@@ -138,7 +137,7 @@ export default function AboutUsEditor() {
             value={form.mediaURL}
             onChange={(e) => handleChange("mediaURL", e.target.value)}
             placeholder={form.mediaType === "image" ? "Image path (public/)" : "Video URL"}
-            className="w-full mt-2 border px-4 py-2 rounded"
+            className="w-full mt-2 border px-4 py-2 rounded text-black placeholder-gray-500"
           />
 
           {form.mediaType === "image" ? (
@@ -162,7 +161,7 @@ export default function AboutUsEditor() {
           <input
             value={form.title}
             onChange={(e) => handleChange("title", e.target.value)}
-            className="w-full border px-4 py-2 rounded"
+            className="w-full border px-4 py-2 rounded text-black"
           />
         </div>
 
@@ -174,7 +173,7 @@ export default function AboutUsEditor() {
               rows={3}
               value={para}
               onChange={(e) => handleParagraphChange(i, e.target.value)}
-              className="w-full border px-4 py-2 rounded"
+              className="w-full border px-4 py-2 rounded text-black"
             />
           </div>
         ))}
