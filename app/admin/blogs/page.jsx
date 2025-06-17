@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Trash, UploadCloud } from "lucide-react";
+import { Plus, Trash, UploadCloud } from "lucide-react"; // Assuming lucide-react is installed
 
 export default function AdminBlogEditor() {
   const [blogs, setBlogs] = useState([
@@ -9,9 +9,9 @@ export default function AdminBlogEditor() {
       title: "Why Manual Compliance is Holding Pharma Back",
       date: "June 2025",
       mediaType: "image",
-      mediaURL: "/placeholder.png",
       mediaSource: "url", // 'url' or 'upload'
-      uploadedFile: null,
+      mediaURL: "/placeholder.png",
+      uploadedFile: null, // Stores the File object for upload
       headingColor: "#0f766e",
       headingSize: "32px",
       headingFont: "sans-serif",
@@ -20,22 +20,25 @@ export default function AdminBlogEditor() {
     },
   ]);
 
+  // Handle changes for a specific field in a specific blog entry
   const handleChange = (index, field, value) => {
-    const updated = [...blogs];
-    updated[index][field] = value;
-    setBlogs(updated);
+    const updatedBlogs = [...blogs];
+    updatedBlogs[index][field] = value;
+    setBlogs(updatedBlogs);
   };
 
+  // Handle file uploads for media
   const handleFileUpload = (index, file) => {
-    const updated = [...blogs];
-    updated[index].uploadedFile = file;
-    updated[index].mediaURL = URL.createObjectURL(file);
-    setBlogs(updated);
+    const updatedBlogs = [...blogs];
+    updatedBlogs[index].uploadedFile = file;
+    updatedBlogs[index].mediaURL = URL.createObjectURL(file); // Create a temporary URL for preview
+    setBlogs(updatedBlogs);
   };
 
+  // Add a new blank blog entry
   const addBlog = () => {
-    setBlogs([
-      ...blogs,
+    setBlogs((prevBlogs) => [
+      ...prevBlogs,
       {
         title: "",
         date: "",
@@ -52,100 +55,140 @@ export default function AdminBlogEditor() {
     ]);
   };
 
+  // Remove a blog entry by index
   const removeBlog = (index) => {
-    const updated = [...blogs];
-    updated.splice(index, 1);
-    setBlogs(updated);
+    // eslint-disable-next-line no-alert
+    if (window.confirm("Are you sure you want to remove this blog entry?")) {
+      const updatedBlogs = [...blogs];
+      updatedBlogs.splice(index, 1);
+      setBlogs(updatedBlogs);
+    }
   };
 
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Saved blogs:", blogs);
-    alert("✅ Blogs saved successfully (demo)");
+    console.log("Saving blogs:", blogs);
+    // In a real application, you'd send 'blogs' data to a backend API here.
+    // Also, handle actual file uploads (e.g., to S3 or a local server) for `uploadedFile`.
+    // eslint-disable-next-line no-alert
+    alert("✅ Blogs saved successfully (demo only)");
   };
 
   return (
     <div className="max-w-6xl mx-auto p-8 bg-white rounded-xl shadow-lg border border-teal-100">
-      <h2 className="text-2xl font-bold text-teal-600 mb-6">Blog Editor Dashboard</h2>
+      <h2 className="text-2xl font-bold text-teal-600 mb-8">Blog Editor Dashboard</h2>
       <form onSubmit={handleSubmit} className="space-y-10">
         {blogs.map((blog, index) => (
           <div
-            key={index}
-            className="bg-[#f9fefe] p-6 border border-teal-200 rounded-lg shadow-sm space-y-4"
+            key={index} // Using index as key is generally okay for static lists, but unique IDs are preferred for dynamic lists
+            className="bg-[#f9fefe] p-7 border border-teal-200 rounded-lg shadow-sm space-y-6"
           >
-            {/* Header */}
-            <div className="flex justify-between items-center mb-2">
-              <h3 className="text-xl font-semibold text-gray-800">✏️ Blog #{index + 1}</h3>
+            {/* Blog Entry Header with Remove Button */}
+            <div className="flex justify-between items-center mb-4 pb-2 border-b border-teal-100">
+              <h3 className="text-xl font-semibold text-gray-800">
+                <span className="mr-2">📝</span> Blog Entry #{index + 1}
+              </h3>
               <button
                 type="button"
                 onClick={() => removeBlog(index)}
-                className="text-red-600 text-sm"
+                className="text-red-600 hover:text-red-800 transition-colors duration-200 flex items-center gap-1.5 px-3 py-1 rounded-md text-sm font-medium bg-red-50/50 hover:bg-red-100"
+                aria-label={`Remove Blog Entry ${index + 1}`}
               >
-                <Trash className="inline-block w-4 h-4" /> Remove
+                <Trash className="w-4 h-4" /> Remove
               </button>
             </div>
 
-            {/* Title + Date */}
-            <div className="grid md:grid-cols-2 gap-4">
-              <input
-                type="text"
-                placeholder="Blog Title"
-                value={blog.title}
-                onChange={(e) => handleChange(index, "title", e.target.value)}
-                className="border px-4 py-2 rounded w-full"
-              />
-              <input
-                type="text"
-                placeholder="Blog Date (e.g., June 2025)"
-                value={blog.date}
-                onChange={(e) => handleChange(index, "date", e.target.value)}
-                className="border px-4 py-2 rounded w-full"
-              />
+            {/* Title and Date Inputs */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <label htmlFor={`title-${index}`} className="block text-sm font-medium text-gray-700 mb-1">
+                  Blog Title
+                </label>
+                <input
+                  id={`title-${index}`}
+                  type="text"
+                  placeholder="e.g., The Future of AI in Compliance"
+                  value={blog.title}
+                  onChange={(e) => handleChange(index, "title", e.target.value)}
+                  className="border border-gray-300 px-4 py-2 rounded-md w-full text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
+                />
+              </div>
+              <div>
+                <label htmlFor={`date-${index}`} className="block text-sm font-medium text-gray-700 mb-1">
+                  Publication Date
+                </label>
+                <input
+                  id={`date-${index}`}
+                  type="text"
+                  placeholder="e.g., June 17, 2025"
+                  value={blog.date}
+                  onChange={(e) => handleChange(index, "date", e.target.value)}
+                  className="border border-gray-300 px-4 py-2 rounded-md w-full text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
+                />
+              </div>
             </div>
 
-            {/* Heading Styling */}
-            <div className="grid md:grid-cols-3 gap-4">
+            {/* Heading Styling Options */}
+            <div className="grid md:grid-cols-3 gap-6 pt-2">
               <div>
-                <label className="text-sm text-gray-600">Heading Color</label>
+                <label htmlFor={`headingColor-${index}`} className="block text-sm font-medium text-gray-700 mb-1">
+                  Heading Color
+                </label>
                 <input
+                  id={`headingColor-${index}`}
                   type="color"
                   value={blog.headingColor}
                   onChange={(e) => handleChange(index, "headingColor", e.target.value)}
-                  className="h-10 w-20"
+                  className="h-10 w-full rounded-md border border-gray-300 cursor-pointer"
+                  title="Choose Heading Color"
                 />
               </div>
               <div>
-                <label className="text-sm text-gray-600">Heading Size</label>
+                <label htmlFor={`headingSize-${index}`} className="block text-sm font-medium text-gray-700 mb-1">
+                  Heading Size (px)
+                </label>
                 <input
+                  id={`headingSize-${index}`}
                   type="number"
-                  value={parseInt(blog.headingSize)}
+                  value={parseInt(blog.headingSize, 10)} // Ensure integer for display
                   onChange={(e) => handleChange(index, "headingSize", `${e.target.value}px`)}
-                  className="w-full border rounded px-3 py-1"
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:ring-teal-500 focus:border-teal-500"
+                  placeholder="e.g., 32"
+                  aria-label="Heading Font Size in Pixels"
                 />
               </div>
               <div>
-                <label className="text-sm text-gray-600">Font</label>
+                <label htmlFor={`headingFont-${index}`} className="block text-sm font-medium text-gray-700 mb-1">
+                  Heading Font
+                </label>
                 <select
+                  id={`headingFont-${index}`}
                   value={blog.headingFont}
                   onChange={(e) => handleChange(index, "headingFont", e.target.value)}
-                  className="w-full border rounded px-3 py-1"
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:ring-teal-500 focus:border-teal-500"
+                  aria-label="Heading Font Family"
                 >
                   <option value="sans-serif">Sans-serif</option>
                   <option value="serif">Serif</option>
                   <option value="'Poppins', sans-serif">Poppins</option>
+                  <option value="'Inter', sans-serif">Inter</option>
                   <option value="monospace">Monospace</option>
                 </select>
               </div>
             </div>
 
-            {/* Media Type & Source */}
-            <div className="grid md:grid-cols-2 gap-4">
+            {/* Media Type & Source Selection */}
+            <div className="grid md:grid-cols-2 gap-6 pt-2">
               <div>
-                <label className="text-sm font-semibold text-gray-700">Media Type</label>
+                <label htmlFor={`mediaType-${index}`} className="block text-sm font-medium text-gray-700 mb-1">
+                  Media Type
+                </label>
                 <select
+                  id={`mediaType-${index}`}
                   value={blog.mediaType}
                   onChange={(e) => handleChange(index, "mediaType", e.target.value)}
-                  className="w-full border px-3 py-2 rounded"
+                  className="w-full border border-gray-300 px-3 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500"
                 >
                   <option value="image">Image</option>
                   <option value="video">Video</option>
@@ -153,11 +196,14 @@ export default function AdminBlogEditor() {
               </div>
 
               <div>
-                <label className="text-sm font-semibold text-gray-700">Media Source</label>
+                <label htmlFor={`mediaSource-${index}`} className="block text-sm font-medium text-gray-700 mb-1">
+                  Media Source
+                </label>
                 <select
+                  id={`mediaSource-${index}`}
                   value={blog.mediaSource}
                   onChange={(e) => handleChange(index, "mediaSource", e.target.value)}
-                  className="w-full border px-3 py-2 rounded"
+                  className="w-full border border-gray-300 px-3 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500"
                 >
                   <option value="url">External URL</option>
                   <option value="upload">Upload File</option>
@@ -165,82 +211,104 @@ export default function AdminBlogEditor() {
               </div>
             </div>
 
-            {/* Upload or URL */}
+            {/* URL or Upload Input based on mediaSource */}
             {blog.mediaSource === "url" ? (
-              <input
-                type="text"
-                placeholder="Image or Video URL"
-                value={blog.mediaURL}
-                onChange={(e) => handleChange(index, "mediaURL", e.target.value)}
-                className="w-full border px-4 py-2 rounded"
-              />
+              <div className="pt-2">
+                <label htmlFor={`mediaURL-${index}`} className="sr-only">Media URL</label>
+                <input
+                  id={`mediaURL-${index}`}
+                  type="text"
+                  placeholder={blog.mediaType === "image" ? "Image URL (e.g., https://example.com/image.jpg)" : "Video URL (e.g., https://example.com/video.mp4)"}
+                  value={blog.mediaURL}
+                  onChange={(e) => handleChange(index, "mediaURL", e.target.value)}
+                  className="w-full border border-gray-300 px-4 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
+                />
+              </div>
             ) : (
-              <div>
-                <label className="text-sm text-gray-600 flex items-center gap-2">
-                  <UploadCloud className="w-4 h-4" /> Upload Media
+              <div className="pt-2">
+                <label htmlFor={`file-upload-${index}`} className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2 cursor-pointer">
+                  <UploadCloud className="w-4 h-4 text-teal-600" />
+                  Upload {blog.mediaType === "image" ? "Image" : "Video"}
                 </label>
                 <input
+                  id={`file-upload-${index}`}
                   type="file"
                   accept={blog.mediaType === "image" ? "image/*" : "video/*"}
                   onChange={(e) => handleFileUpload(index, e.target.files[0])}
-                  className="w-full border px-4 py-2 rounded mt-1"
+                  className="w-full border border-gray-300 px-4 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100"
                 />
+                {blog.uploadedFile && (
+                  <p className="text-xs text-gray-500 mt-1">Selected: {blog.uploadedFile.name}</p>
+                )}
               </div>
             )}
 
-            {/* Preview Media */}
-            {blog.mediaURL &&
-              (blog.mediaType === "image" ? (
-                <img
-                  src={blog.mediaURL}
-                  alt="Preview"
-                  className="rounded-md w-full h-64 object-cover mt-2"
-                />
-              ) : (
-                <video
-                  src={blog.mediaURL}
-                  controls
-                  className="rounded-md w-full mt-2 max-h-[300px]"
-                />
-              ))}
+            {/* Media Preview */}
+            {blog.mediaURL && (
+              <div className="mt-4 border border-gray-200 rounded-md overflow-hidden bg-gray-50 flex items-center justify-center">
+                {blog.mediaType === "image" ? (
+                  <img
+                    src={blog.mediaURL}
+                    alt="Media Preview"
+                    className="w-full h-64 object-cover"
+                  />
+                ) : (
+                  <video
+                    src={blog.mediaURL}
+                    controls
+                    className="w-full max-h-[300px] object-contain"
+                  >
+                    Your browser does not support the video tag.
+                  </video>
+                )}
+              </div>
+            )}
 
-            {/* Summary */}
+            {/* Summary Textarea */}
             <div>
-              <label className="text-sm text-gray-700 font-semibold">Summary</label>
+              <label htmlFor={`summary-${index}`} className="block text-sm font-medium text-gray-700 mb-1">
+                Summary (Short Description)
+              </label>
               <textarea
+                id={`summary-${index}`}
                 value={blog.summary}
                 onChange={(e) => handleChange(index, "summary", e.target.value)}
                 rows={3}
-                className="w-full border px-4 py-2 rounded"
+                placeholder="A brief overview of the blog post content."
+                className="w-full border border-gray-300 px-4 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
               />
             </div>
 
-            {/* Content */}
+            {/* Full Blog Content Textarea */}
             <div>
-              <label className="text-sm text-gray-700 font-semibold">Full Blog Content</label>
+              <label htmlFor={`content-${index}`} className="block text-sm font-medium text-gray-700 mb-1">
+                Full Blog Content
+              </label>
               <textarea
+                id={`content-${index}`}
                 value={blog.content}
                 onChange={(e) => handleChange(index, "content", e.target.value)}
-                rows={6}
-                className="w-full border px-4 py-2 rounded"
+                rows={8} // Increased rows for more content
+                placeholder="Write the full content of your blog post here..."
+                className="w-full border border-gray-300 px-4 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
               />
             </div>
           </div>
         ))}
 
-        {/* Buttons */}
-        <div className="flex justify-between items-center">
+        {/* Action Buttons: Add Blog and Save All */}
+        <div className="flex justify-between items-center pt-6">
           <button
             type="button"
             onClick={addBlog}
-            className="text-teal-600 hover:underline flex items-center gap-1"
+            className="text-teal-600 hover:text-teal-800 transition-colors duration-200 flex items-center gap-2 px-4 py-2 rounded-md bg-teal-50/50 hover:bg-teal-100 font-medium"
           >
-            <Plus className="w-4 h-4" /> Add New Blog
+            <Plus className="w-5 h-5" /> Add New Blog Entry
           </button>
 
           <button
             type="submit"
-            className="bg-gradient-to-r from-teal-500 to-cyan-600 text-white font-semibold px-6 py-3 rounded-md hover:opacity-90 shadow-md transition"
+            className="bg-gradient-to-r from-teal-500 to-cyan-600 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:opacity-90 transition-opacity duration-300"
           >
             Save All Blogs
           </button>
