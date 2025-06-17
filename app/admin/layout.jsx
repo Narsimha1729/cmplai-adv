@@ -28,9 +28,6 @@ export default function AdminLayout({ children }) {
               <a href="/admin/team" className="block hover:text-teal-500">Team</a>
               <a href="/admin/contactus" className="block hover:text-teal-500">Contact Us</a>
               <a href="/admin/blogs" className="block hover:text-teal-500">Blogs</a>
-              <a href="/admin/faq" className="block hover:text-teal-500">FAQ</a>
-              <a href="/admin/docs" className="block hover:text-teal-500">Docs</a>
-              <a href="/admin/privacy" className="block hover:text-teal-500">Legal Pages</a>
             </nav>
           </aside>
 
