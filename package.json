@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hello-pangea/dnd": "^18.0.1",
     "@vercel/speed-insights": "^1.2.0",
     "aos": "^2.3.4",
     "lucide-react": "^0.515.0",
