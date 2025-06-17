@@ -1,43 +1,37 @@
 'use client';
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function AdminLogin() {
-  const [password, setPassword] = useState('');
   const router = useRouter();
+  const [password, setPassword] = useState('');
 
-  const handleLogin = (e) => {
-    e.preventDefault();
+  const handleLogin = () => {
     if (password === 'admin123') {
-      localStorage.setItem('isAdmin', 'true');
       router.push('/admin/dashboard');
     } else {
-      alert('Invalid password');
+      alert('Incorrect password!');
     }
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <form
-        onSubmit={handleLogin}
-        className="bg-white p-8 rounded-xl shadow-md w-full max-w-sm"
-      >
-        <h1 className="text-2xl font-bold mb-4 text-teal-600">Admin Login</h1>
+    <div className="h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-10 rounded-xl shadow-md">
+        <h1 className="text-xl font-semibold mb-4">Admin Login</h1>
         <input
           type="password"
           placeholder="Enter admin password"
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-teal-400"
+          className="border px-4 py-2 rounded-md w-full mb-4"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
         />
         <button
-          type="submit"
-          className="w-full bg-teal-500 text-white font-semibold py-2 rounded-lg hover:bg-cyan-600 transition"
+          onClick={handleLogin}
+          className="w-full bg-teal-500 text-white py-2 rounded-md hover:bg-cyan-600"
         >
           Login
         </button>
-      </form>
-    </main>
+      </div>
+    </div>
   );
 }
