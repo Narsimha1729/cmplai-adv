@@ -1,612 +1,587 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import {
-  Plus,
-  Trash,
-  Linkedin,
-  Github,
-  Facebook,
-  Twitter,
-  Instagram,
-  Youtube,
-  Globe, // For general website links
-  MapPin,
-  Phone,
-  Mail,
-  Copyright,
-  FileText, // For policy documents
-  Home, // For Home link
-  Box, // For Product link
-  Info, // For About Us link
-  BookOpen, // For Blog link
-  Image as ImageIcon, // Renamed to avoid conflict with HTML ImageElement
-  UploadCloud, // For upload button
+  Settings, Eye as EyeIcon, Save, Plus, Trash,
+  Facebook, Twitter, Linkedin, Instagram, Github, // Social icons
+  MapPin, Phone, Mail, // Contact icons
+  Link as LinkIcon, // Generic link icon for inputs
+  Type, Palette
 } from 'lucide-react';
 
-// Map social platform names to Lucide icons
-const socialIcons = {
-  LinkedIn: Linkedin,
-  GitHub: Github,
-  Facebook: Facebook,
-  Twitter: Twitter,
-  Instagram: Instagram,
-  Youtube: Youtube,
-  // Add more as needed
+// Map Lucide icons for easier rendering in preview
+const SOCIAL_ICONS_MAP = {
+  facebook: <Facebook className="w-6 h-6" />,
+  twitter: <Twitter className="w-6 h-6" />,
+  linkedin: <Linkedin className="w-6 h-6" />,
+  instagram: <Instagram className="w-6 h-6" />,
+  github: <Github className="w-6 h-6" />,
 };
 
-// Map quick link labels to Lucide icons (optional, for preview)
-const quickLinkIcons = {
-  Home: Home,
-  Product: Box,
-  'About Us': Info,
-  Blog: BookOpen,
-  // Fallback for others
-  default: Globe,
-};
+// Live Preview Component
+function FooterPreview({ formData }) {
+  const {
+    bgColor, textColor, headingColor, linkColor, linkHoverColor,
+    logoText, description, socialLinks,
+    quickLinksTitle, quickLinks,
+    resourcesTitle, resources,
+    contactTitle, address, phone, email,
+    copyrightText, legalLinks
+  } = formData;
 
-export default function FooterEditor() {
-  const [form, setForm] = useState({
-    logo: '/logo.png', // Default or placeholder logo
-    tagline: 'Transforming the future of Compliance through automation of document preparation.',
-    social: [
-      { platform: 'LinkedIn', url: 'https://linkedin.com/yourcompany', icon: 'LinkedIn' },
-      { platform: 'GitHub', url: 'https://github.com/yourcompany', icon: 'GitHub' },
-    ],
-    links: [
-      { label: 'Home', href: '/#home' },
-      { label: 'Product', href: '/#product' },
-      { label: 'About Us', href: '/#about' },
-      { label: 'Blog', href: '/blog' },
-    ],
-    contact: {
-      address: 'LN Infosphere TechTransformers Pvt Ltd, Hyderabad, India',
-      phone: '+91 6301985408',
-      email: 'admin@cmplai.com',
-    },
-    policies: [
-      { label: 'Privacy Policy', href: '/privacy-policy' },
-      { label: 'Terms of Service', href: '/terms' },
-      { label: 'Cookie Policy', href: '/cookies' },
-    ],
-    copyright: '© 2025 LN Infosphere TechTransformers Pvt Ltd. All rights reserved.',
+  const footerStyle = {
+    backgroundColor: bgColor,
+    color: textColor,
+  };
+
+  const linkStyle = (isHovered = false) => ({
+    color: isHovered ? linkHoverColor : linkColor,
+    transition: 'color 0.2s ease-in-out',
   });
 
-  const handleChange = (field, value) => {
-    setForm((prevForm) => ({ ...prevForm, [field]: value }));
-  };
+  return (
+    <footer className="py-16 px-4 rounded-xl" style={footerStyle}>
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 text-sm">
 
-  const handleNestedChange = (parentField, childField, value) => {
-    setForm((prevForm) => ({
-      ...prevForm,
-      [parentField]: { ...prevForm[parentField], [childField]: value },
-    }));
-  };
+        {/* Column 1: Logo & Description */}
+        <div className="space-y-4">
+          <h3 className="text-3xl font-bold" style={{ color: headingColor }}>{logoText}</h3>
+          <p className="text-sm leading-relaxed" style={{ color: textColor }}>{description}</p>
+          <div className="flex space-x-4 mt-4">
+            {socialLinks.map((social, index) => social.url && (
+              <a
+                key={index}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:scale-110 transition-transform duration-200"
+                style={{ color: linkColor }} // Default icon color
+                onMouseEnter={e => e.currentTarget.style.color = linkHoverColor}
+                onMouseLeave={e => e.currentTarget.style.color = linkColor}
+              >
+                {SOCIAL_ICONS_MAP[social.platform] || <LinkIcon className="w-6 h-6" />}
+              </a>
+            ))}
+          </div>
+        </div>
 
-  const handleListChange = (listName, index, field, value) => {
-    const updatedList = [...form[listName]];
-    updatedList[index][field] = value;
-    setForm((prevForm) => ({ ...prevForm, [listName]: updatedList }));
-  };
+        {/* Column 2: Quick Links */}
+        <div className="space-y-4">
+          <h4 className="text-xl font-bold mb-4" style={{ color: headingColor }}>{quickLinksTitle}</h4>
+          <ul className="space-y-2">
+            {quickLinks.map((link, index) => link.text && link.url && (
+              <li key={index}>
+                <a
+                  href={link.url}
+                  className="block hover:underline"
+                  style={linkStyle()}
+                  onMouseEnter={e => e.currentTarget.style.color = linkStyle(true).color}
+                  onMouseLeave={e => e.currentTarget.style.color = linkStyle().color}
+                >
+                  {link.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-  const handleListAdd = (listName, newItem) => {
-    setForm((prevForm) => ({
-      ...prevForm,
-      [listName]: [...prevForm[listName], newItem],
-    }));
-  };
+        {/* Column 3: Resources */}
+        <div className="space-y-4">
+          <h4 className="text-xl font-bold mb-4" style={{ color: headingColor }}>{resourcesTitle}</h4>
+          <ul className="space-y-2">
+            {resources.map((link, index) => link.text && link.url && (
+              <li key={index}>
+                <a
+                  href={link.url}
+                  className="block hover:underline"
+                  style={linkStyle()}
+                  onMouseEnter={e => e.currentTarget.style.color = linkStyle(true).color}
+                  onMouseLeave={e => e.currentTarget.style.color = linkStyle().color}
+                >
+                  {link.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-  const handleListRemove = (listName, index) => {
-    // eslint-disable-next-line no-alert
-    if (window.confirm(`Are you sure you want to remove this ${listName.slice(0, -1)}?`)) {
-      const updatedList = [...form[listName]];
-      updatedList.splice(index, 1);
-      setForm((prevForm) => ({ ...prevForm, [listName]: updatedList }));
-    }
-  };
+        {/* Column 4: Contact */}
+        <div className="space-y-4">
+          <h4 className="text-xl font-bold mb-4" style={{ color: headingColor }}>{contactTitle}</h4>
+          <div className="space-y-3">
+            {address && (
+              <div className="flex items-start gap-3">
+                <MapPin className="w-5 h-5 text-current" style={{ color: headingColor }} />
+                <p className="text-sm leading-relaxed" style={{ color: textColor }}>{address}</p>
+              </div>
+            )}
+            {phone && (
+              <div className="flex items-start gap-3">
+                <Phone className="w-5 h-5 text-current" style={{ color: headingColor }} />
+                <p className="text-sm leading-relaxed" style={{ color: textColor }}>{phone}</p>
+              </div>
+            )}
+            {email && (
+              <div className="flex items-start gap-3">
+                <Mail className="w-5 h-5 text-current" style={{ color: headingColor }} />
+                <p className="text-sm leading-relaxed" style={{ color: textColor }}>{email}</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
 
-  // --- New function to handle logo file upload ---
-  const handleLogoUpload = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      // Basic file size validation (e.g., max 2MB)
-      if (file.size > 2 * 1024 * 1024) {
-        // eslint-disable-next-line no-alert
-        alert('File size exceeds 2MB. Please choose a smaller image.');
-        return;
-      }
+      {/* Bottom Footer Section */}
+      <div className="mt-16 border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center text-xs">
+        <p className="mb-4 md:mb-0" style={{ color: textColor }}>{copyrightText}</p>
+        <div className="flex flex-wrap justify-center md:justify-end gap-x-6 gap-y-2">
+          {legalLinks.map((link, index) => link.text && link.url && (
+            <a
+              key={index}
+              href={link.url}
+              className="hover:underline"
+              style={linkStyle()}
+              onMouseEnter={e => e.currentTarget.style.color = linkStyle(true).color}
+              onMouseLeave={e => e.currentTarget.style.color = linkStyle().color}
+            >
+              {link.text}
+            </a>
+          ))}
+        </div>
+      </div>
+    </footer>
+  );
+}
 
-      // Check file type (optional, for more specific validation)
-      const acceptedImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/svg+xml'];
-      if (!acceptedImageTypes.includes(file.type)) {
-        // eslint-disable-next-line no-alert
-        alert('Invalid file type. Please upload a JPG, PNG, GIF, or SVG image.');
-        return;
-      }
 
-      // In a real application, you would upload this file to a server
-      // (e.g., AWS S3, Cloudinary, your own backend API) and get a public URL back.
-      // For this demo, we'll use FileReader to create a Data URL for instant preview.
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        handleChange('logo', reader.result); // reader.result will be a Data URL (base64 encoded image)
-      };
-      reader.readAsDataURL(file);
+export default function AdminFooterEditor() {
+  const [form, setForm] = useState({
+    // Global Styles
+    bgColor: '#e0f7fa', // Light cyan-ish color from image
+    textColor: '#4b5563', // Gray-600 for general text
+    headingColor: '#0f766e', // Teal-700 for headings
+    linkColor: '#0f766e', // Teal-700 for links
+    linkHoverColor: '#0891b2', // Cyan-600 for link hover
 
-      // Example of what you'd do with a real upload API:
-      /*
-      const formData = new FormData();
-      formData.append('logo', file);
-      fetch('/api/upload-logo', {
-        method: 'POST',
-        body: formData,
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.url) {
-          handleChange('logo', data.url);
-        } else {
-          alert('Logo upload failed: ' + (data.message || 'Unknown error'));
-        }
-      })
-      .catch(error => {
-        console.error('Error uploading logo:', error);
-        alert('An error occurred during logo upload.');
-      });
-      */
-    }
-  };
+    // Column 1: Logo & Description
+    logoText: 'Cmplai',
+    description: 'Transforming the future of compliance through automation of document preparation.',
+    socialLinks: [
+      { platform: 'facebook', url: 'https://facebook.com/cmplai' },
+      { platform: 'twitter', url: 'https://twitter.com/cmplai' },
+      { platform: 'linkedin', url: 'https://linkedin.com/company/cmplai' },
+      { platform: 'instagram', url: 'https://instagram.com/cmplai' },
+      { platform: 'github', url: 'https://github.com/cmplai' },
+    ],
+
+    // Column 2: Quick Links
+    quickLinksTitle: 'Quick Links',
+    quickLinks: [
+      { text: 'Home', url: '/' },
+      { text: 'Product', url: '/product' },
+      { text: 'About Us', url: '/about' },
+      { text: 'Contact', url: '/contact' },
+    ],
+
+    // Column 3: Resources
+    resourcesTitle: 'Resources',
+    resources: [
+      { text: 'Blog', url: '/blog' },
+      { text: 'Case Studies', url: '/case-studies' },
+      { text: 'Documentation', url: '/docs' },
+      { text: 'FAQ', url: '/faq' },
+    ],
+
+    // Column 4: Contact
+    contactTitle: 'Contact',
+    address: 'LN Infosphere TechTransformers Pvt Ltd, Hyderabad, India',
+    phone: '+91 6301985408',
+    email: 'admin@cmplai.com',
+
+    // Bottom Footer
+    copyrightText: '© 2025 LN Infosphere TechTransformers Pvt Ltd. All rights reserved.',
+    legalLinks: [
+      { text: 'Privacy Policy', url: '/privacy' },
+      { text: 'Terms of Service', url: '/terms' },
+      { text: 'Cookie Policy', url: '/cookie' },
+    ],
+  });
+
+  const handleChange = useCallback((field, value) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+  }, []);
+
+  const handleLinkArrayChange = useCallback((arrayName, index, field, value) => {
+    const updatedArray = [...form[arrayName]];
+    updatedArray[index][field] = value;
+    handleChange(arrayName, updatedArray);
+  }, [form, handleChange]);
+
+  const addLinkItem = useCallback((arrayName) => {
+    handleChange(arrayName, [...form[arrayName], { text: 'New Link', url: '#' }]);
+  }, [form, handleChange]);
+
+  const removeLinkItem = useCallback((arrayName, index) => {
+    const updatedArray = form[arrayName].filter((_, i) => i !== index);
+    handleChange(arrayName, updatedArray);
+  }, [form, handleChange]);
+
+  const handleSocialLinkChange = useCallback((index, url) => {
+    const updatedSocialLinks = [...form.socialLinks];
+    updatedSocialLinks[index].url = url;
+    handleChange('socialLinks', updatedSocialLinks);
+  }, [form, handleChange]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Final Footer Data:', form);
-    // In a real application, you'd send 'form' data to a backend API here.
-    // eslint-disable-next-line no-alert
-    alert('✅ Footer settings saved successfully!');
+    console.log("💾 Saving Footer:", form);
+    alert("✅ Footer settings saved! (Demo only)");
+    // In a real application, send this `form` data to your backend API.
   };
 
+  // Common Tailwind classes for inputs and selects
+  const commonInputClasses = "w-full border border-gray-300 px-4 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400";
+  const commonColorInputClasses = "h-10 w-full rounded-md border border-gray-300 p-1 cursor-pointer";
+  const commonSelectClasses = "w-full border border-gray-300 px-3 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500";
+
+
   return (
-    <div className="max-w-6xl mx-auto bg-white p-8 rounded-xl shadow-lg border border-teal-100">
-      <h2 className="text-2xl font-bold text-teal-600 mb-8">
-        ⚙️ Footer Content Editor
+    <div className="max-w-7xl mx-auto bg-white p-8 rounded-xl shadow-2xl border border-teal-100">
+      <h2 className="text-3xl font-extrabold text-teal-700 mb-8 text-center">
+        <Settings className="inline-block w-8 h-8 mr-2 text-teal-600" /> Website Footer Editor
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-10">
-        {/* --- Logo & Tagline --- */}
-        <div className="pb-6 border-b border-gray-200">
-          <label className="block font-semibold text-gray-800 mb-2">Company Logo</label>
-          <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
-            {/* Logo Preview */}
-            {form.logo && (
-              <div className="flex-shrink-0">
-                <img
-                  src={form.logo}
-                  alt="Company Logo Preview"
-                  className="h-20 w-auto object-contain border border-gray-300 p-2 rounded-md bg-white"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = '/placeholder-logo.png'; // Fallback image if actual logo fails
-                  }}
-                />
-              </div>
-            )}
 
-            {/* File Input & Upload Button */}
-            <div className="flex-grow">
+        {/* --- Global Styling --- */}
+        <div className="bg-blue-50 p-6 rounded-lg shadow-inner border border-blue-200">
+          <h3 className="text-xl font-bold text-blue-800 mb-4">🎨 Global Footer Styling</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div>
+              <label htmlFor="bgColor" className="block text-sm font-semibold text-gray-700 mb-1">Background Color</label>
               <input
-                id="logoUpload"
-                type="file"
-                accept="image/*"
-                onChange={handleLogoUpload}
-                className="hidden" // Hide the default file input
+                id="bgColor"
+                type="color"
+                value={form.bgColor}
+                onChange={(e) => handleChange('bgColor', e.target.value)}
+                className={commonColorInputClasses}
+                title="Footer Background Color"
               />
-              <label
-                htmlFor="logoUpload"
-                className="inline-flex items-center px-4 py-2 bg-teal-500 text-white font-semibold rounded-md shadow-sm hover:bg-teal-600 cursor-pointer transition-colors duration-200"
-              >
-                <UploadCloud className="w-5 h-5 mr-2" />
-                Upload Logo
-              </label>
-              <p className="text-sm text-gray-500 mt-2">
-                Accepted formats: JPG, PNG, GIF, SVG. Max size: 2MB.
-              </p>
+            </div>
+            <div>
+              <label htmlFor="textColor" className="block text-sm font-semibold text-gray-700 mb-1">General Text Color</label>
+              <input
+                id="textColor"
+                type="color"
+                value={form.textColor}
+                onChange={(e) => handleChange('textColor', e.target.value)}
+                className={commonColorInputClasses}
+                title="General Text Color"
+              />
+            </div>
+            <div>
+              <label htmlFor="headingColor" className="block text-sm font-semibold text-gray-700 mb-1">Heading Color</label>
+              <input
+                id="headingColor"
+                type="color"
+                value={form.headingColor}
+                onChange={(e) => handleChange('headingColor', e.target.value)}
+                className={commonColorInputClasses}
+                title="Heading Color"
+              />
+            </div>
+            <div>
+              <label htmlFor="linkColor" className="block text-sm font-semibold text-gray-700 mb-1">Link Color</label>
+              <input
+                id="linkColor"
+                type="color"
+                value={form.linkColor}
+                onChange={(e) => handleChange('linkColor', e.target.value)}
+                className={commonColorInputClasses}
+                title="Link Color"
+              />
+            </div>
+            <div>
+              <label htmlFor="linkHoverColor" className="block text-sm font-semibold text-gray-700 mb-1">Link Hover Color</label>
+              <input
+                id="linkHoverColor"
+                type="color"
+                value={form.linkHoverColor}
+                onChange={(e) => handleChange('linkHoverColor', e.target.value)}
+                className={commonColorInputClasses}
+                title="Link Hover Color"
+              />
             </div>
           </div>
-
-          {/* Direct URL Input */}
-          <label htmlFor="logoUrl" className="block font-semibold text-gray-800 mt-6 mb-2">
-            Or provide Logo URL:
-          </label>
-          <input
-            id="logoUrl"
-            type="url" // Use type="url" for direct URL input
-            value={form.logo}
-            onChange={(e) => handleChange('logo', e.target.value)}
-            className="w-full border border-gray-300 px-4 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
-            placeholder="e.g., https://example.com/your-logo.png"
-          />
-          <p className="text-sm text-gray-500 mt-1">
-            Uploading a file will override this URL.
-          </p>
-
-
-          <label htmlFor="tagline" className="block font-semibold text-gray-800 mt-6 mb-2">
-            Company Tagline
-          </label>
-          <textarea
-            id="tagline"
-            value={form.tagline}
-            onChange={(e) => handleChange('tagline', e.target.value)}
-            className="w-full h-24 border border-gray-300 px-4 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
-            placeholder="A short, catchy phrase about your company."
-          />
         </div>
 
-        {/* --- Social Links --- */}
-        <div className="pb-6 border-b border-gray-200">
-          <h3 className="text-xl font-bold text-gray-800 mb-4">Social Media Links</h3>
-          {form.social.map((s, i) => {
-            const Icon = socialIcons[s.icon] || Globe; // Fallback to Globe icon
-            return (
-              <div
-                key={i}
-                className="flex flex-col md:flex-row gap-4 items-stretch md:items-center bg-gray-50 p-4 rounded-md shadow-sm mb-4"
-              >
-                <div className="flex-1">
-                  <label htmlFor={`social-platform-${i}`} className="block text-sm font-medium text-gray-700 mb-1">
-                    Platform Name
-                  </label>
-                  <select
-                    id={`social-platform-${i}`}
-                    value={s.icon} // Bind select to the icon field for easier mapping
-                    onChange={(e) => handleListChange('social', i, 'icon', e.target.value)}
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:ring-teal-500 focus:border-teal-500"
-                  >
-                    {Object.keys(socialIcons).map((iconName) => (
-                      <option key={iconName} value={iconName}>
-                        {iconName}
-                      </option>
-                    ))}
-                    {!Object.keys(socialIcons).includes(s.icon) && s.icon && (
-                      <option value={s.icon}>{s.icon} (Custom)</option>
-                    )}
-                  </select>
-                </div>
-                <div className="flex-1">
-                  <label htmlFor={`social-url-${i}`} className="block text-sm font-medium text-gray-700 mb-1">
-                    URL
-                  </label>
+        {/* --- Column 1: Logo, Description & Social Links --- */}
+        <div className="bg-teal-50 p-6 rounded-lg shadow-inner border border-teal-200">
+          <h3 className="text-xl font-bold text-teal-800 mb-4">🚀 Logo & Socials</h3>
+          <div>
+            <label htmlFor="logoText" className="block text-sm font-semibold text-gray-700 mb-1">Logo Text</label>
+            <input
+              id="logoText"
+              type="text"
+              value={form.logoText}
+              onChange={(e) => handleChange('logoText', e.target.value)}
+              className={commonInputClasses}
+              placeholder="e.g., Cmplai"
+            />
+          </div>
+          <div className="mt-4">
+            <label htmlFor="description" className="block text-sm font-semibold text-gray-700 mb-1">Description</label>
+            <textarea
+              id="description"
+              value={form.description}
+              onChange={(e) => handleChange('description', e.target.value)}
+              rows={3}
+              className={`${commonInputClasses} resize-y`}
+              placeholder="e.g., Transforming the future of compliance..."
+            />
+          </div>
+          <div className="mt-6">
+            <h4 className="text-lg font-semibold text-gray-700 mb-3">Social Media Links</h4>
+            <p className="text-sm text-gray-600 mb-4">Enter the full URL for each social platform. Leave blank to hide the icon.</p>
+            <div className="space-y-3">
+              {form.socialLinks.map((social, index) => (
+                <div key={social.platform} className="flex items-center gap-3">
+                  <span className="text-gray-700 capitalize w-24 flex items-center gap-2">
+                    {SOCIAL_ICONS_MAP[social.platform] || <LinkIcon className="w-5 h-5" />}
+                    {social.platform}:
+                  </span>
                   <input
-                    id={`social-url-${i}`}
                     type="url"
-                    value={s.url}
-                    onChange={(e) => handleListChange('social', i, 'url', e.target.value)}
-                    placeholder="https://yourprofile.com"
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
+                    value={social.url}
+                    onChange={(e) => handleSocialLinkChange(index, e.target.value)}
+                    className={commonInputClasses}
+                    placeholder={`https://${social.platform}.com/yourprofile`}
                   />
                 </div>
-                <div className="flex items-center gap-2 mt-4 md:mt-0">
-                  <Icon className="w-6 h-6 text-teal-600" aria-hidden="true" />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* --- Column 2 & 3: Quick Links & Resources --- */}
+        <div className="grid md:grid-cols-2 gap-8 bg-purple-50 p-6 rounded-lg shadow-inner border border-purple-200">
+          {/* Quick Links */}
+          <div>
+            <h3 className="text-xl font-bold text-purple-800 mb-4">🔗 Quick Links</h3>
+            <label htmlFor="quickLinksTitle" className="block text-sm font-semibold text-gray-700 mb-1">Section Title</label>
+            <input
+              id="quickLinksTitle"
+              type="text"
+              value={form.quickLinksTitle}
+              onChange={(e) => handleChange('quickLinksTitle', e.target.value)}
+              className={commonInputClasses}
+              placeholder="e.g., Quick Links"
+            />
+            <div className="mt-4 space-y-3">
+              {form.quickLinks.map((link, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={link.text}
+                    onChange={(e) => handleLinkArrayChange('quickLinks', index, 'text', e.target.value)}
+                    className="w-1/2 border border-gray-300 px-3 py-2 rounded-md text-gray-900"
+                    placeholder="Link Text"
+                  />
+                  <input
+                    type="text"
+                    value={link.url}
+                    onChange={(e) => handleLinkArrayChange('quickLinks', index, 'url', e.target.value)}
+                    className="w-1/2 border border-gray-300 px-3 py-2 rounded-md text-gray-900"
+                    placeholder="Link URL"
+                  />
                   <button
                     type="button"
-                    onClick={() => handleListRemove('social', i)}
-                    className="p-2 text-red-600 hover:text-red-800 transition-colors duration-200 rounded-full hover:bg-red-50/50"
-                    aria-label={`Remove ${s.platform} link`}
+                    onClick={() => removeLinkItem('quickLinks', index)}
+                    className="p-2 rounded-md bg-red-500 text-white hover:bg-red-600 transition-colors"
                   >
-                    <Trash className="w-5 h-5" />
+                    <Trash className="w-4 h-4" />
                   </button>
                 </div>
-              </div>
-            );
-          })}
-          <button
-            type="button"
-            onClick={() => handleListAdd('social', { platform: '', url: '', icon: 'LinkedIn' })}
-            className="flex items-center gap-2 text-teal-600 hover:text-teal-800 transition-colors duration-200 px-4 py-2 rounded-md bg-teal-50/50 hover:bg-teal-100 font-medium mt-4"
-          >
-            <Plus className="w-5 h-5" /> Add Social Link
-          </button>
-        </div>
-
-        {/* --- Quick Links --- */}
-        <div className="pb-6 border-b border-gray-200">
-          <h3 className="text-xl font-bold text-gray-800 mb-4">Quick Navigation Links</h3>
-          {form.links.map((l, i) => (
-            <div
-              key={i}
-              className="flex flex-col md:flex-row gap-4 items-stretch md:items-center bg-gray-50 p-4 rounded-md shadow-sm mb-4"
-            >
-              <div className="flex-1">
-                <label htmlFor={`link-label-${i}`} className="block text-sm font-medium text-gray-700 mb-1">
-                  Link Label
-                </label>
-                <input
-                  id={`link-label-${i}`}
-                  type="text"
-                  value={l.label}
-                  onChange={(e) => handleListChange('links', i, 'label', e.target.value)}
-                  placeholder="e.g., Products"
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
-                />
-              </div>
-              <div className="flex-1">
-                <label htmlFor={`link-href-${i}`} className="block text-sm font-medium text-gray-700 mb-1">
-                  URL/Path
-                </label>
-                <input
-                  id={`link-href-${i}`}
-                  type="text"
-                  value={l.href}
-                  onChange={(e) => handleListChange('links', i, 'href', e.target.value)}
-                  placeholder="e.g., /products or /#features"
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
-                />
-              </div>
-              <button
-                type="button"
-                onClick={() => handleListRemove('links', i)}
-                className="mt-4 md:mt-0 p-2 text-red-600 hover:text-red-800 transition-colors duration-200 rounded-full hover:bg-red-50/50 self-end md:self-center"
-                aria-label={`Remove ${l.label} link`}
-              >
-                <Trash className="w-5 h-5" />
-              </button>
+              ))}
             </div>
-          ))}
-          <button
-            type="button"
-            onClick={() => handleListAdd('links', { label: '', href: '' })}
-            className="flex items-center gap-2 text-teal-600 hover:text-teal-800 transition-colors duration-200 px-4 py-2 rounded-md bg-teal-50/50 hover:bg-teal-100 font-medium mt-4"
-          >
-            <Plus className="w-5 h-5" /> Add Quick Link
-          </button>
+            <button
+              type="button"
+              onClick={() => addLinkItem('quickLinks')}
+              className="mt-4 px-3 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors text-sm flex items-center gap-1"
+            >
+              <Plus className="w-4 h-4" /> Add Link
+            </button>
+          </div>
+
+          {/* Resources */}
+          <div>
+            <h3 className="text-xl font-bold text-purple-800 mb-4">📚 Resources</h3>
+            <label htmlFor="resourcesTitle" className="block text-sm font-semibold text-gray-700 mb-1">Section Title</label>
+            <input
+              id="resourcesTitle"
+              type="text"
+              value={form.resourcesTitle}
+              onChange={(e) => handleChange('resourcesTitle', e.target.value)}
+              className={commonInputClasses}
+              placeholder="e.g., Resources"
+            />
+            <div className="mt-4 space-y-3">
+              {form.resources.map((link, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={link.text}
+                    onChange={(e) => handleLinkArrayChange('resources', index, 'text', e.target.value)}
+                    className="w-1/2 border border-gray-300 px-3 py-2 rounded-md text-gray-900"
+                    placeholder="Link Text"
+                  />
+                  <input
+                    type="text"
+                    value={link.url}
+                    onChange={(e) => handleLinkArrayChange('resources', index, 'url', e.target.value)}
+                    className="w-1/2 border border-gray-300 px-3 py-2 rounded-md text-gray-900"
+                    placeholder="Link URL"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeLinkItem('resources', index)}
+                    className="p-2 rounded-md bg-red-500 text-white hover:bg-red-600 transition-colors"
+                  >
+                    <Trash className="w-4 h-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={() => addLinkItem('resources')}
+              className="mt-4 px-3 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors text-sm flex items-center gap-1"
+            >
+              <Plus className="w-4 h-4" /> Add Link
+            </button>
+          </div>
         </div>
 
-        {/* --- Contact Info --- */}
-        <div className="pb-6 border-b border-gray-200">
-          <h3 className="text-xl font-bold text-gray-800 mb-4">Contact Information</h3>
-          <div className="space-y-4">
+        {/* --- Column 4: Contact Info --- */}
+        <div className="bg-orange-50 p-6 rounded-lg shadow-inner border border-orange-200">
+          <h3 className="text-xl font-bold text-orange-800 mb-4">📞 Contact Information</h3>
+          <div>
+            <label htmlFor="contactTitle" className="block text-sm font-semibold text-gray-700 mb-1">Section Title</label>
+            <input
+              id="contactTitle"
+              type="text"
+              value={form.contactTitle}
+              onChange={(e) => handleChange('contactTitle', e.target.value)}
+              className={commonInputClasses}
+              placeholder="e.g., Contact"
+            />
+          </div>
+          <div className="mt-4 space-y-4">
             <div>
-              <label htmlFor="contactAddress" className="block font-semibold text-gray-800 mb-2">
-                Address
-              </label>
+              <label htmlFor="address" className="block text-sm font-semibold text-gray-700 mb-1">Address</label>
               <textarea
-                id="contactAddress"
-                value={form.contact.address}
-                onChange={(e) => handleNestedChange('contact', 'address', e.target.value)}
-                className="w-full border border-gray-300 px-4 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
+                id="address"
+                value={form.address}
+                onChange={(e) => handleChange('address', e.target.value)}
                 rows={2}
+                className={`${commonInputClasses} resize-y`}
                 placeholder="e.g., 123 Business Rd, City, Country"
               />
             </div>
             <div>
-              <label htmlFor="contactPhone" className="block font-semibold text-gray-800 mb-2">
-                Phone Number
-              </label>
+              <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-1">Phone</label>
               <input
-                id="contactPhone"
+                id="phone"
                 type="tel"
-                value={form.contact.phone}
-                onChange={(e) => handleNestedChange('contact', 'phone', e.target.value)}
-                className="w-full border border-gray-300 px-4 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
-                placeholder="e.g., +1 (555) 123-4567"
+                value={form.phone}
+                onChange={(e) => handleChange('phone', e.target.value)}
+                className={commonInputClasses}
+                placeholder="e.g., +1 123 456 7890"
               />
             </div>
             <div>
-              <label htmlFor="contactEmail" className="block font-semibold text-gray-800 mb-2">
-                Email Address
-              </label>
+              <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-1">Email</label>
               <input
-                id="contactEmail"
+                id="email"
                 type="email"
-                value={form.contact.email}
-                onChange={(e) => handleNestedChange('contact', 'email', e.target.value)}
-                className="w-full border border-gray-300 px-4 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
-                placeholder="e.g., info@yourcompany.com"
+                value={form.email}
+                onChange={(e) => handleChange('email', e.target.value)}
+                className={commonInputClasses}
+                placeholder="e.g., info@example.com"
               />
             </div>
           </div>
         </div>
 
-        {/* --- Policy Links --- */}
-        <div className="pb-6 border-b border-gray-200">
-          <h3 className="text-xl font-bold text-gray-800 mb-4">Legal & Policy Links</h3>
-          {form.policies.map((p, i) => (
-            <div
-              key={i}
-              className="flex flex-col md:flex-row gap-4 items-stretch md:items-center bg-gray-50 p-4 rounded-md shadow-sm mb-4"
-            >
-              <div className="flex-1">
-                <label htmlFor={`policy-label-${i}`} className="block text-sm font-medium text-gray-700 mb-1">
-                  Policy Label
-                </label>
-                <input
-                  id={`policy-label-${i}`}
-                  type="text"
-                  value={p.label}
-                  onChange={(e) => handleListChange('policies', i, 'label', e.target.value)}
-                  placeholder="e.g., Privacy Policy"
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
-                />
-              </div>
-              <div className="flex-1">
-                <label htmlFor={`policy-href-${i}`} className="block text-sm font-medium text-gray-700 mb-1">
-                  URL/Path
-                </label>
-                <input
-                  id={`policy-href-${i}`}
-                  type="text"
-                  value={p.href}
-                  onChange={(e) => handleListChange('policies', i, 'href', e.target.value)}
-                  placeholder="e.g., /privacy"
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
-                />
-              </div>
-              <button
-                type="button"
-                onClick={() => handleListRemove('policies', i)}
-                className="mt-4 md:mt-0 p-2 text-red-600 hover:text-red-800 transition-colors duration-200 rounded-full hover:bg-red-50/50 self-end md:self-center"
-                aria-label={`Remove ${p.label} policy`}
-              >
-                <Trash className="w-5 h-5" />
-              </button>
-            </div>
-          ))}
-          <button
-            type="button"
-            onClick={() => handleListAdd('policies', { label: '', href: '' })}
-            className="flex items-center gap-2 text-teal-600 hover:text-teal-800 transition-colors duration-200 px-4 py-2 rounded-md bg-teal-50/50 hover:bg-teal-100 font-medium mt-4"
-          >
-            <Plus className="w-5 h-5" /> Add Policy Link
-          </button>
-        </div>
-
-        {/* --- Copyright Text --- */}
-        <div>
-          <label htmlFor="copyright" className="block font-semibold text-gray-800 mb-2">
-            Copyright Text
-          </label>
-          <input
-            id="copyright"
-            type="text"
-            value={form.copyright}
-            onChange={(e) => handleChange('copyright', e.target.value)}
-            className="w-full border border-gray-300 px-4 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
-            placeholder="e.g., © 2025 Your Company. All rights reserved."
-          />
-        </div>
-
-        {/* --- Live Preview --- */}
-        <div className="mt-10 p-8 rounded-xl border-2 border-dashed border-teal-200 shadow-inner bg-gray-900 text-gray-300">
-          <h3 className="text-lg font-semibold text-teal-300 mb-6">Live Footer Preview:</h3>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {/* Logo & Tagline Column */}
-            <div className="md:col-span-1">
-              {form.logo && (
-                <img
-                  src={form.logo}
-                  alt="Company Logo"
-                  className="h-14 mb-4 filter brightness-150 contrast-125" // Adjust for dark background
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = '/placeholder-logo.png'; // Fallback image
-                  }}
-                />
-              )}
-              <p className="text-sm leading-relaxed text-gray-400">{form.tagline}</p>
-              {form.social.length > 0 && (
-                <div className="flex space-x-4 mt-6">
-                  {form.social.map((s, i) => {
-                    const Icon = socialIcons[s.icon] || Globe;
-                    return (
-                      <a
-                        key={i}
-                        href={s.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-gray-400 hover:text-teal-500 transition-colors duration-200"
-                        aria-label={`Link to ${s.platform}`}
-                      >
-                        <Icon className="w-6 h-6" />
-                      </a>
-                    );
-                  })}
+        {/* --- Bottom Footer Section --- */}
+        <div className="bg-gray-100 p-6 rounded-lg shadow-inner border border-gray-200">
+          <h3 className="text-xl font-bold text-gray-800 mb-4">© Copyright & Legal Links</h3>
+          <div>
+            <label htmlFor="copyrightText" className="block text-sm font-semibold text-gray-700 mb-1">Copyright Text</label>
+            <input
+              id="copyrightText"
+              type="text"
+              value={form.copyrightText}
+              onChange={(e) => handleChange('copyrightText', e.target.value)}
+              className={commonInputClasses}
+              placeholder="e.g., © 2025 Your Company. All rights reserved."
+            />
+          </div>
+          <div className="mt-4">
+            <h4 className="text-lg font-semibold text-gray-700 mb-3">Legal Links</h4>
+            <div className="space-y-3">
+              {form.legalLinks.map((link, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={link.text}
+                    onChange={(e) => handleLinkArrayChange('legalLinks', index, 'text', e.target.value)}
+                    className="w-1/2 border border-gray-300 px-3 py-2 rounded-md text-gray-900"
+                    placeholder="Link Text"
+                  />
+                  <input
+                    type="text"
+                    value={link.url}
+                    onChange={(e) => handleLinkArrayChange('legalLinks', index, 'url', e.target.value)}
+                    className="w-1/2 border border-gray-300 px-3 py-2 rounded-md text-gray-900"
+                    placeholder="Link URL"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeLinkItem('legalLinks', index)}
+                    className="p-2 rounded-md bg-red-500 text-white hover:bg-red-600 transition-colors"
+                  >
+                    <Trash className="w-4 h-4" />
+                  </button>
                 </div>
-              )}
+              ))}
             </div>
-
-            {/* Quick Links Column */}
-            <div className="md:col-span-1">
-              <h4 className="font-semibold text-teal-300 mb-4">Quick Links</h4>
-              <ul className="space-y-2">
-                {form.links.map((l, i) => {
-                  const LinkIcon = quickLinkIcons[l.label] || quickLinkIcons.default;
-                  return (
-                    <li key={i}>
-                      <a
-                        href={l.href}
-                        className="text-gray-400 hover:text-teal-500 transition-colors duration-200 flex items-center gap-2"
-                      >
-                        <LinkIcon className="w-4 h-4 shrink-0" />
-                        {l.label}
-                      </a>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-
-            {/* Contact Info Column */}
-            <div className="md:col-span-1">
-              <h4 className="font-semibold text-teal-300 mb-4">Contact Us</h4>
-              <ul className="space-y-2">
-                {form.contact.address && (
-                  <li className="flex items-start gap-2">
-                    <MapPin className="w-4 h-4 text-gray-400 mt-1 shrink-0" />
-                    <span className="text-gray-400">{form.contact.address}</span>
-                  </li>
-                )}
-                {form.contact.phone && (
-                  <li className="flex items-center gap-2">
-                    <Phone className="w-4 h-4 text-gray-400 shrink-0" />
-                    <a
-                      href={`tel:${form.contact.phone}`}
-                      className="text-gray-400 hover:text-teal-500 transition-colors duration-200"
-                    >
-                      {form.contact.phone}
-                    </a>
-                  </li>
-                )}
-                {form.contact.email && (
-                  <li className="flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-gray-400 shrink-0" />
-                    <a
-                      href={`mailto:${form.contact.email}`}
-                      className="text-gray-400 hover:text-teal-500 transition-colors duration-200"
-                    >
-                      {form.contact.email}
-                    </a>
-                  </li>
-                )}
-              </ul>
-            </div>
-
-            {/* Policies Column */}
-            <div className="md:col-span-1">
-              <h4 className="font-semibold text-teal-300 mb-4">Legal & Policies</h4>
-              <ul className="space-y-2">
-                {form.policies.map((p, i) => (
-                  <li key={i}>
-                    <a
-                      href={p.href}
-                      className="text-gray-400 hover:text-teal-500 transition-colors duration-200 flex items-center gap-2"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FileText className="w-4 h-4 shrink-0" />
-                      {p.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          {/* Copyright Section (Full Width) */}
-          <div className="mt-8 pt-6 border-t border-gray-700 text-center text-sm text-gray-500">
-            <p className="flex items-center justify-center gap-1">
-              <Copyright className="w-4 h-4" />
-              {form.copyright}
-            </p>
+            <button
+              type="button"
+              onClick={() => addLinkItem('legalLinks')}
+              className="mt-4 px-3 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors text-sm flex items-center gap-1"
+            >
+              <Plus className="w-4 h-4" /> Add Link
+            </button>
           </div>
         </div>
 
-        {/* --- Save Button --- */}
-        <div className="pt-8 text-right">
+
+        {/* --- Live Preview Section --- */}
+        <div className="mt-12 p-8 rounded-xl border-4 border-dashed border-gray-300 bg-gray-50 shadow-lg">
+          <h3 className="text-3xl font-bold text-gray-800 mb-8 text-center flex items-center justify-center gap-2">
+            <EyeIcon className="w-8 h-8 text-gray-700" /> Live Preview
+          </h3>
+          <FooterPreview formData={form} />
+        </div>
+
+        {/* --- Submit Button --- */}
+        <div className="pt-8 text-center">
           <button
             type="submit"
-            className="bg-gradient-to-r from-teal-500 to-cyan-600 text-white px-8 py-3 font-semibold rounded-lg shadow-lg hover:opacity-90 transition-opacity duration-300"
+            className="bg-gradient-to-r from-teal-500 to-cyan-600 text-white px-10 py-4 font-bold text-lg rounded-xl shadow-xl hover:from-teal-600 hover:to-cyan-700 transition-all duration-300 transform hover:scale-105"
           >
-            💾 Save Footer Settings
+            <Save className="inline-block w-6 h-6 mr-2" /> Save Footer Settings
           </button>
         </div>
       </form>

@@ -1,7 +1,84 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Trash, UploadCloud } from "lucide-react"; // Assuming lucide-react is installed
+import { Plus, Trash, UploadCloud, Eye as EyeIcon } from "lucide-react";
+
+// BlogPreview Component for live rendering
+function BlogPreview({ blogs }) {
+  const defaultPlaceholderImage = "https://placehold.co/400x200/edf2f7/4a5568?text=Cmplai"; // Matches Cmplai green/gray
+
+  return (
+    <section className="py-8 bg-gray-50 rounded-lg border border-gray-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-3xl lg:text-4xl font-extrabold text-gray-900 mb-4 text-center">
+          Our Blog
+        </h2>
+        <p className="text-lg text-gray-700 mb-12 text-center max-w-2xl mx-auto">
+          Explore expert blogs on pharma compliance, GenAI, and automation.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {blogs.length === 0 ? (
+            <p className="col-span-full text-center text-gray-600 text-lg py-10">
+              No blog posts available. Add one using the editor above!
+            </p>
+          ) : (
+            blogs.map((blog, index) => (
+              <div
+                key={index} // Using index as key is generally okay for static lists, but unique IDs are preferred for dynamic lists
+                className="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-105 duration-300 flex flex-col"
+              >
+                {/* Media Section */}
+                <div className="w-full h-48 bg-teal-500 flex items-center justify-center text-white text-3xl font-bold">
+                  {blog.mediaURL && blog.mediaType === "image" ? (
+                    <img
+                      src={blog.mediaURL}
+                      alt={blog.title || "Blog media"}
+                      className="w-full h-full object-cover"
+                      onError={(e) => { e.currentTarget.src = defaultPlaceholderImage; }} // Fallback image
+                    />
+                  ) : blog.mediaURL && blog.mediaType === "video" ? (
+                    <video
+                      src={blog.mediaURL}
+                      controls
+                      className="w-full h-full object-cover"
+                      onError={(e) => { console.error('Video error:', e); e.currentTarget.style.backgroundColor = '#e2e8f0'; e.currentTarget.textContent = 'Video Error'; }}
+                    >
+                      Your browser does not support the video tag.
+                    </video>
+                  ) : (
+                    // Placeholder for when no mediaURL is set or for 'Cmplai' style
+                    <span className="text-white text-3xl font-bold">Cmplai</span>
+                  )}
+                </div>
+
+                {/* Content Section */}
+                <div className="p-6 flex flex-col flex-grow">
+                  <h3
+                    className="font-bold mb-3 leading-tight text-xl" // Added text-xl to match reference
+                    style={{
+                      color: blog.headingColor,
+                      fontSize: blog.headingSize,
+                      fontFamily: blog.headingFont,
+                    }}
+                  >
+                    {blog.title}
+                  </h3>
+                  <p className="text-sm text-gray-500 mb-3">{blog.date}</p> {/* Moved date below title */}
+                  <p className="text-gray-700 text-base flex-grow mb-4">
+                    {blog.summary}
+                  </p>
+                  <a href="#" className="text-teal-600 hover:text-teal-800 text-sm font-semibold transition-colors duration-200 flex items-center">
+                    Read More →
+                  </a>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export default function AdminBlogEditor() {
   const [blogs, setBlogs] = useState([
@@ -10,13 +87,39 @@ export default function AdminBlogEditor() {
       date: "June 2025",
       mediaType: "image",
       mediaSource: "url", // 'url' or 'upload'
-      mediaURL: "/placeholder.png",
+      mediaURL: "", // Example image URL
       uploadedFile: null, // Stores the File object for upload
-      headingColor: "#0f766e",
-      headingSize: "32px",
-      headingFont: "sans-serif",
+      headingColor: "#0f766e", // teal-700
+      headingSize: "20px", // Adjusted to match the reference image size
+      headingFont: "sans-serif", // Default to sans-serif
       summary: "Manual documentation takes up over 70% of compliance teams' time. Learn why modern pharma companies are shifting to automation.",
       content: "Manual compliance processes are not just outdated — they’re a major roadblock to innovation in the pharmaceutical industry...",
+    },
+    {
+      title: "5 Ways CmplaI Transforms Regulatory Workflows",
+      date: "May 2025",
+      mediaType: "image",
+      mediaSource: "url",
+      mediaURL: "", // Will show placeholder "Cmplai"
+      uploadedFile: null,
+      headingColor: "#0f766e",
+      headingSize: "20px",
+      headingFont: "sans-serif",
+      summary: "Discover how CmplaI makes compliance faster, more accurate, and easier for teams across pharma and manufacturing.",
+      content: "Detailed content for 5 ways CmplaI transforms workflows...",
+    },
+    {
+      title: "GenAI + Compliance: A Match Made for Pharma",
+      date: "April 2025",
+      mediaType: "image",
+      mediaSource: "url",
+      mediaURL: "", // Will show placeholder "Cmplai"
+      uploadedFile: null,
+      headingColor: "#0f766e",
+      headingSize: "20px",
+      headingFont: "sans-serif",
+      summary: "AI is not replacing quality teams — it's making them faster, smarter, and more valuable. Here's how GenAI enhances pharma compliance.",
+      content: "Detailed content for GenAI and Compliance in Pharma...",
     },
   ]);
 
@@ -40,17 +143,17 @@ export default function AdminBlogEditor() {
     setBlogs((prevBlogs) => [
       ...prevBlogs,
       {
-        title: "",
-        date: "",
+        title: "New Blog Post",
+        date: new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' }), // Current month and year
         mediaType: "image",
-        mediaURL: "",
+        mediaURL: "", // Starts with no image, will show "Cmplai" placeholder
         mediaSource: "url",
         uploadedFile: null,
         headingColor: "#0f766e",
-        headingSize: "32px",
+        headingSize: "20px",
         headingFont: "sans-serif",
-        summary: "",
-        content: "",
+        summary: "A short summary of the new blog post.",
+        content: "Write the full content of your new blog post here...",
       },
     ]);
   };
@@ -75,9 +178,16 @@ export default function AdminBlogEditor() {
     alert("✅ Blogs saved successfully (demo only)");
   };
 
+  const commonInputClasses = "w-full border border-gray-300 px-4 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400";
+  const commonSelectClasses = "w-full border border-gray-300 px-3 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500";
+  const commonColorInputClasses = "h-10 w-full rounded-md border border-gray-300 cursor-pointer";
+
+
   return (
     <div className="max-w-6xl mx-auto p-8 bg-white rounded-xl shadow-lg border border-teal-100">
-      <h2 className="text-2xl font-bold text-teal-600 mb-8">Blog Editor Dashboard</h2>
+      <h2 className="text-3xl font-extrabold text-teal-700 mb-8 text-center">
+        <EyeIcon className="inline-block w-8 h-8 mr-2 text-teal-600" /> Blog Editor Dashboard
+      </h2>
       <form onSubmit={handleSubmit} className="space-y-10">
         {blogs.map((blog, index) => (
           <div
@@ -111,7 +221,7 @@ export default function AdminBlogEditor() {
                   placeholder="e.g., The Future of AI in Compliance"
                   value={blog.title}
                   onChange={(e) => handleChange(index, "title", e.target.value)}
-                  className="border border-gray-300 px-4 py-2 rounded-md w-full text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
+                  className={commonInputClasses}
                 />
               </div>
               <div>
@@ -124,7 +234,7 @@ export default function AdminBlogEditor() {
                   placeholder="e.g., June 17, 2025"
                   value={blog.date}
                   onChange={(e) => handleChange(index, "date", e.target.value)}
-                  className="border border-gray-300 px-4 py-2 rounded-md w-full text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
+                  className={commonInputClasses}
                 />
               </div>
             </div>
@@ -140,7 +250,7 @@ export default function AdminBlogEditor() {
                   type="color"
                   value={blog.headingColor}
                   onChange={(e) => handleChange(index, "headingColor", e.target.value)}
-                  className="h-10 w-full rounded-md border border-gray-300 cursor-pointer"
+                  className={commonColorInputClasses}
                   title="Choose Heading Color"
                 />
               </div>
@@ -153,7 +263,7 @@ export default function AdminBlogEditor() {
                   type="number"
                   value={parseInt(blog.headingSize, 10)} // Ensure integer for display
                   onChange={(e) => handleChange(index, "headingSize", `${e.target.value}px`)}
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:ring-teal-500 focus:border-teal-500"
+                  className={commonInputClasses}
                   placeholder="e.g., 32"
                   aria-label="Heading Font Size in Pixels"
                 />
@@ -166,7 +276,7 @@ export default function AdminBlogEditor() {
                   id={`headingFont-${index}`}
                   value={blog.headingFont}
                   onChange={(e) => handleChange(index, "headingFont", e.target.value)}
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:ring-teal-500 focus:border-teal-500"
+                  className={commonSelectClasses}
                   aria-label="Heading Font Family"
                 >
                   <option value="sans-serif">Sans-serif</option>
@@ -188,7 +298,7 @@ export default function AdminBlogEditor() {
                   id={`mediaType-${index}`}
                   value={blog.mediaType}
                   onChange={(e) => handleChange(index, "mediaType", e.target.value)}
-                  className="w-full border border-gray-300 px-3 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500"
+                  className={commonSelectClasses}
                 >
                   <option value="image">Image</option>
                   <option value="video">Video</option>
@@ -203,7 +313,7 @@ export default function AdminBlogEditor() {
                   id={`mediaSource-${index}`}
                   value={blog.mediaSource}
                   onChange={(e) => handleChange(index, "mediaSource", e.target.value)}
-                  className="w-full border border-gray-300 px-3 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500"
+                  className={commonSelectClasses}
                 >
                   <option value="url">External URL</option>
                   <option value="upload">Upload File</option>
@@ -221,7 +331,7 @@ export default function AdminBlogEditor() {
                   placeholder={blog.mediaType === "image" ? "Image URL (e.g., https://example.com/image.jpg)" : "Video URL (e.g., https://example.com/video.mp4)"}
                   value={blog.mediaURL}
                   onChange={(e) => handleChange(index, "mediaURL", e.target.value)}
-                  className="w-full border border-gray-300 px-4 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
+                  className={commonInputClasses}
                 />
               </div>
             ) : (
@@ -243,7 +353,7 @@ export default function AdminBlogEditor() {
               </div>
             )}
 
-            {/* Media Preview */}
+            {/* Media Preview (within editor for current item) */}
             {blog.mediaURL && (
               <div className="mt-4 border border-gray-200 rounded-md overflow-hidden bg-gray-50 flex items-center justify-center">
                 {blog.mediaType === "image" ? (
@@ -275,7 +385,7 @@ export default function AdminBlogEditor() {
                 onChange={(e) => handleChange(index, "summary", e.target.value)}
                 rows={3}
                 placeholder="A brief overview of the blog post content."
-                className="w-full border border-gray-300 px-4 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
+                className={commonInputClasses}
               />
             </div>
 
@@ -290,14 +400,14 @@ export default function AdminBlogEditor() {
                 onChange={(e) => handleChange(index, "content", e.target.value)}
                 rows={8} // Increased rows for more content
                 placeholder="Write the full content of your blog post here..."
-                className="w-full border border-gray-300 px-4 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400"
+                className={commonInputClasses}
               />
             </div>
           </div>
         ))}
 
-        {/* Action Buttons: Add Blog and Save All */}
-        <div className="flex justify-between items-center pt-6">
+        {/* Add New Blog Entry button moved here */}
+        <div className="flex justify-start pt-4">
           <button
             type="button"
             onClick={addBlog}
@@ -305,7 +415,20 @@ export default function AdminBlogEditor() {
           >
             <Plus className="w-5 h-5" /> Add New Blog Entry
           </button>
+        </div>
 
+
+        {/* Live Preview */}
+        <div className="mt-12 p-8 rounded-xl border-4 border-dashed border-gray-300 bg-gray-50 shadow-lg">
+          <h3 className="text-3xl font-bold text-gray-800 mb-8 text-center flex items-center justify-center gap-2">
+            <EyeIcon className="w-8 h-8 text-gray-700" /> Live Preview
+          </h3>
+          <BlogPreview blogs={blogs} />
+        </div>
+
+
+        {/* Save All Blogs button (now standalone) */}
+        <div className="pt-6 text-center"> {/* Centered the save button */}
           <button
             type="submit"
             className="bg-gradient-to-r from-teal-500 to-cyan-600 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:opacity-90 transition-opacity duration-300"
