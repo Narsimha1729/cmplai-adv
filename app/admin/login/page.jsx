@@ -10,7 +10,7 @@ export default function AdminLogin() {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    if (password === 'admin123') {
+    if (password === 'Admin@07') {
       document.cookie = 'admin-auth=true; path=/';
       router.push('/admin');
     } else {
