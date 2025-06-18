@@ -1,461 +1,514 @@
 'use client';
 
-import { useState, useCallback } from "react";
-import { Trash, Plus, Image as ImageIcon, Eye as EyeIcon } from "lucide-react";
+import { useState } from 'react';
+import {
+  Plus,
+  Trash,
+  Award, // Example icon for challenges
+  Target, // Example icon for challenges
+  AlertTriangle, // Example icon for challenges
+  Lightbulb, // Reused from Services
+  ShieldCheck, // Reused from Services
+  Layers, // For section settings icon
+  Settings, // For general section settings
+  Palette, // For color settings
+  Save, // For save button
+} from 'lucide-react';
 
-// Component to render the live preview of the Challenges section
-function ChallengesPreview({ formData }) {
-  const { sectionTitle, sectionDesc, titleColor, titleFont, titleSize, descColor, descFont, descSize, bgColor, challenges } = formData;
+// Centralized mapping for Lucide icons for easier rendering and display names
+const ICON_OPTIONS_MAP = {
+  'award': { component: <Award />, name: 'Award (Achievement)' },
+  'target': { component: <Target />, name: 'Target (Goal/Challenge)' },
+  'alert-triangle': { component: <AlertTriangle />, name: 'Alert Triangle (Warning)' },
+  'lightbulb': { component: <Lightbulb />, name: 'Lightbulb (Idea)' },
+  'shield-check': { component: <ShieldCheck />, name: 'Shield Check (Security)' },
+};
 
-  return (
-    <section
-      className="p-8 md:p-12 rounded-xl shadow-inner border border-gray-200 min-h-[400px] flex flex-col justify-center items-center"
-      style={{ backgroundColor: bgColor }}
-      aria-label="Challenges Section Live Preview"
-    >
-      <div className="text-center mb-12 max-w-4xl mx-auto">
-        <h2
-          className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-4 leading-tight tracking-tight"
-          style={{ color: titleColor, fontFamily: titleFont, fontSize: titleSize }}
-        >
-          {sectionTitle || "Challenges We Address (Preview)"}
-        </h2>
-        <p
-          className="text-base sm:text-lg mx-auto max-w-2xl text-gray-700"
-          style={{ color: descColor, fontFamily: descFont, fontSize: descSize }}
-        >
-          {sectionDesc || "Common compliance pain points faced by pharmaceutical and manufacturing industries. (Preview)"}
-        </p>
-      </div>
+const defaultChallengeCard = {
+  icon: 'award', // Default Lucide icon for new challenge cards
+  imageUrl: '', // New: Optional custom image URL
+  title: 'New Challenge Title',
+  desc: 'A brief description of this new challenge we address.',
+  color: '#0d9488', // Changed to match Services editor default
+};
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 w-full max-w-6xl">
-        {challenges.length === 0 && (
-          <p className="col-span-full text-center text-gray-500 italic p-8">No challenges added yet. Add one to see it here!</p>
-        )}
-        {challenges.map((challenge, index) => (
-          <div
-            key={index} // Using index as key, consider unique IDs for production with reorderable lists
-            className="bg-white p-6 rounded-lg shadow-md border border-gray-100 flex flex-col items-center text-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1 transform"
-            aria-label={`Challenge card ${index + 1}: ${challenge.title}`}
-          >
-            {challenge.iconPreview ? (
-              <img
-                src={challenge.iconPreview}
-                alt={`Challenge icon ${index + 1}`}
-                className="w-20 h-20 object-contain mb-4 rounded-full border-4 border-teal-100 p-2 bg-teal-50"
-              />
-            ) : (
-              <div className="w-20 h-20 flex items-center justify-center mb-4 rounded-full border-4 border-teal-100 p-2 bg-teal-50 text-teal-400">
-                <ImageIcon size={40} />
-              </div>
-            )}
-            <h3
-              className="text-xl font-bold mb-2 break-words"
-              style={{ color: challenge.color, fontFamily: challenge.font, fontSize: challenge.size }}
-            >
-              {challenge.title || "Untitled Challenge"}
-            </h3>
-            <p
-              className="text-gray-600 text-sm break-words"
-              style={{ color: challenge.color, fontFamily: challenge.font, fontSize: `${parseInt(challenge.size) * 0.9}px` }} // Slightly smaller for description
-            >
-              {challenge.desc || "No description provided."}
-            </p>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-export default function ChallengesEditor() {
+export default function AdminChallengesPage() {
   const [form, setForm] = useState({
-    sectionTitle: "Challenges We Address",
-    sectionDesc: "Common compliance pain points faced by pharmaceutical and manufacturing industries.",
-    titleColor: "#0f766e",
-    descColor: "#4b5563",
-    titleFont: "sans-serif",
-    titleSize: "32px",
-    descFont: "sans-serif",
-    descSize: "16px",
-    bgColor: "#f9fafb",
+    sectionTitle: 'Challenges We Address',
+    titleSize: 32,
+    descriptionText: 'We tackle the most pressing challenges in compliance for pharmaceutical and manufacturing companies.',
+    descSize: 16,
 
+    sectionHeadingColor: '#1a202c',
+    sectionSubheadingColor: '#4a5568',
+    sectionBgColor: '#f7fafc',
+    sectionPaddingY: '80px',
+
+    // Challenge card global styles
+    cardBgColor: '#ffffff',
+    cardBorderColor: '#e2e8f0',
+    cardHoverBgColor: '#edf2f7',
+    cardShadow: 'md',
+    cardTitleColor: '#1a202c',
+    cardDescColor: '#4a5568',
+    cardIconSize: '3rem',
+    cardsPerRow: 3,
+
+    // Individual challenge items
     challenges: [
       {
-        title: "Manual, Error-Prone Processes",
-        desc: "Managing thousands of documents manually leads to errors, inefficiencies, and risks.",
-        iconPreview: "",
-        iconFile: null,
-        font: "sans-serif",
-        size: "16px",
-        color: "#374151",
+        icon: 'alert-triangle',
+        imageUrl: '', // Initialize for existing data
+        title: 'Manual, Error-Prone Processes',
+        desc: 'Reliance on manual documentation leads to inefficiencies, delays, and a higher risk of human error, compromising compliance accuracy.',
+        color: '#0d9488', // Changed to match Services editor default
+      },
+      {
+        icon: 'target',
+        imageUrl: '', // Initialize for existing data
+        title: 'Lack of Audit Readiness',
+        desc: 'Struggling to maintain continuous audit readiness, resulting in last-minute rushes and potential non-compliance findings during inspections.',
+        color: '#0d9488',
+      },
+      {
+        icon: 'lightbulb',
+        imageUrl: '', // Initialize for existing data
+        title: 'High Compliance Costs',
+        desc: 'The significant investment in time, resources, and personnel for compliance often strains budgets and diverts focus from innovation.',
+        color: '#0d9488',
       },
     ],
   });
 
-  const handleChange = useCallback((field, value) => {
-    setForm((prevForm) => ({ ...prevForm, [field]: value }));
-  }, []);
+  const handleChange = (key, value) => {
+    setForm((prevForm) => ({ ...prevForm, [key]: value }));
+  };
 
-  const updateChallengeItem = useCallback((index, key, value) => {
-    setForm((prevForm) => {
-      const updatedChallenges = [...prevForm.challenges];
-      updatedChallenges[index] = { ...updatedChallenges[index], [key]: value };
-      return { ...prevForm, challenges: updatedChallenges };
-    });
-  }, []);
+  const handleChallengeChange = (index, field, value) => {
+    const updatedChallenges = [...form.challenges];
+    updatedChallenges[index][field] = value;
+    setForm((prevForm) => ({ ...prevForm, challenges: updatedChallenges }));
+  };
 
-  const updateChallengeIcon = useCallback((index, file) => {
-    setForm((prevForm) => {
-      const updatedChallenges = [...prevForm.challenges];
-      // Revoke old object URL if exists to prevent memory leaks
-      if (updatedChallenges[index].iconPreview) {
-        URL.revokeObjectURL(updatedChallenges[index].iconPreview);
-      }
-      updatedChallenges[index] = {
-        ...updatedChallenges[index],
-        iconFile: file,
-        iconPreview: file ? URL.createObjectURL(file) : "",
-      };
-      return { ...prevForm, challenges: updatedChallenges };
-    });
-  }, []);
-
-  const addChallengeItem = useCallback(() => {
+  const handleAddChallenge = () => {
     setForm((prevForm) => ({
       ...prevForm,
-      challenges: [
-        ...prevForm.challenges,
-        {
-          title: "",
-          desc: "",
-          iconPreview: "",
-          iconFile: null,
-          font: "sans-serif",
-          size: "16px",
-          color: "#374151",
-        },
-      ],
+      challenges: [...prevForm.challenges, { ...defaultChallengeCard, color: prevForm.challenges[0]?.color || '#0d9488' }],
     }));
-  }, []);
+  };
 
-  const removeChallengeItem = useCallback((index) => {
-    if (window.confirm("Are you sure you want to remove this challenge?")) {
-      setForm((prevForm) => {
-        const updatedChallenges = prevForm.challenges.filter((_, i) => i !== index);
-        // Clean up object URL if removed
-        if (prevForm.challenges[index] && prevForm.challenges[index].iconPreview) {
-          URL.revokeObjectURL(prevForm.challenges[index].iconPreview);
-        }
-        return { ...prevForm, challenges: updatedChallenges };
-      });
+  const handleRemoveChallenge = (index) => {
+    const updatedChallenges = [...form.challenges];
+    updatedChallenges.splice(index, 1);
+    setForm((prevForm) => ({ ...prevForm, challenges: updatedChallenges }));
+  };
+
+  const handleSave = () => {
+    alert('Challenges configuration saved! (Demo only)');
+    console.log('Saved Challenges Config:', form);
+    // In a real application, you would send this 'form' data to your backend API
+  };
+
+  // Common Tailwind classes for inputs and selects
+  const commonInputClasses = 'w-full border border-gray-300 px-3 py-2 rounded-md focus:ring-teal-500 focus:border-teal-500 text-black';
+  const commonColorInputClasses = 'h-10 w-full border border-gray-300 rounded-md p-1';
+  const commonSelectClasses = 'w-full border border-gray-300 px-3 py-2 rounded-md focus:ring-teal-500 focus:border-teal-500 text-black';
+
+  // Helper to get Tailwind shadow class
+  const getShadowClass = (shadowValue) => {
+    switch (shadowValue) {
+      case 'sm': return 'shadow-sm';
+      case 'md': return 'shadow-md';
+      case 'lg': return 'shadow-lg';
+      case 'xl': return 'shadow-xl';
+      case '2xl': return 'shadow-2xl';
+      case 'none': return 'shadow-none';
+      default: return 'shadow-md';
     }
-  }, []);
-
-  const handleSubmit = useCallback((e) => {
-    e.preventDefault();
-    console.log("Saved Data:", form);
-    alert("✅ Challenges section saved (demo)");
-  }, [form]);
+  };
 
   return (
-    <div className="flex flex-col gap-10 max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-      {/* Editor Section */}
-      <div className="bg-white p-6 sm:p-8 rounded-xl shadow-lg border border-teal-100">
-        <h2 className="text-2xl sm:text-3xl font-bold text-teal-700 mb-8 border-b pb-4">Challenges Section Editor</h2>
-        <form onSubmit={handleSubmit} className="space-y-8">
-          {/* Section Title and Description */}
-          <fieldset className="p-4 sm:p-5 border border-gray-200 rounded-lg shadow-sm">
-            <legend className="text-lg font-semibold text-gray-800 px-2">Section Header</legend>
-            <div className="space-y-6">
-              <div>
-                <label htmlFor="sectionTitle" className="block text-sm font-medium text-gray-700 mb-1">
-                  Section Title
-                </label>
-                <input
-                  id="sectionTitle"
-                  type="text"
-                  value={form.sectionTitle}
-                  onChange={(e) => handleChange("sectionTitle", e.target.value)}
-                  className="w-full border border-gray-300 px-4 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400 transition-colors duration-200"
-                  placeholder="e.g., Our Key Challenges"
-                />
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3">
-                  <div>
-                    <label htmlFor="titleColor" className="sr-only">Title Color</label>
-                    <input
-                      id="titleColor"
-                      type="color"
-                      value={form.titleColor}
-                      onChange={(e) => handleChange("titleColor", e.target.value)}
-                      className="h-10 w-full rounded-md border border-gray-300 cursor-pointer focus:ring-teal-500 focus:border-teal-500"
-                      title="Section Title Color"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="titleFont" className="sr-only">Title Font</label>
-                    <select
-                      id="titleFont"
-                      value={form.titleFont}
-                      onChange={(e) => handleChange("titleFont", e.target.value)}
-                      className="w-full border border-gray-300 px-2 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500 appearance-none bg-white transition-colors duration-200"
-                      aria-label="Section Title Font"
-                    >
-                      <option value="sans-serif">Sans-serif</option>
-                      <option value="serif">Serif</option>
-                      <option value="monospace">Monospace</option>
-                      <option value="'Poppins', sans-serif">Poppins</option>
-                      <option value="'Inter', sans-serif">Inter</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label htmlFor="titleSize" className="sr-only">Title Size (px)</label>
-                    <input
-                      id="titleSize"
-                      type="number"
-                      value={parseInt(form.titleSize, 10)}
-                      onChange={(e) => handleChange("titleSize", `${e.target.value}px`)}
-                      placeholder="Size (px)"
-                      className="w-full border border-gray-300 px-3 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500 transition-colors duration-200"
-                      aria-label="Section Title Font Size"
-                    />
-                  </div>
-                </div>
-              </div>
+    <div className="max-w-7xl mx-auto bg-white p-8 rounded-xl shadow-lg border border-teal-100">
+      <h2 className="text-3xl font-extrabold text-teal-700 mb-8 text-center">
+        <Layers className="inline-block w-8 h-8 mr-2 text-teal-600" /> Challenges Section Editor
+      </h2>
 
-              <div>
-                <label htmlFor="sectionDesc" className="block text-sm font-medium text-gray-700 mb-1">
-                  Section Description
-                </label>
-                <textarea
-                  id="sectionDesc"
-                  value={form.sectionDesc}
-                  onChange={(e) => handleChange("sectionDesc", e.target.value)}
-                  className="w-full border border-gray-300 px-4 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400 transition-colors duration-200"
-                  rows={3}
-                  placeholder="Describe the challenges addressed by this section."
-                />
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3">
-                  <div>
-                    <label htmlFor="descColor" className="sr-only">Description Color</label>
-                    <input
-                      id="descColor"
-                      type="color"
-                      value={form.descColor}
-                      onChange={(e) => handleChange("descColor", e.target.value)}
-                      className="h-10 w-full rounded-md border border-gray-300 cursor-pointer focus:ring-teal-500 focus:border-teal-500"
-                      title="Section Description Color"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="descFont" className="sr-only">Description Font</label>
-                    <select
-                      id="descFont"
-                      value={form.descFont}
-                      onChange={(e) => handleChange("descFont", e.target.value)}
-                      className="w-full border border-gray-300 px-2 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500 appearance-none bg-white transition-colors duration-200"
-                      aria-label="Section Description Font"
-                    >
-                      <option value="sans-serif">Sans-serif</option>
-                      <option value="serif">Serif</option>
-                      <option value="monospace">Monospace</option>
-                      <option value="'Inter', sans-serif">Inter</option>
-                      <option value="'Poppins', sans-serif">Poppins</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label htmlFor="descSize" className="sr-only">Description Size (px)</label>
-                    <input
-                      id="descSize"
-                      type="number"
-                      value={parseInt(form.descSize, 10)}
-                      onChange={(e) => handleChange("descSize", `${e.target.value}px`)}
-                      placeholder="Size (px)"
-                      className="w-full border border-gray-300 px-3 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500 transition-colors duration-200"
-                      aria-label="Section Description Font Size"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </fieldset>
+      <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="space-y-10">
 
-          {/* Background Color for the entire section */}
-          <fieldset className="p-4 sm:p-5 border border-gray-200 rounded-lg shadow-sm">
-            <legend className="text-lg font-semibold text-gray-800 px-2">Section Background</legend>
+        {/* --- General Section Settings (Challenges Heading/Subheading) --- */}
+        <div className="pb-6 border-b border-gray-200">
+          <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <Settings className="w-5 h-5 text-gray-600" /> Section General Settings
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="bgColor" className="block text-sm font-medium text-gray-700 mb-2">
-                Section Background Color
-              </label>
+              <label htmlFor="sectionTitle" className="block text-sm font-semibold text-gray-700 mb-1">Section Title</label>
               <input
-                id="bgColor"
-                type="color"
-                value={form.bgColor}
-                onChange={(e) => handleChange("bgColor", e.target.value)}
-                className="h-12 w-24 rounded-md border border-gray-300 cursor-pointer focus:ring-teal-500 focus:border-teal-500"
-                title="Choose Section Background Color"
+                id="sectionTitle"
+                type="text"
+                value={form.sectionTitle}
+                onChange={(e) => handleChange('sectionTitle', e.target.value)}
+                className={commonInputClasses}
+                placeholder="Section Title"
               />
-              <p className="text-xs text-gray-500 mt-2">This color will be applied to the background of the entire 'Challenges' section on the live site.</p>
             </div>
-          </fieldset>
-
-          {/* Editable Challenge Cards */}
-          <fieldset className="p-4 sm:p-5 border border-gray-200 rounded-lg shadow-sm">
-            <legend className="text-lg font-semibold text-gray-800 px-2">Individual Challenge Cards</legend>
-            <div className="space-y-6">
-              {form.challenges.map((item, i) => (
-                <div
-                  key={i} // Using index as key, consider unique IDs for production with reorderable lists
-                  className="p-5 bg-gray-50 rounded-lg shadow-sm border border-gray-200 relative"
-                  aria-labelledby={`challenge-title-${i}`}
-                >
-                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 pb-3 border-b border-gray-100">
-                    <h4 id={`challenge-title-${i}`} className="text-md font-bold text-gray-700 mb-2 sm:mb-0">Challenge #{i + 1}</h4>
-                    <button
-                      type="button"
-                      className="text-red-600 hover:text-red-800 transition-colors duration-200 flex items-center gap-1.5 px-3 py-1 rounded-md text-sm font-medium bg-red-50/50 hover:bg-red-100 disabled:opacity-50 disabled:cursor-not-allowed"
-                      onClick={() => removeChallengeItem(i)}
-                      aria-label={`Remove Challenge ${i + 1}`}
-                      disabled={form.challenges.length === 1} // Prevent removing the last item
-                    >
-                      <Trash className="w-4 h-4" /> Remove
-                    </button>
-                  </div>
-
-                  {/* Icon Upload */}
-                  <div className="mb-4">
-                    <label htmlFor={`icon-upload-${i}`} className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2 cursor-pointer">
-                      <ImageIcon className="w-4 h-4 text-teal-600" /> Upload Icon Image (SVG, PNG, JPG)
-                    </label>
-                    <input
-                      id={`icon-upload-${i}`}
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => updateChallengeIcon(i, e.target.files[0])}
-                      className="block w-full text-sm text-gray-900
-                        file:mr-4 file:py-2 file:px-4
-                        file:rounded-md file:border-0
-                        file:text-sm file:font-semibold
-                        file:bg-teal-50 file:text-teal-700
-                        hover:file:bg-teal-100 cursor-pointer"
-                    />
-                    {item.iconPreview && (
-                      <div className="mt-4 p-2 border border-gray-200 rounded-md bg-white inline-block">
-                        <img
-                          src={item.iconPreview}
-                          alt={`Challenge icon preview ${i + 1}`}
-                          className="w-24 h-24 object-contain"
-                        />
-                      </div>
-                    )}
-                    <p className="text-xs text-gray-500 mt-2">
-                      Upload an image for the icon (e.g., a simple graphic representing the challenge).
-                    </p>
-                  </div>
-
-                  {/* Title Input */}
-                  <div className="mb-4">
-                    <label htmlFor={`challenge-item-title-${i}`} className="block text-sm font-medium text-gray-700 mb-1">
-                      Challenge Title
-                    </label>
-                    <input
-                      id={`challenge-item-title-${i}`}
-                      type="text"
-                      value={item.title}
-                      onChange={(e) => updateChallengeItem(i, "title", e.target.value)}
-                      className="w-full border border-gray-300 rounded-md px-4 py-2 text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400 transition-colors duration-200"
-                      placeholder="e.g., Regulatory Compliance Burden"
-                    />
-                  </div>
-
-                  {/* Description Input */}
-                  <div className="mb-4">
-                    <label htmlFor={`challenge-item-desc-${i}`} className="block text-sm font-medium text-gray-700 mb-1">
-                      Challenge Description
-                    </label>
-                    <textarea
-                      id={`challenge-item-desc-${i}`}
-                      rows={3}
-                      value={item.desc}
-                      onChange={(e) => updateChallengeItem(i, "desc", e.target.value)}
-                      className="w-full border border-gray-300 rounded-md px-4 py-2 text-gray-900 focus:ring-teal-500 focus:border-teal-500 placeholder-gray-400 transition-colors duration-200"
-                      placeholder="Provide a detailed description of this challenge."
-                    />
-                  </div>
-
-                  {/* Typography for Challenge Item Text */}
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-gray-100 mt-4">
-                    <div>
-                      <label htmlFor={`item-color-${i}`} className="sr-only">Text Color</label>
-                      <input
-                        id={`item-color-${i}`}
-                        type="color"
-                        value={item.color}
-                        onChange={(e) => updateChallengeItem(i, "color", e.target.value)}
-                        className="h-10 w-full rounded-md border border-gray-300 cursor-pointer focus:ring-teal-500 focus:border-teal-500"
-                        title="Challenge Text Color"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor={`item-font-${i}`} className="sr-only">Text Font</label>
-                      <select
-                        id={`item-font-${i}`}
-                        value={item.font}
-                        onChange={(e) => updateChallengeItem(i, "font", e.target.value)}
-                        className="w-full border border-gray-300 rounded-md px-2 py-2 text-gray-900 focus:ring-teal-500 focus:border-teal-500 appearance-none bg-white transition-colors duration-200"
-                        aria-label="Challenge Text Font"
-                      >
-                        <option value="sans-serif">Sans-serif</option>
-                        <option value="serif">Serif</option>
-                        <option value="monospace">Monospace</option>
-                        <option value="'Inter', sans-serif">Inter</option>
-                        <option value="'Poppins', sans-serif">Poppins</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label htmlFor={`item-size-${i}`} className="sr-only">Text Size (px)</label>
-                      <input
-                        id={`item-size-${i}`}
-                        type="number"
-                        value={parseInt(item.size, 10)}
-                        onChange={(e) => updateChallengeItem(i, "size", `${e.target.value}px`)}
-                        placeholder="Size (px)"
-                        className="w-full border border-gray-300 px-3 py-2 rounded-md text-gray-900 focus:ring-teal-500 focus:border-teal-500 transition-colors duration-200"
-                        aria-label="Challenge Text Font Size"
-                      />
-                    </div>
-                  </div>
-                </div>
-              ))}
+            <div>
+              <label htmlFor="titleSize" className="block text-sm font-semibold text-gray-700 mb-1">Title Font Size (px)</label>
+              <input
+                id="titleSize"
+                type="number"
+                value={form.titleSize}
+                onChange={(e) => handleChange('titleSize', parseInt(e.target.value))}
+                className={commonInputClasses}
+                placeholder="Font Size"
+              />
             </div>
-            <button
-              type="button"
-              onClick={addChallengeItem}
-              className="flex items-center justify-center gap-2 text-teal-600 hover:text-teal-800 transition-colors duration-200 px-4 py-2 rounded-md bg-teal-50/50 hover:bg-teal-100 font-medium w-full mt-6 border border-dashed border-teal-300"
-            >
-              <Plus className="w-5 h-5" /> Add New Challenge Card
-            </button>
-          </fieldset>
-
-          {/* Save Button */}
-          <div className="text-center pt-6">
-            <button
-              type="submit"
-              className="bg-gradient-to-r from-teal-500 to-cyan-600 text-white px-8 py-3 font-semibold rounded-lg shadow-lg hover:opacity-90 transition-opacity duration-300 focus:outline-none focus:ring-4 focus:ring-teal-300 focus:ring-opacity-75"
-            >
-              Save Challenges Section
-            </button>
+            <div className="md:col-span-2">
+              <label htmlFor="descriptionText" className="block text-sm font-semibold text-gray-700 mb-1">Section Description</label>
+              <textarea
+                id="descriptionText"
+                value={form.descriptionText}
+                onChange={(e) => handleChange('descriptionText', e.target.value)}
+                rows={2}
+                className={commonInputClasses}
+                placeholder="A brief description of the challenges."
+              />
+            </div>
+            <div>
+              <label htmlFor="descSize" className="block text-sm font-semibold text-gray-700 mb-1">Description Font Size (px)</label>
+              <input
+                id="descSize"
+                type="number"
+                value={form.descSize}
+                onChange={(e) => handleChange('descSize', parseInt(e.target.value))}
+                className={commonInputClasses}
+                placeholder="Font Size"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Heading Color</label>
+              <input
+                type="color"
+                value={form.sectionHeadingColor}
+                onChange={(e) => handleChange('sectionHeadingColor', e.target.value)}
+                className={commonColorInputClasses}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Subheading Color</label>
+              <input
+                type="color"
+                value={form.sectionSubheadingColor}
+                onChange={(e) => handleChange('sectionSubheadingColor', e.target.value)}
+                className={commonColorInputClasses}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Background Color</label>
+              <input
+                type="color"
+                value={form.sectionBgColor}
+                onChange={(e) => handleChange('sectionBgColor', e.target.value)}
+                className={commonColorInputClasses}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Vertical Padding (px)</label>
+              <input
+                type="number"
+                value={parseInt(form.sectionPaddingY)}
+                onChange={(e) => handleChange('sectionPaddingY', `${e.target.value}px`)}
+                className={commonInputClasses}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Cards Per Row (Desktop)</label>
+              <select
+                value={form.cardsPerRow}
+                onChange={(e) => handleChange('cardsPerRow', parseInt(e.target.value))}
+                className={commonSelectClasses}
+              >
+                <option value={1}>1 Card</option>
+                <option value={2}>2 Cards</option>
+                <option value={3}>3 Cards</option>
+                <option value={4}>4 Cards</option>
+              </select>
+            </div>
           </div>
-        </form>
-      </div>
+        </div>
 
-      {/* Live Preview Section */}
-      <div className="bg-gray-50 p-6 sm:p-8 rounded-xl shadow-lg border border-teal-100">
-        <h2 className="text-2xl sm:text-3xl font-bold text-teal-700 mb-8 border-b pb-4 flex items-center gap-2">
-          <EyeIcon className="w-6 h-6 sm:w-7 sm:h-7" /> Live Preview
-        </h2>
-        <ChallengesPreview formData={form} />
-      </div>
+        {/* --- Challenge Card Global Styles --- */}
+        <div className="pb-6 border-b border-gray-200">
+          <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <Palette className="w-5 h-5 text-gray-600" /> Challenge Card Appearance
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Card Background Color</label>
+              <input
+                type="color"
+                value={form.cardBgColor}
+                onChange={(e) => handleChange('cardBgColor', e.target.value)}
+                className={commonColorInputClasses}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Card Border Color</label>
+              <input
+                type="color"
+                value={form.cardBorderColor}
+                onChange={(e) => handleChange('cardBorderColor', e.target.value)}
+                className={commonColorInputClasses}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Card Hover Background</label>
+              <input
+                type="color"
+                value={form.cardHoverBgColor}
+                onChange={(e) => handleChange('cardHoverBgColor', e.target.value)}
+                className={commonColorInputClasses}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Card Shadow</label>
+              <select
+                value={form.cardShadow}
+                onChange={(e) => handleChange('cardShadow', e.target.value)}
+                className={commonSelectClasses}
+              >
+                <option value="none">None</option>
+                <option value="sm">Small</option>
+                <option value="md">Medium</option>
+                <option value="lg">Large</option>
+                <option value="xl">X-Large</option>
+                <option value="2xl">2X-Large</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Card Title Color</label>
+              <input
+                type="color"
+                value={form.cardTitleColor}
+                onChange={(e) => handleChange('cardTitleColor', e.target.value)}
+                className={commonColorInputClasses}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Card Description Color</label>
+              <input
+                type="color"
+                value={form.cardDescColor}
+                onChange={(e) => handleChange('cardDescColor', e.target.value)}
+                className={commonColorInputClasses}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-1">Icon Size (e.g., 3rem)</label>
+              <input
+                type="text"
+                value={form.cardIconSize}
+                onChange={(e) => handleChange('cardIconSize', e.target.value)}
+                className={commonInputClasses}
+                placeholder="e.g., 2rem, 3rem, 40px"
+              />
+            </div>
+          </div>
+        </div>
+
+
+        {/* --- Individual Challenge Items --- */}
+        <div className="pb-6 border-b border-gray-200">
+          <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <Layers className="w-5 h-5 text-gray-600" /> Manage Challenge Items
+          </h3>
+          <div className="space-y-6">
+            {form.challenges.map((challenge, index) => (
+              <div key={index} className="border p-4 rounded-lg shadow-sm bg-gray-50 space-y-4 relative">
+                <h4 className="text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                  Challenge #{index + 1}
+                  <div className="flex-grow border-b border-gray-200"></div>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveChallenge(index)}
+                    className="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-100 transition-colors"
+                    aria-label={`Remove challenge ${index + 1}`}
+                  >
+                    <Trash className="w-5 h-5" />
+                  </button>
+                </h4>
+
+                {/* Icon Selection */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Lucide Icon</label>
+                  <select
+                    value={challenge.icon}
+                    onChange={(e) => handleChallengeChange(index, 'icon', e.target.value)}
+                    className={commonSelectClasses}
+                  >
+                    {Object.entries(ICON_OPTIONS_MAP).map(([key, value]) => (
+                      <option key={key} value={key}>
+                        {value.name}
+                      </option>
+                    ))}
+                  </select>
+                  <p className="text-xs text-gray-500 mt-1">Select an icon from the predefined set.</p>
+                </div>
+
+                {/* Custom Image URL */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">OR Custom Icon URL (e.g., from CDN)</label>
+                  <input
+                    type="text"
+                    value={challenge.imageUrl}
+                    onChange={(e) => handleChallengeChange(index, 'imageUrl', e.target.value)}
+                    className={commonInputClasses}
+                    placeholder="https://example.com/your-icon.png"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">If a URL is provided, it will override the selected Lucide icon.</p>
+                </div>
+
+                {/* Color Picker (Individual Icon Color) */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Icon Color (Override)</label>
+                  <input
+                    type="color"
+                    value={challenge.color}
+                    onChange={(e) => handleChallengeChange(index, 'color', e.target.value)}
+                    className={commonColorInputClasses}
+                  />
+                  <p className="text-xs text-gray-500 mt-1">This color will apply to Lucide icons. For custom image URLs, the image's original colors will be used.</p>
+                </div>
+
+                {/* Title */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                  <input
+                    type="text"
+                    value={challenge.title}
+                    onChange={(e) => handleChallengeChange(index, 'title', e.target.value)}
+                    className={commonInputClasses}
+                    placeholder="e.g., Data Analytics"
+                  />
+                </div>
+
+                {/* Description */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                  <textarea
+                    value={challenge.desc}
+                    onChange={(e) => handleChallengeChange(index, 'desc', e.target.value)}
+                    rows={3}
+                    className={commonInputClasses}
+                    placeholder="Provide a detailed description of this challenge."
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={handleAddChallenge}
+            className="flex items-center gap-2 text-teal-600 mt-6 px-4 py-2 border border-teal-500 rounded-md hover:bg-teal-50 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors duration-200"
+          >
+            <Plus className="w-5 h-5" /> Add New Challenge
+          </button>
+        </div>
+
+
+        {/* --- Live Preview --- */}
+        <div
+          className="mt-10 p-4 sm:p-8 rounded-xl border-2 border-dashed border-teal-200 shadow-inner"
+          style={{
+            backgroundColor: form.sectionBgColor,
+            paddingTop: form.sectionPaddingY,
+            paddingBottom: form.sectionPaddingY,
+          }}
+        >
+          <h3
+            className="font-extrabold text-center mb-4 font-sans" // Added font-sans for consistency
+            style={{
+              color: form.sectionHeadingColor,
+              fontSize: `${form.titleSize}px`,
+            }}
+          >
+            {form.sectionTitle}
+          </h3>
+          <p
+            className="text-center max-w-3xl mx-auto mb-12 font-sans" // Added font-sans for consistency
+            style={{
+              color: form.sectionSubheadingColor,
+              fontSize: `${form.descSize}px`,
+            }}
+          >
+            {form.descriptionText}
+          </p>
+
+          <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-${form.cardsPerRow} gap-8`}>
+            {form.challenges.map((challenge, index) => (
+              <div
+                key={index}
+                className={`flex flex-col items-center text-center p-6 rounded-xl border ${getShadowClass(form.cardShadow)} transition-all duration-300`}
+                style={{
+                  backgroundColor: form.cardBgColor,
+                  borderColor: form.cardBorderColor,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = form.cardHoverBgColor;
+                  e.currentTarget.style.transform = 'translateY(-5px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = form.cardBgColor;
+                  e.currentTarget.style.transform = 'translateY(0)';
+                }}
+              >
+                <div
+                  className="mb-4"
+                  style={{
+                    color: challenge.color,
+                    fontSize: form.cardIconSize,
+                  }}
+                >
+                  {challenge.imageUrl ? (
+                    // Render custom image if URL is provided
+                    <img
+                      src={challenge.imageUrl}
+                      alt={challenge.title}
+                      style={{ width: form.cardIconSize, height: form.cardIconSize, objectFit: 'contain' }}
+                      onError={(e) => { e.currentTarget.src = ''; e.currentTarget.alt = 'Error loading icon'; }} // Fallback for broken images
+                    />
+                  ) : (
+                    // Render Lucide icon otherwise
+                    ICON_OPTIONS_MAP[challenge.icon]?.component || <Award />
+                  )}
+                </div>
+                <h4
+                  className="text-xl font-bold mb-3"
+                  style={{ color: form.cardTitleColor }}
+                >
+                  {challenge.title}
+                </h4>
+                <p
+                  className="text-gray-600"
+                  style={{ color: form.cardDescColor }}
+                >
+                  {challenge.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* --- Submit Button --- */}
+        <div className="pt-8 text-center">
+          <button
+            type="submit"
+            className="bg-gradient-to-r from-teal-500 to-cyan-600 text-white px-10 py-4 font-bold text-lg rounded-xl shadow-xl hover:from-teal-600 hover:to-cyan-700 transition-all duration-300 transform hover:scale-105"
+          >
+            <Save className="inline-block w-6 h-6 mr-2" /> Save Challenges Section
+          </button>
+        </div>
+      </form>
     </div>
   );
 }
