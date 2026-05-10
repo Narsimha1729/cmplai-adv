@@ -556,38 +556,6 @@ export default function AdminContactUsPage() {
           </div>
         </div>
 
-        {/* --- Business Hours --- */}
-        <div className="bg-orange-50 p-6 rounded-lg shadow-inner border border-orange-200">
-          <h3 className="text-xl font-bold text-orange-800 mb-4">Business Hours</h3>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <label htmlFor="hoursWeek" className="font-semibold text-gray-800 mb-2 flex items-center gap-2">
-                <Clock className="w-5 h-5 text-teal-600" /> Weekday Hours
-              </label>
-              <input
-                id="hoursWeek"
-                type="text"
-                value={form.hoursWeek}
-                onChange={(e) => handleChange('hoursWeek', e.target.value)}
-                className={commonInputClasses}
-                placeholder="e.g., Mon - Fri: 9:00 AM - 6:00 PM"
-              />
-            </div>
-            <div>
-              <label htmlFor="hoursWeekend" className="font-semibold text-gray-800 mb-2 flex items-center gap-2">
-                <Clock className="w-5 h-5 text-teal-600" /> Weekend Hours
-              </label>
-              <input
-                id="hoursWeekend"
-                type="text"
-                value={form.hoursWeekend}
-                onChange={(e) => handleChange('hoursWeekend', e.target.value)}
-                className={commonInputClasses}
-                placeholder="e.g., Sat - Sun: Closed"
-              />
-            </div>
-          </div>
-        </div>
 
         {/* --- Contact Form Details & Button Styling --- */}
         <div className="bg-purple-50 p-6 rounded-lg shadow-inner border border-purple-200">
