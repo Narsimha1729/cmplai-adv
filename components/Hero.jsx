@@ -18,7 +18,7 @@ export default function Hero() {
           className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-600 via-cyan-600 to-sky-500 leading-tight animate-fade-in-up"
           data-aos="fade-up"
         >
-          <br />
+          dfgfdfgfg<br />
           Compliance through <br />
           automation of document preparation
         </h1>
