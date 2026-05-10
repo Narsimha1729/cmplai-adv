@@ -1,11 +1,11 @@
 import React from "react";
 
 const partners = [
-  "/logos/iith.png",
-  "/logos/iitm.png",
-  "/logos/meity.png",
-  "/logos/ust.png",
-  "/logos/pfizer.png",
+  "/iith.jpg",
+  "/iitmic.jpg",
+  "/itic.png",
+  "/ust.png",
+  "/amex.png",
 ];
 
 export default function PartnersScroll() {
