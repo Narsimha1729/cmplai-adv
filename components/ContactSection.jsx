@@ -131,12 +131,6 @@ export default function ContactSection() {
                 <p>admin@cmplai.com</p>
               </div>
             </div>
-
-            <div className="border border-teal-500 rounded-xl p-4 bg-white shadow">
-              <h4 className="font-semibold text-gray-900 mb-2">Business Hours</h4>
-              <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
-              <p>Saturday - Sunday: Closed</p>
-            </div>
           </div>
         </div>
       </div>

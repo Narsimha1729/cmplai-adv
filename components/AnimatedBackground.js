@@ -1,12 +1,18 @@
 'use client';
 
-import { useCallback } from 'react';
-import Particles from 'react-tsparticles';
-import { loadLinksPreset } from 'tsparticles-preset-links';
+import { useEffect, useState } from 'react';
+import Particles, { initParticlesEngine } from '@tsparticles/react';
+import { loadLinksPreset } from '@tsparticles/preset-links';
 
 export default function AnimatedBackground() {
-  const particlesInit = useCallback(async (engine) => {
-    await loadLinksPreset(engine);
+  const [init, setInit] = useState(false);
+
+  useEffect(() => {
+    initParticlesEngine(async (engine) => {
+      await loadLinksPreset(engine);
+    }).then(() => {
+      setInit(true);
+    });
   }, []);
 
   const particlesOptions = {
@@ -45,5 +51,9 @@ export default function AnimatedBackground() {
     },
   };
 
-  return <Particles id="tsparticles" init={particlesInit} options={particlesOptions} />;
+  if (!init) {
+    return null;
+  }
+
+  return <Particles id="tsparticles" options={particlesOptions} />;
 }

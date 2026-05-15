@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import AnimatedBackground from "@/components/AnimatedBackground";
+import AnimatedBackground from "@/components/AnimatedBackground.js";
 
 export default function AreYouReady() {
   const [mounted, setMounted] = useState(false);

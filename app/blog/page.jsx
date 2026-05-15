@@ -1,5 +1,5 @@
-import Navbar from '@/components/Navbar';
-import BlogSection from '@/components/BlogSection';
+import Navbar from '@/components/Navbar.jsx';
+import BlogSection from '@/components/BlogSection.jsx';
 
 export const metadata = {
   title: 'Blog – Cmplai',

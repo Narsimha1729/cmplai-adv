@@ -1,38 +1,32 @@
 "use client";
 
-import {
-  Zap,
-  ShieldCheck,
-  FileText,
-  Clock,
-  CheckCircle,
-  Users,
-} from "lucide-react";
+import { Sparkles } from "lucide-react";
 
-const features = [
+const breakthroughs = [
   {
-    icon: <Zap className="w-5 h-5 text-teal-600" />,
-    text: "AI-powered document automation reducing compliance workload by 70%",
+    num: "01",
+    title: "Zero Document Plants",
+    desc: "No manual compliance records. Every record AI-generated.",
   },
   {
-    icon: <ShieldCheck className="w-5 h-5 text-teal-600" />,
-    text: "Regulatory-ready templates ensuring 100% compliance with global standards",
+    num: "02",
+    title: "World's Best Pharma LLM for Documentation and compliance",
+    desc: "Fine-tuned LLM benchmarked to outperform every existing model.",
   },
   {
-    icon: <FileText className="w-5 h-5 text-teal-600" />,
-    text: "End-to-end document lifecycle management with full audit trails",
+    num: "03",
+    title: "24/7 Internal AI Audit Agent",
+    desc: "AI-powered virtual auditor monitoring plant operations round the clock.",
   },
   {
-    icon: <Clock className="w-5 h-5 text-teal-600" />,
-    text: "Reduced turnaround time from months to days",
+    num: "04",
+    title: "Zero GMP Error Algorithm",
+    desc: "Guarantees every AI-generated record is GMP-compliant. No exceptions.",
   },
   {
-    icon: <CheckCircle className="w-5 h-5 text-teal-600" />,
-    text: "Minimized manual errors and enhanced data integrity",
-  },
-  {
-    icon: <Users className="w-5 h-5 text-teal-600" />,
-    text: "Improved resource allocation and team productivity",
+    num: "05",
+    title: "Five-Stream System Integration",
+    desc: "Real-time validation across 5 live data inputs simultaneously.",
   },
 ];
 
@@ -40,65 +34,50 @@ export default function ProductFeatures() {
   return (
     <section
       id="product"
-      className="relative py-24 px-4 bg-gradient-to-br from-white to-teal-50 overflow-hidden"
+      className="relative py-24 px-4 bg-gradient-to-br from-[#ecfeff] via-white to-teal-50 overflow-hidden"
     >
-      {/* Subtle radial glow effect behind image */}
-      <div className="absolute top-20 left-0 w-[300px] h-[300px] bg-teal-200 opacity-30 blur-3xl rounded-full z-0" />
-      <div className="absolute bottom-[-100px] right-[-100px] w-[250px] h-[250px] bg-cyan-300 opacity-20 blur-2xl rounded-full z-0" />
+      <div className="absolute top-24 right-0 w-[280px] h-[280px] bg-cyan-200/50 blur-3xl rounded-full z-0 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[320px] h-[320px] bg-teal-200/40 blur-3xl rounded-full z-0 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* Heading */}
-        <div className="text-center mb-14" data-aos="fade-up">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-teal-600 mb-2">
-            Product Features
+        <div className="text-center mb-16 max-w-3xl mx-auto" data-aos="fade-up">
+          <div className="inline-flex items-center gap-2 rounded-full border border-teal-200 bg-white/80 px-4 py-1.5 text-teal-700 text-sm font-medium mb-6 shadow-sm">
+            <Sparkles className="w-4 h-4 text-teal-500" />
+            What is New?
+          </div>
+          <h2 className="text-3xl md:text-4xl lg:text-[2.5rem] font-extrabold text-teal-700 leading-tight">
+            Five Industry Breakthroughs
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Comprehensive solutions to transform your compliance processes
+          <p className="mt-4 text-lg text-gray-600 leading-relaxed">
+            CmplAI introduces five breakthroughs the pharma industry has never
+            seen before.
           </p>
+          <div className="mt-4 h-1 w-24 bg-gradient-to-r from-teal-400 to-cyan-500 mx-auto rounded-full" />
         </div>
 
-        {/* Image + Features Grid */}
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          {/* Left: Image Box with Glow */}
-          <div data-aos="fade-right" className="relative">
-<div
-  className="w-full max-h-[500px] overflow-hidden rounded-2xl border bg-white shadow-xl 
-             transition-transform duration-500 hover:scale-[1.02] hover:shadow-2xl"
->
-  <img
-    src="/productfeatures.webp"
-    alt="Product Features"
-    className="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-105"
-  />
-</div>
-          </div>
-
-          {/* Right: Features List */}
-          <div>
-            <div className="space-y-4" data-aos="fade-left" data-aos-delay="200">
-              {features.map((item, i) => (
-                <div
-                  key={i}
-                  className="flex items-start gap-3 p-4 rounded-lg border border-teal-100 bg-white 
-                             hover:border-teal-400 hover:bg-teal-50 hover:scale-[1.02] 
-                             transition-all duration-300 ease-in-out group"
-                >
-                  <div className="bg-teal-50 p-2 rounded-full">{item.icon}</div>
-                  <p className="text-gray-700 text-sm">{item.text}</p>
-                </div>
-              ))}
-            </div>
-            <div className="flex justify-center mt-10" data-aos="fade-up" data-aos-delay="400">
-            <button
-              href="#areyouready"
-                className="px-6 py-3 bg-teal-500 hover:bg-cyan-600 text-white font-semibold 
-                        rounded-md shadow-md transition-all duration-300"
+        <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3 max-w-6xl mx-auto">
+          {breakthroughs.map((item, i) => (
+            <div
+              key={item.num}
+              className="group relative rounded-2xl border border-teal-100/90 bg-white/90 backdrop-blur-sm p-6 md:p-7 shadow-md hover:shadow-xl hover:border-teal-300/70 transition-all duration-300 flex flex-col"
+              data-aos="fade-up"
+              data-aos-delay={i * 80}
             >
-                Request a Demo
-            </button>
+              <span className="text-4xl md:text-5xl font-black text-teal-100 select-none leading-none mb-2">
+                {item.num}
+              </span>
+              <h3 className="text-lg md:text-xl font-bold text-gray-900 leading-snug mb-3">
+                {item.title}
+              </h3>
+              <p className="text-gray-600 text-sm md:text-[15px] leading-relaxed flex-1">
+                {item.desc}
+              </p>
+              <div className="mt-5 h-0.5 w-0 group-hover:w-full bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full transition-all duration-500" />
             </div>
-          </div>
+          ))}
         </div>
+
+        
       </div>
     </section>
   );
