@@ -9,6 +9,7 @@ import Chooseus from "@/components/Chooseus.jsx";
 import ChallengesWeAddress from "@/components/Challenges.jsx";
 import OurJourney from "@/components/OurJourney.jsx";
 import PartnersScroll from "@/components/PartnersScroll.jsx";
+import AwardsRecognitions from "@/components/AwardsRecognitions.jsx";
 import AreYouReady from "@/components/AreYouReady.jsx";
 import AboutUs from "@/components/AboutUs.jsx";
 import Team from "@/components/Team.jsx";
@@ -30,6 +31,7 @@ export default function Home() {
       <ChallengesWeAddress />
       <OurJourney />
       <PartnersScroll />
+      <AwardsRecognitions />
       <AreYouReady />
       <AboutUs />
       <Team />

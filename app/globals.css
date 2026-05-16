@@ -41,3 +41,12 @@ body {
 .partners-marquee:hover {
   animation-play-state: paused;
 }
+
+.awards-marquee {
+  animation: partners-marquee 35s linear infinite;
+  width: max-content;
+}
+
+.awards-marquee:hover {
+  animation-play-state: paused;
+}
