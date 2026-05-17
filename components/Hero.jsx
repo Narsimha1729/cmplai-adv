@@ -1,6 +1,8 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { ArrowRight, Play } from 'lucide-react';
 
 export default function Hero() {
   const [mounted, setMounted] = useState(false);
@@ -10,56 +12,54 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative w-full overflow-hidden bg-gradient-to-b from-white via-[#f0fdfd] to-white"
+      className="relative min-h-[70vh] flex flex-col justify-center overflow-hidden bg-[#fafefe] pt-24 sm:pt-28 pb-12 sm:pb-14"
     >
-      <div className="absolute -top-24 -right-24 w-80 h-80 bg-cyan-200/40 blur-3xl rounded-full pointer-events-none" />
+      <div
+        className="absolute inset-0 opacity-[0.35] pointer-events-none"
+        style={{
+          backgroundImage: 'url(/grid-pattern.svg)',
+          backgroundSize: '48px 48px',
+          backgroundPosition: 'center',
+        }}
+      />
+      <div className="absolute top-20 right-0 w-[420px] h-[420px] bg-cyan-300/25 blur-[100px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[380px] h-[380px] bg-teal-300/20 blur-[90px] rounded-full pointer-events-none" />
 
-      <div className="absolute -bottom-32 -left-24 w-96 h-96 bg-teal-200/35 blur-3xl rounded-full pointer-events-none" />
-
-      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-10 sm:pt-14 pb-16 sm:pb-20">
-        <p
-          className="text-center text-sm font-semibold tracking-widest text-teal-600 uppercase mb-6"
-          data-aos="fade-up"
-        >
-          Our vision
-        </p>
-
-        <div
-          className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-teal-200/80 shadow-[0_20px_60px_-15px_rgba(13,148,136,0.35)] ring-1 ring-teal-500/10"
-          data-aos="fade-up"
-          data-aos-delay="100"
-        >
-          <div className="absolute inset-0 bg-gradient-to-t from-teal-950/25 via-transparent to-cyan-900/5 z-[1] pointer-events-none" />
-          <img
-            src="/vision/zero-doc-pharma-plants.png"
-            alt="The Zero Documentation Pharma Plants — compliance assured, zero documentation, digital workflow, perfectly executed"
-            width={1920}
-            height={1080}
-            decoding="async"
-            fetchPriority="high"
-            className="w-full h-auto block object-cover object-center"
-          />
-        </div>
-
-        <div className="mt-10 sm:mt-12 max-w-2xl mx-auto text-center">
-          <p
-            className="text-lg md:text-xl text-gray-600 leading-relaxed"
-            data-aos="fade-up"
-            data-aos-delay="200"
-          >
-            AI-generated GMP documentation, validated in real time against live
-            regulatory rules — so your plants stay inspection-ready, every hour of
-            every day.
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 w-full">
+        <div className="text-center max-w-4xl mx-auto" data-aos="fade-up">
+          <p className="inline-flex items-center gap-2 rounded-full border border-teal-200 bg-white/80 px-4 py-1.5 text-xs sm:text-sm font-semibold text-teal-700 uppercase tracking-wider mb-6 shadow-sm">
+            Our vision
           </p>
 
-          <a
-            href="#pillars"
-            className="inline-block mt-8 bg-teal-500 hover:bg-cyan-600 text-white px-8 py-3 text-lg font-semibold rounded-lg shadow-md transition duration-300 hover:scale-[1.02] hover:shadow-lg"
-            data-aos="zoom-in"
-            data-aos-delay="300"
-          >
-            Explore our pillars →
-          </a>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[3.5rem] font-extrabold tracking-tight text-gray-900 leading-[1.1]">
+            <span className="block">The future of</span>
+            <span className="block mt-1 bg-gradient-to-r from-teal-600 via-cyan-600 to-sky-500 bg-clip-text text-transparent">
+              Zero Documentation
+            </span>
+            <span className="block mt-1 text-gray-900">Pharma Plants.</span>
+          </h1>
+
+          <p className="mt-6 sm:mt-8 text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            AI agents for GMP compliance — generate, validate, and audit documentation
+            in real time so your plants stay inspection-ready, 24/7.
+          </p>
+
+          <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              href="#pillars"
+              className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-3.5 text-base font-semibold text-white bg-teal-600 hover:bg-teal-700 rounded-full shadow-lg shadow-teal-600/30 transition-all hover:scale-[1.02]"
+            >
+              Get Started
+              <ArrowRight className="w-5 h-5" />
+            </Link>
+            {/* <Link
+              href="#product"
+              className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-3.5 text-base font-semibold text-gray-800 bg-white border border-gray-200 hover:border-teal-300 hover:bg-teal-50/50 rounded-full transition-all"
+            >
+              <Play className="w-5 h-5 text-teal-600" />
+              View breakthroughs
+            </Link> */}
+          </div>
         </div>
       </div>
     </section>

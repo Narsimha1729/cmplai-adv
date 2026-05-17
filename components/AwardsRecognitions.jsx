@@ -11,7 +11,7 @@ const awards = [
     alt: "VS Prasad Best Thesis Award at IITH",
     title: "VS Prasad Best Thesis Award",
     description:
-      "Received the VS Prasad Best Thesis and Academic Excellence Award at IIT Hyderabad (IITH) during the 17th Foundation Day Excellence Awards 2024.",
+      "Received the VS Prasad Best Thesis and Academic Excellence Award at IIT Hyderabad (IITH) during the 17th Foundation Day Excellence Awards 2025.",
   },
   {
     src: "/awards/ust-pharma.png",

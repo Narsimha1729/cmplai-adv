@@ -22,10 +22,10 @@ const services = [
 
 export default function Services() {
   return (
-    <section className="py-24 px-4 bg-white" id="product">
+    <section className="py-24 px-4 bg-white" id="services">
       <div className="max-w-6xl mx-auto text-center">
         <h2
-          className="text-3xl md:text-4xl font-extrabold text-teal-600 mb-4"
+          className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-600 via-cyan-600 to-sky-600 mb-4"
           data-aos="fade-up"
         >
           Our Services

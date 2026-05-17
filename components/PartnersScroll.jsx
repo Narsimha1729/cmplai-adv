@@ -11,7 +11,7 @@ export default function PartnersScroll() {
 
   return (
     <section
-      className="w-full bg-white py-24 px-4 overflow-hidden"
+      className="w-full bg-[#fafefe] pt-4 pb-16 sm:pb-20 px-4 overflow-hidden"
       id="partners"
     >
       <div className="max-w-6xl mx-auto text-center mb-12">
@@ -38,8 +38,8 @@ export default function PartnersScroll() {
       </div>
 
       <div className="relative w-full overflow-hidden">
-        <div className="absolute left-0 top-0 h-full w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 h-full w-32 bg-gradient-to-r from-[#fafefe] to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-[#fafefe] to-transparent z-10 pointer-events-none" />
 
         <div className="flex partners-marquee whitespace-nowrap items-center">
           {track.map((partner, index) => (

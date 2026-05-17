@@ -50,3 +50,32 @@ body {
 .awards-marquee:hover {
   animation-play-state: paused;
 }
+
+@keyframes flashcard-float {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-10px) scale(1);
+  }
+}
+
+@keyframes flashcard-to-back {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotateX(0deg);
+  }
+  to {
+    opacity: 0.55;
+    transform: translateY(72px) scale(0.88) rotateX(10deg);
+  }
+}
+
+.flashcard-float {
+  animation: flashcard-float 4s ease-in-out infinite;
+}
+
+.flashcard-to-back {
+  animation: flashcard-to-back 0.55s ease-in-out forwards;
+}
