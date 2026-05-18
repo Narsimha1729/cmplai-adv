@@ -1,5 +1,6 @@
 "use client";
 
+import { Fragment } from "react";
 import { CalendarDays } from "lucide-react";
 
 const milestones = [
@@ -41,84 +42,80 @@ const milestones = [
   },
 ];
 
-const ROW_SIZE = 3;
-
-function MilestoneCard({ item, index, compact }) {
+function MilestoneCard({ item, index }) {
   return (
-    <article
-      className={`relative flex flex-col w-full mx-auto ${
-        compact ? "max-w-[220px] sm:max-w-[240px]" : "max-w-[260px] lg:max-w-[280px]"
-      }`}
-    >
-      <div className="flex justify-center mb-2 lg:mb-3">
-        <span className="relative z-10 flex h-8 w-8 lg:h-9 lg:w-9 items-center justify-center rounded-full bg-white border-4 border-teal-500 shadow-md">
-          <span className="text-[10px] lg:text-xs font-bold text-teal-700">
-            {index + 1}
-          </span>
+    <article className="flex flex-col h-full w-full">
+      <div className="flex justify-center mb-3">
+        <span className="relative z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white border-4 border-teal-500 shadow-md">
+          <span className="text-xs font-bold text-teal-700">{index + 1}</span>
         </span>
       </div>
-      <div className="flex-1 bg-white rounded-2xl border border-teal-100 p-4 sm:p-5 lg:p-6 text-left shadow-md hover:shadow-lg hover:border-teal-300 transition-all duration-300 h-full">
-        <div className="flex items-center gap-2 mb-2 lg:mb-3 text-xs sm:text-sm font-semibold text-teal-600">
-          <CalendarDays className="w-3.5 h-3.5 lg:w-4 lg:h-4 shrink-0" />
+      <div className="flex-1 bg-white rounded-2xl border border-teal-100 p-5 sm:p-6 text-left shadow-md hover:shadow-lg hover:border-teal-300 transition-all duration-300 min-h-[168px]">
+        <div className="flex items-center gap-2 mb-3 text-sm font-semibold text-teal-600">
+          <CalendarDays className="w-4 h-4 shrink-0" />
           <span>{item.date}</span>
         </div>
-        <h3 className="text-sm sm:text-base lg:text-lg font-bold text-gray-900 mb-1.5 lg:mb-2 leading-snug">
+        <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2 leading-snug">
           {item.title}
         </h3>
-        <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
-          {item.description}
-        </p>
+        <p className="text-gray-600 text-sm leading-relaxed">{item.description}</p>
       </div>
     </article>
   );
 }
 
-function HorizontalConnector({ reverse }) {
+function HorizontalArrow({ direction }) {
   return (
     <div
-      className={`hidden lg:flex items-center shrink-0 self-center mt-5 px-0.5 text-teal-400 ${
-        reverse ? "flex-row-reverse" : ""
-      }`}
+      className="hidden lg:flex items-center justify-center self-center mt-6 h-9"
       aria-hidden
     >
-      <div className="w-5 xl:w-8 h-0.5 bg-gradient-to-r from-teal-300 to-teal-500" />
-      <div
-        className={`w-0 h-0 border-y-[4px] border-y-transparent ${
-          reverse
-            ? "border-r-[7px] border-r-teal-500"
-            : "border-l-[7px] border-l-teal-500"
-        }`}
-      />
+      <svg
+        width="48"
+        height="12"
+        viewBox="0 0 48 12"
+        className="text-teal-400 w-10 xl:w-12"
+      >
+        {direction === "right" ? (
+          <>
+            <line x1="0" y1="6" x2="38" y2="6" stroke="currentColor" strokeWidth="2" />
+            <path d="M38 1 L46 6 L38 11" fill="currentColor" />
+          </>
+        ) : (
+          <>
+            <line x1="10" y1="6" x2="48" y2="6" stroke="currentColor" strokeWidth="2" />
+            <path d="M10 1 L2 6 L10 11" fill="currentColor" />
+          </>
+        )}
+      </svg>
     </div>
   );
 }
 
-function SnakeTurn({ alignRight }) {
+function VerticalTurn({ side }) {
   return (
     <div
-      className={`hidden lg:flex w-full max-w-4xl xl:max-w-5xl mx-auto ${
-        alignRight
-          ? "justify-end pr-[6%] xl:pr-[8%]"
-          : "justify-start pl-[6%] xl:pl-[8%]"
+      className={`hidden lg:flex h-14 w-full max-w-4xl mx-auto ${
+        side === "right" ? "justify-end pr-[10%]" : "justify-start pl-[10%]"
       }`}
       aria-hidden
     >
       <svg
-        width="36"
-        height="44"
-        viewBox="0 0 40 48"
+        width="44"
+        height="52"
+        viewBox="0 0 44 52"
         fill="none"
-        className={`text-teal-400 shrink-0 ${alignRight ? "" : "scale-x-[-1]"}`}
+        className={`text-teal-400 ${side === "left" ? "scale-x-[-1]" : ""}`}
       >
         <path
-          d="M20 0 V22 H34 V48"
+          d="M22 0 V20 H36 V52"
           stroke="currentColor"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
-          d="M28 42 L34 48 L40 42"
+          d="M30 46 L36 52 L42 46"
           stroke="currentColor"
           strokeWidth="2"
           strokeLinecap="round"
@@ -129,42 +126,24 @@ function SnakeTurn({ alignRight }) {
   );
 }
 
-function MobileSnakeTimeline() {
+function SnakeRow({ items, startIndex, direction }) {
+  const ordered = direction === "left" ? [...items].reverse() : items;
+
   return (
-    <div className="lg:hidden max-w-md mx-auto w-full px-1">
-      {milestones.map((item, index) => {
-        const isLeft = index % 2 === 0;
+    <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr_auto_1fr] gap-y-8 lg:gap-y-0 gap-x-0 items-start max-w-4xl mx-auto w-full">
+      {ordered.map((item, i) => {
+        const milestoneIndex =
+          direction === "left"
+            ? startIndex + (items.length - 1 - i)
+            : startIndex + i;
+
         return (
-          <div key={item.title} className="relative">
-            {index > 0 && (
-              <div
-                className={`flex h-10 items-start ${
-                  isLeft ? "justify-end pr-[18%]" : "justify-start pl-[18%]"
-                }`}
-                aria-hidden
-              >
-                <svg
-                  width="28"
-                  height="40"
-                  viewBox="0 0 28 40"
-                  fill="none"
-                  className={`text-teal-300 ${isLeft ? "scale-x-[-1]" : ""}`}
-                >
-                  <path
-                    d="M14 0 V18 H24 V40"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </div>
+          <Fragment key={item.title}>
+            <MilestoneCard item={item} index={milestoneIndex} />
+            {i < ordered.length - 1 && (
+              <HorizontalArrow direction={direction} />
             )}
-            <div className={`flex ${isLeft ? "justify-start" : "justify-end"}`}>
-              <div className="w-[88%] max-w-[300px]">
-                <MilestoneCard item={item} index={index} compact />
-              </div>
-            </div>
-          </div>
+          </Fragment>
         );
       })}
     </div>
@@ -172,74 +151,72 @@ function MobileSnakeTimeline() {
 }
 
 export default function OurJourney() {
-  const rows = [];
-  for (let i = 0; i < milestones.length; i += ROW_SIZE) {
-    rows.push(milestones.slice(i, i + ROW_SIZE));
-  }
+  const row1 = milestones.slice(0, 3);
+  const row2 = milestones.slice(3, 6);
+  const row3 = milestones.slice(6);
 
   return (
     <section
-      className="bg-[#f1fcfc] py-24 px-4 overflow-x-hidden overflow-y-visible"
+      className="bg-[#f1fcfc] py-24 px-4 overflow-x-hidden"
       id="journey"
     >
-      <div className="max-w-6xl mx-auto text-center mb-12" data-aos="fade-up">
+      <div className="max-w-6xl mx-auto text-center mb-14" data-aos="fade-up">
         <h2 className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-cyan-600">
           Our Journey
         </h2>
         <p className="text-gray-600 mt-3">Key milestones in our growth story</p>
       </div>
 
-      {/* Desktop snake: 1→2→3, turn, 4←5←6, turn, 7 */}
       <div
-        className="hidden lg:block max-w-4xl xl:max-w-5xl mx-auto w-full overflow-x-hidden"
+        className="hidden lg:block max-w-5xl mx-auto space-y-0"
         data-aos="fade-up"
         data-aos-delay="100"
       >
-        {rows.map((row, rowIndex) => {
-          const reverse = rowIndex % 2 === 1;
-          const startIndex = rowIndex * ROW_SIZE;
-          const partialEnd =
-            row.length < ROW_SIZE && rowIndex > 0 && rowIndex % 2 === 0;
-
-          return (
-            <div key={`snake-row-${rowIndex}`} className="w-full">
-              {rowIndex > 0 && (
-                <SnakeTurn alignRight={(rowIndex - 1) % 2 === 0} />
-              )}
-
-              <div
-                className={`flex items-start w-full overflow-x-hidden ${
-                  reverse ? "flex-row-reverse" : ""
-                } ${partialEnd ? "justify-end" : "justify-center"}`}
-              >
-                {row.map((item, colIndex) => {
-                  const isLastInRow = colIndex === row.length - 1;
-                  return (
-                    <div
-                      key={item.title}
-                      className="flex items-start shrink min-w-0"
-                    >
-                      <MilestoneCard
-                        item={item}
-                        index={startIndex + colIndex}
-                        compact
-                      />
-                      {!isLastInRow && (
-                        <HorizontalConnector reverse={reverse} />
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          );
-        })}
+        <SnakeRow items={row1} startIndex={0} direction="right" />
+        <VerticalTurn side="right" />
+        <SnakeRow items={row2} startIndex={3} direction="left" />
+        <VerticalTurn side="right" />
+        <div className="grid grid-cols-[1fr_auto_1fr_auto_1fr] items-start max-w-4xl mx-auto w-full">
+          <div aria-hidden />
+          <div aria-hidden />
+          <div aria-hidden />
+          <div aria-hidden />
+          <MilestoneCard item={row3[0]} index={6} />
+        </div>
       </div>
 
-      <div data-aos="fade-up" data-aos-delay="100">
-        <MobileSnakeTimeline />
+      <div
+        className="lg:hidden max-w-md mx-auto relative px-2"
+        data-aos="fade-up"
+        data-aos-delay="100"
+      >
+        <div className="absolute left-1/2 -translate-x-1/2 top-4 bottom-4 w-0.5 bg-gradient-to-b from-teal-200 via-teal-400 to-teal-200" />
+        <ul className="space-y-10">
+          {milestones.map((item, index) => (
+            <li key={item.title} className="relative flex justify-center">
+              <span className="absolute left-1/2 -translate-x-1/2 top-5 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white border-[3px] border-teal-500 shadow-sm">
+                <span className="text-xs font-bold text-teal-700">
+                  {index + 1}
+                </span>
+              </span>
+              <div className="w-full max-w-[320px] pt-1">
+                <article className="bg-white rounded-2xl border border-teal-100 p-5 shadow-md text-left">
+                  <div className="flex items-center gap-2 mb-2 text-sm font-semibold text-teal-600">
+                    <CalendarDays className="w-4 h-4 shrink-0" />
+                    <span>{item.date}</span>
+                  </div>
+                  <h3 className="text-base font-bold text-gray-900 mb-1">
+                    {item.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    {item.description}
+                  </p>
+                </article>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );
 }
-
