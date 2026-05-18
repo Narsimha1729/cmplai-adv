@@ -45,13 +45,13 @@ export default function Hero() {
           </p>
 
           <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
+            {/* <Link
               href="#pillars"
               className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-3.5 text-base font-semibold text-white bg-teal-600 hover:bg-teal-700 rounded-full shadow-lg shadow-teal-600/30 transition-all hover:scale-[1.02]"
             >
               Get Started
               <ArrowRight className="w-5 h-5" />
-            </Link>
+            </Link> */}
             {/* <Link
               href="#product"
               className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-3.5 text-base font-semibold text-gray-800 bg-white border border-gray-200 hover:border-teal-300 hover:bg-teal-50/50 rounded-full transition-all"
