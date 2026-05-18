@@ -79,3 +79,92 @@ body {
 .flashcard-to-back {
   animation: flashcard-to-back 0.55s ease-in-out forwards;
 }
+
+/* AreYouReady section — CSS particle-style background */
+.animated-bg-gradient {
+  background: linear-gradient(135deg, #a0f0f4, #7ee8ec, #00b4bc);
+  background-size: 200% 200%;
+  animation: animated-bg-shift 12s ease infinite;
+}
+
+.animated-bg-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.animated-bg-glow-a {
+  width: 420px;
+  height: 420px;
+  top: -10%;
+  left: -5%;
+  background: #7ee8ec;
+  animation: animated-bg-float-a 18s ease-in-out infinite;
+}
+
+.animated-bg-glow-b {
+  width: 360px;
+  height: 360px;
+  bottom: -15%;
+  right: -5%;
+  background: #00b4bc;
+  animation: animated-bg-float-b 22s ease-in-out infinite;
+}
+
+.animated-bg-dots {
+  background-image: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.55) 1px,
+    transparent 1px
+  );
+  background-size: 42px 42px;
+  opacity: 0.35;
+  animation: animated-bg-drift 40s linear infinite;
+}
+
+.animated-bg-links {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cpath d='M0 60h120M60 0v120' stroke='rgba(255,255,255,0.08)' stroke-width='1'/%3E%3C/svg%3E");
+  background-size: 120px 120px;
+  opacity: 0.5;
+}
+
+@keyframes animated-bg-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes animated-bg-float-a {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(40px, 30px);
+  }
+}
+
+@keyframes animated-bg-float-b {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-35px, -25px);
+  }
+}
+
+@keyframes animated-bg-drift {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(-42px, -42px);
+  }
+}
