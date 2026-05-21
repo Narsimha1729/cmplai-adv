@@ -25,6 +25,17 @@ const team = [
   },
   {
     order: 3,
+    name: 'Rohit Thakur',
+    role: 'Founder & COO',
+    experience:
+      '',
+    image: '',
+    linkedin: '#',
+    twitter: '#',
+    email: 'mailto:divya@example.com',
+  },
+  {
+    order: 4,
     name: 'Divya Taluri',
     role: 'Chief Regulatory Officer',
     experience:
