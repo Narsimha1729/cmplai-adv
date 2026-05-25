@@ -29,7 +29,7 @@ const team = [
     role: 'Founder & COO',
     experience:
       'Ex-iTIC IITH, Second-time founder',
-    image: '/rohit thakur.png',
+    image: '/rohit thakur.jpg',
     linkedin: '#',
     twitter: '#',
     email: 'mailto:divya@example.com',
