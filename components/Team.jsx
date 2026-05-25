@@ -28,7 +28,7 @@ const team = [
     name: 'Rohit Thakur',
     role: 'Founder & COO',
     experience:
-      '',
+      'Ex-iTIC IITH, Second-time founder',
     image: '',
     linkedin: '#',
     twitter: '#',
