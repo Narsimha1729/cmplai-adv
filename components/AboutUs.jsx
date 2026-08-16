@@ -1,53 +1,43 @@
 'use client';
 
 import Image from 'next/image';
-import aboutusImage from '/public/aboutus.webp'; // Place your image in the public folder
+import aboutusImage from '/public/aboutus.webp';
 
 export default function AboutUs() {
   return (
-    <section className="relative px-6 py-24 bg-[#f9fefe]" id="about">
+    <section className="relative px-6 py-28 section-dark border-t border-white/5" id="about">
       <div className="max-w-7xl mx-auto">
-        {/* Heading */}
         <div className="mb-14 text-center" data-aos="fade-up">
-          <h2 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-600 via-cyan-600 to-sky-500">
-            About Us
-          </h2>
-          <p className="text-gray-600 mt-2 text-lg">Our mission and vision</p>
+          <p className="label-caps mb-4">Company</p>
+          <h2 className="heading-lg">About Us</h2>
+          <p className="text-body mt-2">Our mission and vision</p>
         </div>
 
-        {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          {/* 🟢 Image with Glowing Aura */}
           <div
-            className="relative w-full rounded-2xl overflow-hidden shadow-lg group transition-transform hover:scale-[1.02]"
-            data-aos="zoom-in-right"
+            className="relative w-full rounded-2xl overflow-hidden border border-white/10 group"
+            data-aos="fade-up"
           >
-            {/* Glow behind the image */}
-            <div className="absolute -inset-6 bg-cyan-200 opacity-20 blur-3xl rounded-3xl z-0" />
-
-            {/* Actual Image */}
+            <div className="absolute -inset-4 bg-cyan-500/10 blur-3xl rounded-3xl z-0" />
             <div className="relative z-10 rounded-2xl overflow-hidden">
               <Image
                 src={aboutusImage}
                 alt="About Cmplai"
-                className="object-cover w-full h-full"
+                className="object-cover w-full h-full opacity-90"
                 width={600}
                 height={400}
                 priority
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
             </div>
           </div>
 
-          {/* 📄 Text Content */}
-          <div
-            className="text-gray-700 text-base leading-relaxed space-y-5 text-justify"
-            data-aos="fade-up"
-          >
-            <h3 className="text-2xl font-bold text-gray-900">
+          <div className="text-body text-base space-y-5" data-aos="fade-up" data-aos-delay="100">
+            <h3 className="text-2xl font-semibold text-white">
               Transforming Compliance Through Innovation
             </h3>
             <p>
-              At <strong className="text-[#00b4bc]">Cmplai</strong>, we're on a mission to revolutionize how pharmaceutical and manufacturing companies handle compliance documentation.
+              At <strong className="text-cyan-400">Cmplai</strong>, we&apos;re on a mission to revolutionize how pharmaceutical and manufacturing companies handle compliance documentation.
               Founded by industry experts with decades of experience, we understand the challenges organizations face with regulatory compliance.
             </p>
             <p>

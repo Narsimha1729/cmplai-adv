@@ -7,9 +7,9 @@ import { Menu, X } from 'lucide-react';
 
 const homeLinks = [
   { href: '#home', label: 'Home' },
+  { href: '#platform', label: 'Platform' },
   { href: '#pillars', label: 'Pillars' },
   { href: '#services', label: 'Services' },
-  { href: '#product', label: 'Breakthroughs' },
   { href: '#journey', label: 'Journey' },
   { href: '#about', label: 'About' },
   { href: '#contact', label: 'Contact' },
@@ -39,30 +39,30 @@ export default function Navbar() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-white/85 backdrop-blur-lg shadow-sm border-b border-teal-100/80'
-          : 'bg-white/70 backdrop-blur-md border-b border-transparent'
+          ? 'bg-black/80 backdrop-blur-xl border-b border-white/10'
+          : 'bg-transparent border-b border-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-[4.25rem] flex items-center justify-between gap-4">
         <Link href="/" className="shrink-0 flex items-center gap-2">
-          <img src="/logo.png" alt="Cmplai" className="h-8 w-auto" />
+          <img src="/logo.png" alt="Cmplai" className="h-8 w-auto brightness-0 invert" />
         </Link>
 
         {!isBlogPage ? (
           <>
-            <nav className="hidden lg:flex items-center gap-1">
+            <nav className="hidden lg:flex items-center gap-0.5">
               {homeLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={navHref(link.href)}
-                  className="px-3.5 py-2 text-sm font-medium text-gray-600 hover:text-teal-600 rounded-full hover:bg-teal-50 transition-colors"
+                  className="px-3.5 py-2 text-sm font-medium text-zinc-400 hover:text-white rounded-full hover:bg-white/5 transition-colors"
                 >
                   {link.label}
                 </Link>
               ))}
               <Link
                 href="/blog"
-                className="px-3.5 py-2 text-sm font-medium text-gray-600 hover:text-teal-600 rounded-full hover:bg-teal-50 transition-colors"
+                className="px-3.5 py-2 text-sm font-medium text-zinc-400 hover:text-white rounded-full hover:bg-white/5 transition-colors"
               >
                 Blog
               </Link>
@@ -71,21 +71,18 @@ export default function Navbar() {
             <div className="hidden lg:flex items-center gap-3">
               <Link
                 href={navHref('#contact')}
-                className="text-sm font-semibold text-gray-700 hover:text-teal-600 px-4 py-2 rounded-full transition-colors"
+                className="text-sm font-medium text-zinc-300 hover:text-white px-4 py-2 transition-colors"
               >
                 Book a demo
               </Link>
-              <Link
-                href={navHref('#pillars')}
-                className="text-sm font-semibold text-white bg-teal-600 hover:bg-teal-700 px-5 py-2.5 rounded-full shadow-md shadow-teal-600/25 transition-all hover:shadow-lg"
-              >
+              <Link href={navHref('#pillars')} className="btn-primary text-sm py-2 px-5">
                 Get Started
               </Link>
             </div>
 
             <button
               type="button"
-              className="lg:hidden p-2 rounded-lg text-gray-700 hover:bg-teal-50"
+              className="lg:hidden p-2 rounded-lg text-zinc-300 hover:bg-white/10"
               onClick={() => setOpen(!open)}
               aria-label={open ? 'Close menu' : 'Open menu'}
             >
@@ -93,22 +90,19 @@ export default function Navbar() {
             </button>
           </>
         ) : (
-          <Link
-            href="/"
-            className="text-sm font-semibold bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-full transition"
-          >
+          <Link href="/" className="btn-ghost text-sm py-2 px-4">
             ← Back to Home
           </Link>
         )}
       </div>
 
       {open && !isBlogPage && (
-        <div className="lg:hidden border-t border-teal-100 bg-white/95 backdrop-blur-lg px-4 py-4 space-y-1">
+        <div className="lg:hidden border-t border-white/10 bg-black/95 backdrop-blur-xl px-4 py-4 space-y-1">
           {homeLinks.map((link) => (
             <Link
               key={link.href}
               href={navHref(link.href)}
-              className="block px-4 py-3 text-sm font-medium text-gray-700 hover:text-teal-600 hover:bg-teal-50 rounded-xl"
+              className="block px-4 py-3 text-sm font-medium text-zinc-300 hover:text-white hover:bg-white/5 rounded-xl"
               onClick={() => setOpen(false)}
             >
               {link.label}
@@ -116,14 +110,14 @@ export default function Navbar() {
           ))}
           <Link
             href="/blog"
-            className="block px-4 py-3 text-sm font-medium text-gray-700 hover:bg-teal-50 rounded-xl"
+            className="block px-4 py-3 text-sm font-medium text-zinc-300 hover:bg-white/5 rounded-xl"
             onClick={() => setOpen(false)}
           >
             Blog
           </Link>
           <Link
             href={navHref('#pillars')}
-            className="block mt-2 text-center font-semibold text-white bg-teal-600 py-3 rounded-xl"
+            className="block mt-2 text-center btn-primary py-3"
             onClick={() => setOpen(false)}
           >
             Get Started

@@ -16,7 +16,7 @@ const team = [
   {
     order: 2,
     name: 'Chetan P',
-    role: 'Founder & CTO',
+    role: 'Co-Founder & CTO',
     experience: 'M.Tech in Entrepreneurship and Management from IIT Hyderabad',
     image: '/Chetan_LN Infosphere.png',
     linkedin: '#',
@@ -57,16 +57,12 @@ function MemberAvatar({ name, image }) {
 
   if (image) {
     return (
-      <img
-        src={image}
-        alt={name}
-        className="w-full h-full object-cover"
-      />
+      <img src={image} alt={name} className="w-full h-full object-cover" />
     );
   }
 
   return (
-    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-teal-500 to-cyan-600 text-white text-xl font-bold">
+    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-cyan-600/40 to-teal-600/30 text-cyan-200 text-xl font-semibold">
       {initials}
     </div>
   );
@@ -74,44 +70,39 @@ function MemberAvatar({ name, image }) {
 
 export default function Team() {
   return (
-    <section className="bg-[#f9fefe] py-24 px-6" id="team">
+    <section className="section-elevated py-28 px-6 border-t border-white/5" id="team">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-14" data-aos="fade-up">
-          <h2 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-600 via-cyan-600 to-sky-500">
-            Our Team
-          </h2>
-          <p className="text-gray-600 mt-2 text-lg">Meet the experts behind Cmplai</p>
+          <p className="label-caps mb-4">People</p>
+          <h2 className="heading-lg">Our Team</h2>
+          <p className="text-body mt-2">Meet the experts behind Cmplai</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-12 justify-items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {team.map((member, index) => (
             <div
               key={member.name}
-              className="relative group bg-white rounded-2xl shadow-md p-8 w-full max-w-sm text-center transition-all hover:shadow-xl hover:scale-[1.02] border border-transparent hover:border-teal-300"
-              data-aos="zoom-in-up"
-              data-aos-delay={index * 150}
+              className="card-dark p-8 w-full text-center"
+              data-aos="fade-up"
+              data-aos-delay={index * 80}
             >
-              <div className="absolute -top-8 -left-8 w-36 h-36 bg-cyan-200 opacity-20 blur-3xl rounded-full z-0" />
+              <div className="w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden border-2 border-white/10 bg-zinc-900">
+                <MemberAvatar name={member.name} image={member.image} />
+              </div>
+              <h3 className="text-lg font-semibold text-white">{member.name}</h3>
+              <p className="text-cyan-400/90 text-sm font-medium mt-1">{member.role}</p>
+              <p className="text-body text-xs mt-2">{member.experience}</p>
 
-              <div className="relative z-10">
-                <div className="w-28 h-28 mx-auto mb-4 rounded-full overflow-hidden border-4 border-white shadow-md bg-gray-200">
-                  <MemberAvatar name={member.name} image={member.image} />
-                </div>
-                <h3 className="text-lg font-bold text-gray-900">{member.name}</h3>
-                <p className="text-[#00b4bc] font-medium">{member.role}</p>
-                <p className="text-gray-600 text-sm mt-2">{member.experience}</p>
-
-                <div className="flex justify-center gap-4 mt-4 text-[#00b4bc]">
-                  <a href={member.linkedin} target="_blank" rel="noopener noreferrer">
-                    <FaLinkedin className="text-lg hover:text-cyan-600 transition" />
-                  </a>
-                  <a href={member.twitter} target="_blank" rel="noopener noreferrer">
-                    <FaTwitter className="text-lg hover:text-cyan-600 transition" />
-                  </a>
-                  <a href={member.email}>
-                    <FaEnvelope className="text-lg hover:text-cyan-600 transition" />
-                  </a>
-                </div>
+              <div className="flex justify-center gap-4 mt-5 text-zinc-500">
+                <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-white transition">
+                  <FaLinkedin className="text-base" />
+                </a>
+                <a href={member.twitter} target="_blank" rel="noopener noreferrer" className="hover:text-white transition">
+                  <FaTwitter className="text-base" />
+                </a>
+                <a href={member.email} className="hover:text-white transition">
+                  <FaEnvelope className="text-base" />
+                </a>
               </div>
             </div>
           ))}
@@ -120,5 +111,3 @@ export default function Team() {
     </section>
   );
 }
-
-

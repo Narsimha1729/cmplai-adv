@@ -46,19 +46,19 @@ function MilestoneCard({ item, index }) {
   return (
     <article className="flex flex-col h-full w-full">
       <div className="flex justify-center mb-3">
-        <span className="relative z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white border-4 border-teal-500 shadow-md">
-          <span className="text-xs font-bold text-teal-700">{index + 1}</span>
+        <span className="relative z-10 flex h-9 w-9 items-center justify-center rounded-full bg-black border-2 border-cyan-500/50 text-cyan-400">
+          <span className="text-xs font-bold">{index + 1}</span>
         </span>
       </div>
-      <div className="flex-1 bg-white rounded-2xl border border-teal-100 p-5 sm:p-6 text-left shadow-md hover:shadow-lg hover:border-teal-300 transition-all duration-300 min-h-[168px]">
-        <div className="flex items-center gap-2 mb-3 text-sm font-semibold text-teal-600">
+      <div className="flex-1 card-dark p-5 sm:p-6 text-left min-h-[168px]">
+        <div className="flex items-center gap-2 mb-3 text-sm font-medium text-cyan-400/90">
           <CalendarDays className="w-4 h-4 shrink-0" />
           <span>{item.date}</span>
         </div>
-        <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2 leading-snug">
+        <h3 className="text-base sm:text-lg font-semibold text-white mb-2 leading-snug">
           {item.title}
         </h3>
-        <p className="text-gray-600 text-sm leading-relaxed">{item.description}</p>
+        <p className="text-body text-sm">{item.description}</p>
       </div>
     </article>
   );
@@ -74,7 +74,7 @@ function HorizontalArrow({ direction }) {
         width="48"
         height="12"
         viewBox="0 0 48 12"
-        className="text-teal-400 w-10 xl:w-12"
+        className="text-zinc-600 w-10 xl:w-12"
       >
         {direction === "right" ? (
           <>
@@ -105,7 +105,7 @@ function VerticalTurn({ side }) {
         height="52"
         viewBox="0 0 44 52"
         fill="none"
-        className={`text-teal-400 ${side === "left" ? "scale-x-[-1]" : ""}`}
+        className={`text-zinc-600 ${side === "left" ? "scale-x-[-1]" : ""}`}
       >
         <path
           d="M22 0 V20 H36 V52"
@@ -157,14 +157,13 @@ export default function OurJourney() {
 
   return (
     <section
-      className="bg-[#f1fcfc] py-24 px-4 overflow-x-hidden"
+      className="section-elevated py-28 px-4 overflow-x-hidden border-t border-white/5"
       id="journey"
     >
       <div className="max-w-6xl mx-auto text-center mb-14" data-aos="fade-up">
-        <h2 className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-cyan-600">
-          Our Journey
-        </h2>
-        <p className="text-gray-600 mt-3">Key milestones in our growth story</p>
+        <p className="label-caps mb-4">Timeline</p>
+        <h2 className="heading-lg">Our Journey</h2>
+        <p className="text-body mt-3 text-sm">Key milestones in our growth story</p>
       </div>
 
       <div
@@ -190,25 +189,25 @@ export default function OurJourney() {
         data-aos="fade-up"
         data-aos-delay="100"
       >
-        <div className="absolute left-1/2 -translate-x-1/2 top-4 bottom-4 w-0.5 bg-gradient-to-b from-teal-200 via-teal-400 to-teal-200" />
+        <div className="absolute left-1/2 -translate-x-1/2 top-4 bottom-4 w-px bg-gradient-to-b from-zinc-800 via-zinc-600 to-zinc-800" />
         <ul className="space-y-10">
           {milestones.map((item, index) => (
             <li key={item.title} className="relative flex justify-center">
-              <span className="absolute left-1/2 -translate-x-1/2 top-5 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white border-[3px] border-teal-500 shadow-sm">
-                <span className="text-xs font-bold text-teal-700">
+              <span className="absolute left-1/2 -translate-x-1/2 top-5 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-black border-2 border-cyan-500/50">
+                <span className="text-xs font-bold text-cyan-400">
                   {index + 1}
                 </span>
               </span>
               <div className="w-full max-w-[320px] pt-1">
-                <article className="bg-white rounded-2xl border border-teal-100 p-5 shadow-md text-left">
-                  <div className="flex items-center gap-2 mb-2 text-sm font-semibold text-teal-600">
+                <article className="card-dark p-5 text-left">
+                  <div className="flex items-center gap-2 mb-2 text-sm font-medium text-cyan-400/90">
                     <CalendarDays className="w-4 h-4 shrink-0" />
                     <span>{item.date}</span>
                   </div>
-                  <h3 className="text-base font-bold text-gray-900 mb-1">
+                  <h3 className="text-base font-semibold text-white mb-1">
                     {item.title}
                   </h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">
+                  <p className="text-body text-sm">
                     {item.description}
                   </p>
                 </article>

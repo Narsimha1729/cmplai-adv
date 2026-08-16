@@ -54,7 +54,7 @@ export const metadata = {
   alternates: {
     canonical: "https://www.cmplai.com",
   },
-  themeColor: "#00b4bc",
+  themeColor: "#fbfcfe",
   authors: [{ name: "LN Infosphere TechTransformers Pvt Ltd" }],
   robots: "index, follow",
 };

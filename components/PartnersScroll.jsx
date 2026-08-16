@@ -11,41 +11,30 @@ export default function PartnersScroll() {
 
   return (
     <section
-      className="w-full bg-[#fafefe] pt-4 pb-16 sm:pb-20 px-4 overflow-hidden"
+      className="w-full section-elevated pt-8 pb-20 px-4 overflow-hidden border-y border-white/5"
       id="partners"
     >
-      <div className="max-w-6xl mx-auto text-center mb-12">
-        <p
-          className="text-sm font-semibold tracking-widest text-teal-600 uppercase mb-4"
-          data-aos="fade-up"
-        >
+      <div className="max-w-6xl mx-auto text-center mb-10">
+        <p className="label-caps mb-4" data-aos="fade-up">
           Recognized & Supported By
         </p>
-        <h2
-          className="text-3xl md:text-4xl font-extrabold text-teal-600 mb-4"
-          data-aos="fade-up"
-          data-aos-delay="100"
-        >
+        <h2 className="heading-lg mb-3" data-aos="fade-up" data-aos-delay="100">
           Trusted Innovation Ecosystem
         </h2>
-        <p
-          className="text-gray-600 max-w-2xl mx-auto"
-          data-aos="fade-up"
-          data-aos-delay="200"
-        >
+        <p className="text-body max-w-2xl mx-auto text-sm" data-aos="fade-up" data-aos-delay="200">
           Partners and programs that support our mission
         </p>
       </div>
 
       <div className="relative w-full overflow-hidden">
-        <div className="absolute left-0 top-0 h-full w-32 bg-gradient-to-r from-[#fafefe] to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-[#fafefe] to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 h-full w-24 sm:w-32 marquee-fade-l-alt z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 h-full w-24 sm:w-32 marquee-fade-r-alt z-10 pointer-events-none" />
 
         <div className="flex partners-marquee whitespace-nowrap items-center">
           {track.map((partner, index) => (
             <div
               key={`${partner.src}-${index}`}
-              className="flex items-center shrink-0 mx-10 sm:mx-12 gap-3 sm:gap-4 whitespace-nowrap"
+              className="flex items-center shrink-0 mx-10 sm:mx-14 gap-4 whitespace-nowrap opacity-70 hover:opacity-100 transition-opacity"
             >
               <img
                 src={partner.src}
@@ -53,11 +42,9 @@ export default function PartnersScroll() {
                 width={180}
                 height={64}
                 decoding="async"
-                className="h-16 max-h-[64px] w-auto max-w-[120px] sm:max-w-[180px] object-contain shrink-0"
+                className="h-12 sm:h-14 w-auto max-w-[140px] sm:max-w-[160px] object-contain shrink-0 brightness-0 invert"
               />
-              <span className="text-gray-600 text-sm sm:text-base font-medium">
-                {partner.name}
-              </span>
+              <span className="text-zinc-500 text-sm font-medium">{partner.name}</span>
             </div>
           ))}
         </div>

@@ -58,29 +58,29 @@ function Flashcard({ item, offset, isAnimatingBack }) {
 
   return (
     <article
-      className={`absolute inset-x-0 top-0 mx-auto w-full max-w-2xl rounded-3xl border border-teal-100 bg-white shadow-2xl overflow-hidden transition-all duration-500 ease-out origin-top ${
+      className={`absolute inset-x-0 top-0 mx-auto w-full max-w-2xl rounded-2xl border border-white/10 bg-zinc-950 shadow-2xl shadow-black/50 overflow-hidden transition-all duration-500 ease-out origin-top ${
         isFront && !isAnimatingBack ? "flashcard-float" : ""
       } ${isAnimatingBack ? "flashcard-to-back" : ""}`}
       style={style}
       aria-hidden={!isFront}
     >
       <div className="grid sm:grid-cols-2 gap-0">
-        <div className="relative min-h-[200px] sm:min-h-[260px] bg-gray-100 overflow-hidden">
+        <div className="relative min-h-[200px] sm:min-h-[260px] bg-zinc-900 overflow-hidden">
           <img
             src={item.image}
             alt={item.alt}
             className="absolute inset-0 w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-teal-950/25 via-transparent to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
           <span className="absolute top-4 left-4 text-4xl sm:text-5xl font-black text-white/90 drop-shadow-md">
             {item.num}
           </span>
         </div>
         <div className="p-6 sm:p-8 flex flex-col justify-center">
-          <h3 className="text-lg sm:text-xl font-bold text-gray-900 leading-snug mb-3">
+          <h3 className="text-lg sm:text-xl font-semibold text-white leading-snug mb-3">
             {item.title}
           </h3>
-          <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
+          <p className="text-body text-sm sm:text-base leading-relaxed">
             {item.desc}
           </p>
         </div>
@@ -126,20 +126,18 @@ export default function ProductFeatures() {
   return (
     <section
       id="product"
-      className="relative py-24 px-4 bg-gradient-to-b from-white via-[#f0fdfd] to-white overflow-hidden"
+      className="relative section-dark py-28 px-4 overflow-hidden border-t border-white/5"
     >
-      <div className="absolute top-0 right-0 w-72 h-72 bg-cyan-200/40 blur-3xl rounded-full pointer-events-none" />
+      <div className="glow-orb w-96 h-96 top-0 left-1/2 -translate-x-1/2 bg-cyan-500/10" />
 
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="text-center mb-12 max-w-3xl mx-auto" data-aos="fade-up">
-          <div className="inline-flex items-center gap-2 rounded-full border border-teal-200 bg-white px-4 py-1.5 text-teal-700 text-sm font-medium mb-6 shadow-sm">
-            <Sparkles className="w-4 h-4 text-teal-500" />
+          <p className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-zinc-400 text-sm font-medium mb-6">
+            <Sparkles className="w-4 h-4 text-cyan-400" />
             What is New?
-          </div>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-600 via-cyan-600 to-sky-600">
-            Five Industry Breakthroughs
-          </h2>
-          <p className="mt-4 text-lg text-gray-600">
+          </p>
+          <h2 className="heading-lg">Five Industry Breakthroughs</h2>
+          <p className="mt-4 text-body text-sm sm:text-base">
             CmplAI introduces five breakthroughs the pharma industry has never seen before.
           </p>
         </div>
@@ -178,17 +176,17 @@ export default function ProductFeatures() {
                 type="button"
                 onClick={prev}
                 disabled={animatingBack}
-                className="p-2.5 rounded-full border border-teal-200 text-teal-700 hover:bg-teal-50 transition-colors disabled:opacity-50"
+                className="p-2.5 rounded-full border border-white/15 text-zinc-300 hover:bg-white/10 hover:text-white transition-colors disabled:opacity-50"
                 aria-label="Previous breakthrough"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
 
               <div className="text-center min-w-[200px] px-2">
-                <p className="text-xs font-semibold text-teal-600 uppercase tracking-wider">
+                <p className="label-caps text-[10px]">
                   {slide.num} / 05
                 </p>
-                <p className="text-sm font-bold text-gray-900 mt-0.5 line-clamp-1">
+                <p className="text-sm font-medium text-white mt-0.5 line-clamp-1">
                   {slide.title}
                 </p>
               </div>
@@ -197,7 +195,7 @@ export default function ProductFeatures() {
                 type="button"
                 onClick={next}
                 disabled={animatingBack}
-                className="p-2.5 rounded-full border border-teal-200 text-teal-700 hover:bg-teal-50 transition-colors disabled:opacity-50"
+                className="p-2.5 rounded-full border border-white/15 text-zinc-300 hover:bg-white/10 hover:text-white transition-colors disabled:opacity-50"
                 aria-label="Next breakthrough"
               >
                 <ChevronRight className="w-5 h-5" />
@@ -215,8 +213,8 @@ export default function ProductFeatures() {
                   aria-current={i === active ? "true" : undefined}
                   className={`rounded-full transition-all duration-300 disabled:opacity-50 ${
                     i === active
-                      ? "w-8 h-2.5 bg-teal-600"
-                      : "w-2.5 h-2.5 bg-teal-300 hover:bg-teal-500"
+                      ? "w-8 h-2.5 bg-white"
+                      : "w-2.5 h-2.5 bg-zinc-600 hover:bg-zinc-400"
                   }`}
                 />
               ))}
